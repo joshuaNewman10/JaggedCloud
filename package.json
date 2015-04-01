@@ -1,0 +1,22 @@
+{
+  "name": "JaggedCloud",
+  "version": "1.0.0",
+  "description": "> Pithy project description",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JaggedCloud/JaggedCloud.git"
+  },
+  "keywords": [
+    "thesis"
+  ],
+  "author": "Garron Sanchez <garron.michael@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JaggedCloud/JaggedCloud/issues"
+  },
+  "homepage": "https://github.com/JaggedCloud/JaggedCloud"
+}
