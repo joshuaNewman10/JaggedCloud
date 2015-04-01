@@ -1,0 +1,19 @@
+{
+  "name": "JaggedCloud",
+  "version": "0.0.0",
+  "homepage": "https://github.com/JaggedCloud/JaggedCloud",
+  "authors": [
+    "Garron Sanchez <garron.michael@gmail.com>"
+  ],
+  "keywords": [
+    "thesis"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
