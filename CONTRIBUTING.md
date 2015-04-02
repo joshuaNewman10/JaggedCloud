@@ -166,6 +166,9 @@ This is just to help you organize your process
 If you follow all of these guidelines and make good changes, you should have
 no problem getting your changes merged in.
 
+### Code Review
+If you are reviewing code please leave a comment once you have finished reviewing. We require that two people
+have reviewed the code before it can be merged. If the code looks good please leave a comment saying: "this is ready to be merged." If there is a problem please leave a general comment saying "this pull request needs revision before it can be merged" and also leave a comment on the specific point in the code that requires revision.
 
 <!-- Links -->
 [style guide]: https://github.com/hackreactor-labs/style-guide
