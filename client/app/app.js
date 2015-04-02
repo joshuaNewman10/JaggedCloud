@@ -1,6 +1,6 @@
 (function(){
 
-  var app = angular.module('interview', ['ui.router']);
+  var app = angular.module('hackbox', ['ui.router']);
 
   app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
       $urlRouterProvider.otherwise('/');
