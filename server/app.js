@@ -3,8 +3,8 @@ var http = require('http');
 
 var app = express();
 
-require('./routes')(app);
+var port = process.env.port || 3000;
 
-var server = http.createSever(app).listen(3000);
+require('./routes')(app, express);
 
-exports = module.exports = app;
+app.listen(port);
