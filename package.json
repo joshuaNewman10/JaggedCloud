@@ -18,5 +18,14 @@
   "bugs": {
     "url": "https://github.com/JaggedCloud/JaggedCloud/issues"
   },
-  "homepage": "https://github.com/JaggedCloud/JaggedCloud"
+  "homepage": "https://github.com/JaggedCloud/JaggedCloud",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-jshint": "^0.11.1",
+    "jasmine-core": "^2.2.0",
+    "karma": "^0.12.31",
+    "karma-chrome-launcher": "^0.1.7",
+    "karma-jasmine": "^0.3.5"
+  }
 }
