@@ -1,7 +1,7 @@
 (function(){
 
   angular
-    .module('interview')
+    .module('hackbox')
     .controller('HomeCtrl', HomeCtrl);
 
   HomeCtrl.$inject = ['$scope'];
