@@ -1,0 +1,3 @@
+/*
+Unit test suite for the page the user signup component
+*/

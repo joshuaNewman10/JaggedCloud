@@ -2,14 +2,19 @@
 Unit test suite for the page the interview view page (main page of app)
 */
 
-var assert = chai.assert;
-var should = chai.should();
-var expect = chai.expect;
+// describe('Unit: MainController', function() {
+//   // Load the module with MainController
+//   beforeEach(module('myApp'));
 
-// describe('the todo.App', function() {
-//   describe('todo utilities object', function(){
-//     it('should have all the necessary methods', function(){
-//        todo.util.should.have.property('isValidTodoName');
-//        todo.util.should.have.property('getUniqueId');
+//   var ctrl, scope;
+//   // inject the $controller and $rootScope services
+//   // in the beforeEach block
+//   beforeEach(inject(function($controller, $rootScope) {
+//     // Create a new scope that's a child of the $rootScope
+//     scope = $rootScope.$new();
+//     // Create the controller
+//     ctrl = $controller('MainController', {
+//       $scope: scope
 //     });
-//   });
+//   }));
+// });
