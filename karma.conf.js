@@ -12,10 +12,17 @@ module.exports = function(config) {
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['jasmine'],
 
+    junitReporter : {
+        outputFile: 'test_out/unit.xml',
+        suite: 'unit'
+    },
 
     // list of files / patterns to load in the browser
-    files: [
-      'Spec/**/*.js'
+    files : [
+        'client/lib/bower_components/angular/angular.js',
+        'client/lib/bower_components/angular-mocks/ng-mock.js',
+        'client/app/**/*.js',
+        'Spec/unit/**/*.js'
     ],
 
 
@@ -37,7 +44,6 @@ module.exports = function(config) {
 
 
     // web server port
-    port: 9876,
 
 
     // enable / disable colors in the output (reporters and logs)
@@ -60,6 +66,14 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false
+    singleRun: false,
+
+    plugins : [
+        'karma-junit-reporter',
+        'karma-chrome-launcher',
+        'karma-firefox-launcher',
+        'karma-phantomjs-launcher',
+        'karma-jasmine'
+    ]
   });
 };
