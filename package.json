@@ -31,6 +31,8 @@
     "karma-jasmine": "^0.3.5"
   },
   "dependencies": {
-    "require": "^2.4.17"
+    "require": "^2.4.17",
+    "express": "^4.12.3",
+    "mongoose": "^4.0.1"
   }
 }
