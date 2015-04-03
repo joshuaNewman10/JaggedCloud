@@ -7,6 +7,7 @@ module.exports = function(grunt) {
   }
 
   grunt.initConfig({
+
     karma: {
       unit: {
         configFile: 'karma.conf.js',
@@ -45,7 +46,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('default', ['env:all', 'env:test', 'karma:unit']);
 
-  grunt.registerTask('test', ['karma:travis']);  //test build
   grunt.registerTask('test', ['env:all', 'env:test', 'karma:travis']);  //test build
   // grunt.registerTask('serve', ['build', 'env:all','env:prod']); //production build
 
