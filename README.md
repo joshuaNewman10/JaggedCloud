@@ -11,7 +11,7 @@
 
 ##Status
 
-[![Build Status](https://secure.travis-ci.org/joshuaNewman10/JaggedCloud/JaggedCloud.png)](http://travis-ci.org/joshuaNewman10/JaggedCloud/JaggedCloud)
+[![Build Status](https://secure.travis-ci.org/JaggedCloud/JaggedCloud.png)](http://travis-ci.org/JaggedCloud/JaggedCloud)
 
 
 ## Table of Contents
