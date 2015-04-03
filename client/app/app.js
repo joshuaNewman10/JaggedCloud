@@ -36,5 +36,9 @@
       }
     });
   });
+<<<<<<< HEAD
+=======
+
+>>>>>>> 10512e78f387a13d6ba503126f52faa7f2424fae
   console.log('App loaded successfully');
 })();
