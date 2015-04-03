@@ -7,7 +7,6 @@ module.exports = function(grunt) {
   }
 
   grunt.initConfig({
-
     karma: {
       unit: {
         configFile: 'karma.conf.js',
@@ -35,15 +34,26 @@ module.exports = function(grunt) {
         NODE_ENV: 'production'
       },
       all: localConfig
-    },
+    }
     });
 
+  grunt.loadNpmTasks('grunt-env');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-karma');
-  grunt.registerTask('devmode', ['env:all', 'env:test', 'karma:unit', 'watch']); //development build, watch for changes
+
+  grunt.registerTask('devmode', ['env', 'env:test', 'karma:unit', 'watch']); //development build, watch for changes
+
+  grunt.registerTask('default', ['env:all', 'env:test', 'karma:unit']);
+
   grunt.registerTask('test', ['karma:travis']);  //test build
   grunt.registerTask('test', ['env:all', 'env:test', 'karma:travis']);  //test build
   // grunt.registerTask('serve', ['build', 'env:all','env:prod']); //production build
+
+  grunt.registerTask('server', function () {
+    grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
+    grunt.task.run(['serve']);
+  });
+
 
 };
 
