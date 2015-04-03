@@ -9,7 +9,7 @@
             url: '/',
             controller: 'HomeCtrl',
             templateUrl: 'app/home/home.html',
-        })
-  })
+        });
+  });
   console.log('App loaded successfully');
 })();
