@@ -25,14 +25,15 @@
   
   // Anytime a state changes, this function ensures that any route that needs 
   // authentication is authenticated.
-  .run(function ($rootScope, $state, $stateParams, Auth) {
+  .run(function ($rootScope, $state, $stateParams, Auth, Video) {
     $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams){
       if (toState && toState.authenticate && !Auth.isAuthenticated()) {
         $state.go('home');
         event.preventDefault();
       }
-      if(toState.name === 'home'){
-        console.log('LEAVING ROOM')
+      if(toState.name !== 'room'){
+        console.log('LEAVING ROOM');
+        Video.unInitialize();
       }
     });
   });

@@ -18,12 +18,13 @@
 
     ///// IMPLEMENTATION /////
     var comm = null;
-
+    
     function initialize(roomName){
       if(!comm){
-        comm = new Icecomm('glkfL9sBKg/o6i2Ma3OS3kMqqbeEDT1ofUODOQjAlmwESS7LBu');
+        console.log('Initializing Video');
+        comm = new Icecomm('glkfL9sBKg/o6i2Ma3OS3kMqqbeEDT1ofUODOQjAlmwESS7LBu', {debug: true});
         comm.connect(roomName, {audio: false});
-
+        
         comm.on('connected', function(peer) {
           peerVideo.src = peer.stream;
         });
@@ -40,6 +41,7 @@
 
     function unInitialize(){
       if(!!comm){
+        console.log('Stopping Video');
         comm.leave();
         comm = null;
       }
