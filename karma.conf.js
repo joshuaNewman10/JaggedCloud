@@ -14,12 +14,12 @@ module.exports = function(config) {
 
     junitReporter : {
         outputFile: 'test_out/unit.xml',
-        suite: 'unit'
+        suite: ''
     },
 
     // list of files / patterns to load in the browser
     files : [
-        // 'client/lib/bower_components/angular/angular.js',
+        'client/lib/bower_components/angular/angular.js',
         // 'client/lib/bower_components/angular-mocks/ng-mock.js',
         'client/app/**/*.js',
         'Spec/unit/**/*.js'
