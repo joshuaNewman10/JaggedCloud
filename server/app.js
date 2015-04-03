@@ -1,3 +1,4 @@
+var mongoose = require('mongoose');
 var express = require('express');
 var http = require('http');
 
@@ -12,8 +13,7 @@ app.listen(port);
 
 
 
-// INITIATION: include mongoose and open connection to database on locally running MongoDB instance
-var mongoose = require('mongoose');
+// INITIATION: open mongoose connection to database on locally running MongoDB instance
 mongoose.connect(<MONGODB connection goes here>) --> example: 'mongodb://localhost/test'
 
 
