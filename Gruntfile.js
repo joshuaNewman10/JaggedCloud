@@ -41,7 +41,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-karma');
   grunt.registerTask('devmode', ['env:all', 'env:test', 'karma:unit', 'watch']); //development build, watch for changes
-  grunt.registerTask('test', ['env:all', 'env:test', 'karma:travis']);  //test build
+  grunt.registerTask('test', ['karma:travis']);  //test build
   // grunt.registerTask('serve', ['build', 'env:all','env:prod']); //production build
 
 };
