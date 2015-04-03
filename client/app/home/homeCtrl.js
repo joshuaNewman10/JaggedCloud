@@ -1,3 +1,6 @@
+// homeCtrl.js
+// This is the controller responsible for the main landing page. 
+
 (function(){
 
   angular

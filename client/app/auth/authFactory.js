@@ -1,6 +1,6 @@
 // authFactory.js
 // This factory/service is responsible for handling all the client-side authentication.
-// 
+
 (function(){
 
   angular
@@ -41,7 +41,8 @@
       $state.go('home', {}, {reload: true});
     }
 
-
+    // Function: Auth.isAuthenticated()
+    // This function will unAuthenticate the user by removing the local storage object. 
     function isAuthenticated(){
       return true;
      // return !!$window.localStorage.getItem('hackboxAuth');

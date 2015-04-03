@@ -1,3 +1,8 @@
+// authTokenFactory.js
+// This is a service designed for the httpInterceptor. 
+// When outgoing requests are made, this service attaches information to the request header
+// regarding the user such as the session token. 
+
 (function(){
 
   angular

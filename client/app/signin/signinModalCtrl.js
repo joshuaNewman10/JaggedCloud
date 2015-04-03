@@ -1,3 +1,7 @@
+// signinModalCtrl.js
+// This is the controller responsible for the signin Modal that appears when
+// the signin button is clicked. 
+
 (function(){
 
   angular
@@ -7,7 +11,7 @@
   SigninModalCtrl.$inject = ['$scope','$modalInstance'];
 
   function SigninModalCtrl($scope, $modalInstance){
-
+    
     $scope.submit = function () {
       $modalInstance.close();
     };

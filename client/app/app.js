@@ -33,7 +33,7 @@
       }
       if(toState.name !== 'room'){
         console.log('LEAVING ROOM');
-        Video.unInitialize();
+        Video.uninitialize();
       }
     });
   });
