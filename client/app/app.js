@@ -11,13 +11,13 @@
             url: '/',
             controller: 'homeCtrl',
             templateUrl: 'app/home/home.html',
-        });
+        })
         .state('room', {
             url: '/room',
             controller: 'roomCtrl',
             templateUrl: 'app/room/room.html',
             authenticate: true
-        })
+        });
 
         // Attach token to all requests
         $httpProvider.interceptors.push('AttachTokens');
