@@ -9,7 +9,7 @@ var userSchema = mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  profile_photo: ??,
+  profile_photo: String,
   rooms: []
 });
 
