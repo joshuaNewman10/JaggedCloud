@@ -8,6 +8,12 @@
   - __Scrum Master__: teamMember
   - __Development Team Members__: teamMember, teamMember
 
+
+##Status
+
+[![Build Status](https://secure.travis-ci.org/joshuaNewman10/JaggedCloud/JaggedCloud.png)](http://travis-ci.org/joshuaNewman10/JaggedCloud/JaggedCloud)
+
+
 ## Table of Contents
 
 1. [Usage](#Usage)
