@@ -31,6 +31,9 @@
         $state.go('home');
         event.preventDefault();
       }
+      if(toState.name === 'home'){
+        console.log('LEAVING ROOM')
+      }
     });
   });
   console.log('App loaded successfully');

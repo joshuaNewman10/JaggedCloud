@@ -21,7 +21,7 @@
       });
 
       comm.on('disconnect', function(peer) {
-        comm.leave();
+        peerVideo.src = '';
       });
     };
 
