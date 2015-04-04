@@ -44,7 +44,6 @@
 
       comm.on('disconnect', function(peer) {
           $scope.peerVideoSource = '';
-          $scope.$digest();
       });
     };
 
