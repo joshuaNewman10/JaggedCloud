@@ -1,31 +1,42 @@
+var expect = chai.expect;
 /*
 Unit test suite for the page the user first lands on (Home)
 */
 
-// describe('HomeController', function() {
-//   beforeEach(module('hackbox'));
+//////////////////// Controllers ////////////////////
+describe('homeCtrl', function() {
+  beforeEach(module('hackbox'));
 
-//   var $controller;
+  var $controller;
 
-//   beforeEach(inject(function(_$controller_){
-//     // The injector unwraps the underscores (_) from around the parameter names when matching
-//     $controller = _$controller_;
-//   }));
+  beforeEach(inject(function(_$controller_){
+    // The injector unwraps the underscores (_) from around the parameter names when matching
+    $controller = _$controller_;
+  }));
 
-//   describe('$scope.logout', function() {
-//     it('logs out users', function() {
-//       var $scope = {};
-//       var controller = $controller('HomeCtrl', { $scope: $scope, $modal: $modal, $log: $log, Auth: 4});
-//       $scope.password = 'longerthaneightchars';
-//       $scope.grade();
-//       expect($scope.strength).toEqual('strong');
-//     });
-//   });
-// });
+  describe('', function() {
+    it('should have all the necessary methods', function() {
+      var $scope = {};
+      var controller = $controller('homeCtrl', { $scope: $scope});
 
-describe("A suite", function() {
-  it("contains spec with an expectation!", function() {
-    expect(true).toBe(true);
+      expect($scope.logout).to.not.be.undefined;
+    });
   });
+});
+
+//////////////////// Factory/Service ////////////////////
+
+describe('Video/Icecomm Service', function() {
+    beforeEach(module('hackbox'));
+
+    var Video;
+
+    beforeEach(inject(function(_Video_) {
+        Video = _Video_;
+    }));
+
+    it('should have all the necessary methods', function(){
+        expect(Video.getIcecommInstance).to.not.be.undefined;
+    });
 });
 

@@ -30,7 +30,7 @@
       if(!!comm){
         console.log('Stopping Video');
         
-        comm.leave(); 
+        comm.leave(true); 
         return true;
       }
       return false;

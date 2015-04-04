@@ -31,10 +31,6 @@
         $state.go('home');
         event.preventDefault();
       }
-      if(toState.name !== 'room'){
-        console.log('LEAVING ROOM');
-        Video.uninitialize();
-      }
     });
   });
   console.log('App loaded successfully');
