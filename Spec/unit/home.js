@@ -17,7 +17,7 @@ describe('homeCtrl', function() {
   describe('', function() {
     it('should have all the necessary methods', function() {
       var $scope = {};
-      var controller = $controller('homeCtrl', { $scope: $scope, Auth:Auth});
+      var controller = $controller('homeCtrl', { $scope: $scope});
 
       expect($scope.logout).to.not.be.undefined;
     });

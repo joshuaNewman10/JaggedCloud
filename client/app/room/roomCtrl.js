@@ -14,10 +14,20 @@
     $scope.userVideoSource = null;
     $scope.peerVideoSource = null;
 
+    $scope.$on('$destroy', function(){
+      $scope.uninit();
+    });
+
     // Function: RoomCtrl.init()
     // This function will initialize all entities upon switching the the room state.
     $scope.init = function(){
       $scope.initializeVideo('hackbox');
+    };
+
+    $scope.uninit = function(){
+      console.log('Leaving Room, shutting down video and removing listeners.')
+      var comm = Video.getIcecommInstance();
+      comm.leave(true);
     };
 
     // Function: RoomCtrl.initializeVideo(roomName)
