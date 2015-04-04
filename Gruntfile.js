@@ -30,6 +30,11 @@ module.exports = function(grunt) {
         browsers: ['PhantomJS']
       }
     },
+    nodemon: {
+      dev: {
+        script: 'server/server.js'
+      }
+    },
     watch: {
       karma: {
         // run the continuous karma task when on file change
@@ -38,10 +43,8 @@ module.exports = function(grunt) {
       }
     },
     env : {
-      options : {
-        script: 'server/server.js'
-      },
       dev : {
+        options: {},
         NODE_ENV : 'development',
         DEST     : 'builds/dev'
       },
@@ -58,19 +61,33 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-env');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-nodemon');
+
+  //Server development
+  grunt.registerTask('server-dev', function (target) {
+      // Running nodejs in a different process and displaying output on the main console
+      var nodemon = grunt.util.spawn({
+           cmd: 'grunt',
+           grunt: true,
+           args: 'nodemon'
+      });
+      nodemon.stdout.pipe(process.stdout);
+      nodemon.stderr.pipe(process.stderr);
+
+    });
 
   //will run our unit tests once and report the results in Karma
   grunt.registerTask('unit-test', ['karma:unit']);
 
   //Use development mode while working on our codebae, it will watch for any file changes and run karma continuously
-  grunt.registerTask('devmode', ['env','printEnv', 'karma:continuous:start', 'watch:karma']); 
+  grunt.registerTask('devmode', ['env:all','env:dev','printEnv','server-dev', 'karma:continuous:start', 'watch:karma']); 
 
   //Test is what Travis uses to run our test suite, it is initiated in the 'scripts' section in package.json
   grunt.registerTask('test', ['karma:travis']);
 
  //Task to check what current env variables are (useful for debugging)
   grunt.registerTask('printEnv', 'prints a message with an env var', function() { 
-    console.log('Env var in subsequent grunt task: ' + process.env.DEST, process.env);
+    console.log('Gruntfile.js Environmental variables being set: ' + process.env.DEST, process.env);
   });
 
   /*These tasks will eventually be what we run for development and production, at the moment they are 
