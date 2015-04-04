@@ -15,7 +15,7 @@
 
     var instance = {
       initialize: initialize,
-      unInitialize: unInitialize,
+      uninitialize: uninitialize,
       getComm: getComm
     };
 
@@ -43,6 +43,7 @@
         });
 
         comm.on('local', function(peer) {
+          console.log(localVideo);
           localVideo.src = peer.stream;
         });
 
