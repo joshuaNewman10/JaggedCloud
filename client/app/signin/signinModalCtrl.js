@@ -13,7 +13,6 @@
   function SigninModalCtrl($scope, $modalInstance, Auth){
     
     $scope.submit = function () {
-      console.log(Auth);
       Auth.signIn();
     };
 
