@@ -80,8 +80,8 @@ module.exports = function(grunt) {
   grunt.registerTask('unit-test', ['karma:unit']);
 
   //Use development mode while working on our codebae, it will watch for any file changes and run karma continuously
-  grunt.registerTask('devmode', ['env:all','env:dev','printEnv','server-dev', 'karma:continuous:start', 'watch:karma']); 
-
+  grunt.registerTask('devmode', ['env:all','env:dev','printEnv','server-dev', 'karma:continuous:start', 'watch:karma']);
+  
   //Test is what Travis uses to run our test suite, it is initiated in the 'scripts' section in package.json
   grunt.registerTask('test', ['karma:travis']);
 
