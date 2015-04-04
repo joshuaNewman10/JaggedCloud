@@ -24,11 +24,10 @@
     // Function: Auth.signIn(user)
     // user: The user object to send to the server
     // This function will make a POST request to the server to signin the user
-    function signIn(user){
+    function signIn(){
       return $http({
-        method: 'POST',
-        url: '/user/signin',
-        data: user
+        method: 'GET',
+        url: '/auth/github'
       }).then(function(response){
         return response;        
       });
