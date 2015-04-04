@@ -13,28 +13,14 @@
   function Video(){
 
     var instance = {
-      initialize: initialize,
-      uninitialize: uninitialize,
-      getIcecommInstance: getIcecommInstance
+      getIcecommInstance: getIcecommInstance,
+      uninitialize: uninitialize
     };
 
     return instance;
 
     ///// IMPLEMENTATION /////
     var comm = null;
-
-    // Function: Video.initialize(roomName)
-    // roomName: A string representing the room a user is joining. 
-    // This function will initialize the comm object as a new Icecomm instance. 
-    // It will also setup event listeners for the room to react when others join.
-    // Returns: The Icecomm instance created.
-    function initialize(){
-      // If the comm object is not initialized, then create a new instance.
-      if(!comm){
-        comm = new Icecomm('glkfL9sBKg/o6i2Ma3OS3kMqqbeEDT1ofUODOQjAlmwESS7LBu', {debug: true});
-      }
-      return comm;
-    };
 
     // Function: Video.uninitialize()
     // This function will leave current room, stop local audio/video stream 
@@ -51,13 +37,13 @@
     };
 
     // Function: Video.getIcecommInstance()
-    // This function returns the instance of Icecomm currently in use.
+    // This function returns an Icecomm object. If it does not exist, it creates one. 
     // Returns: The Icecomm instance if possible, or else null. 
     function getIcecommInstance(){
-      if(!!comm)
-        return comm;
-      else
-        return null;
+      if(!comm){
+        comm = new Icecomm('glkfL9sBKg/o6i2Ma3OS3kMqqbeEDT1ofUODOQjAlmwESS7LBu', {debug: true});
+      }
+      return comm;
     };
   }
 })();

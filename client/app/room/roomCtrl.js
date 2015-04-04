@@ -25,7 +25,7 @@
     // This function will initialize the Video component of the room.
     $scope.initializeVideo = function(roomName){
       // Create the Icecomm object and get the instance of it.
-      var comm = Video.initialize();
+      var comm = Video.getIcecommInstance();
 
       // Connect to the correct room.
       comm.connect(roomName, {audio: false});
