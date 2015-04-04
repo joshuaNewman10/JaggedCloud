@@ -8,12 +8,13 @@
     .module('hackbox')
     .controller('signinModalCtrl', SigninModalCtrl);
 
-  SigninModalCtrl.$inject = ['$scope','$modalInstance'];
+  SigninModalCtrl.$inject = ['$scope','$modalInstance', 'Auth'];
 
-  function SigninModalCtrl($scope, $modalInstance){
+  function SigninModalCtrl($scope, $modalInstance, Auth){
     
     $scope.submit = function () {
-      $modalInstance.close();
+      console.log(Auth);
+      Auth.signIn();
     };
 
     $scope.cancel = function () {
