@@ -1,79 +1,56 @@
-// Karma configuration
-// Generated on Wed Apr 01 2015 17:11:28 GMT-0700 (PDT)
-
-module.exports = function(config) {
-  config.set({
-
-    // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '',
-
-
-    // frameworks to use
-    // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine'],
-
-    junitReporter : {
-        outputFile: 'test_out/unit.xml',
-        suite: ''
-    },
-
-    // list of files / patterns to load in the browser
+module.exports = function(config){
+    config.set({
+    /*  root path location that will be used to resolve all relative paths in files and exclude sections, 
+          Should always be the root of our project
+    */
+    
+    basePath : '',
+ 
+    // files to include, ordered by dependencies
     files : [
-        'client/lib/bower_components/angular/angular.js',
-        // 'client/lib/bower_components/angular-mocks/ng-mock.js',
-        'client/app/**/*.js',
-        'Spec/unit/**/*.js'
+      //These are the library dependency files we need to run our tests
+      'client/lib/bower_components/angular/angular.js',
+      'client/lib/bower_components/angular-mocks/angular-mocks.js',
+ 
+      //These are the actual files in our codebase we want to test
+      'client/app/**/*.js',
+ 
+      //These are the spec unit test files where our tests lives
+      'Spec/unit/home.js'
     ],
 
-
-    // list of files to exclude
-    exclude: [
+    // files to exclude
+    exclude : [
     ],
-
-
-    // preprocess matching files before serving them to the browser
-    // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {
-    },
-
-
-    // test results reporter to use
-    // possible values: 'dots', 'progress'
-    // available reporters: https://npmjs.org/browse/keyword/karma-reporter
+ 
+    //Karma can watch for changes on files but we are doing the watching with Grunt instead
+    autoWatch : false,
+ 
+    //Our testing frameworks (e.g. Jasmine, Chai, Mocha) we will have jasmine and sinon (eventually)
+    frameworks: ['jasmine'],
+ 
+    //The browsers we want to test against, we can add others such as ie
+    browsers : ['Chrome', 'PhantomJS', 'Firefox'],
+ 
+    //Reports the result of our tests, progress is the default
     reporters: ['progress'],
-
-
-    // web server port
-
-
-    // enable / disable colors in the output (reporters and logs)
-    colors: true,
-
-
-    // level of logging
-    // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-    logLevel: config.LOG_INFO,
-
-
-    // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: false,
-
-
-    // start these browsers
-    // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
-
-
-    // Continuous Integration mode
-    // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false,
-
+ 
+    // map of preprocessors that is used mostly for plugins (none for now)
+    preprocessors: {
+ 
+    },
+ 
+    /*Karma plugins we need to run karma and our tests
+         We need a browser launcher for each browser we want to use
+         We also need karmas framework plugins
+         Phamtom.js is our headless browser
+    */
     plugins : [
         'karma-junit-reporter',
         'karma-chrome-launcher',
         'karma-firefox-launcher',
-        'karma-phantomjs-launcher',
-        'karma-jasmine'
+        'karma-jasmine',
+        'karma-phantomjs-launcher'
     ]
   });
 };
