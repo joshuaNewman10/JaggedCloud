@@ -39,23 +39,22 @@ module.exports = function(grunt) {
     },
     env : {
       options : {
-      //Shared Options Hash
+        script: 'server/server.js'
       },
       dev : {
         NODE_ENV : 'development',
-        DEST     : 'builds/dev',
-        config: localConfig
+        DEST     : 'builds/dev'
       },
       build : {
         NODE_ENV : 'production',
-        DEST     : 'builds/production',
-        config: localConfig
+        DEST     : 'builds/production'
       },
       all: localConfig
     }
   });
  
   // load the Grunt task
+  grunt.loadNpmTasks('grunt-express-server');
   grunt.loadNpmTasks('grunt-env');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-contrib-watch');
@@ -64,7 +63,7 @@ module.exports = function(grunt) {
   grunt.registerTask('unit-test', ['karma:unit']);
 
   //Use development mode while working on our codebae, it will watch for any file changes and run karma continuously
-  grunt.registerTask('devmode', ['env:dev','printEnv', 'karma:continuous:start', 'watch:karma']); 
+  grunt.registerTask('devmode', ['env','printEnv', 'karma:continuous:start', 'watch:karma']); 
 
   //Test is what Travis uses to run our test suite, it is initiated in the 'scripts' section in package.json
   grunt.registerTask('test', ['karma:travis']);
@@ -77,6 +76,6 @@ module.exports = function(grunt) {
   /*These tasks will eventually be what we run for development and production, at the moment they are 
     just placeholders that print out the Node environmental variables 
   */
-  grunt.registerTask('prod', ['env:build', 'printEnv']);
-  grunt.registerTask('dev',  ['env:dev', 'printEnv']);
+  grunt.registerTask('prod', ['env:all', 'env:build', 'printEnv']);
+  grunt.registerTask('dev',  ['env:all', 'env:dev', 'printEnv']);
 };
