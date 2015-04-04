@@ -15,7 +15,7 @@ module.exports = function(grunt) {
     karma: {
       options: {
         // point all tasks to karma config file
-        configFile: 'karma-conf.js'
+        configFile: 'karma.conf.js'
       },
       unit: {
         singleRun: true
