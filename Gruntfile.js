@@ -35,6 +35,20 @@ module.exports = function(grunt) {
         script: 'server/server.js'
       }
     },
+    shell: {
+      mongo: {
+          command: 'sudo mongod',
+          options: {
+              async: true
+          }
+      }
+    },
+    open : {
+        dev : {
+          path: 'http://localhost:3000/',
+          app: 'Google Chrome'
+        }
+    },
     watch: {
       karma: {
         // run the continuous karma task when on file change
@@ -57,12 +71,13 @@ module.exports = function(grunt) {
   });
  
   // load the Grunt task
+  grunt.loadNpmTasks('grunt-shell-spawn');
   grunt.loadNpmTasks('grunt-express-server');
   grunt.loadNpmTasks('grunt-env');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-nodemon');
-
+  grunt.loadNpmTasks('grunt-open');
   //Server development
   grunt.registerTask('server-dev', function (target) {
       // Running nodejs in a different process and displaying output on the main console
@@ -80,8 +95,8 @@ module.exports = function(grunt) {
   grunt.registerTask('unit-test', ['karma:unit']);
 
   //Use development mode while working on our codebae, it will watch for any file changes and run karma continuously
-  grunt.registerTask('devmode', ['env:all','env:dev','printEnv','server-dev', 'karma:continuous:start', 'watch:karma']);
-  
+  grunt.registerTask('devmode', ['env:all','env:dev','printEnv','shell:mongo','server-dev','open:dev', 'karma:continuous:start', 'watch:karma']);
+
   //Test is what Travis uses to run our test suite, it is initiated in the 'scripts' section in package.json
   grunt.registerTask('test', ['karma:travis']);
 
