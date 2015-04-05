@@ -1,11 +1,8 @@
-var passport = require('./githubConfig.js').passport;
+var passport = require('./githubConfig.js');
 
 module.exports.signin = function(req, res){
-    passport.authenticate('github'),
-    function(req, res){
-      // The request will be redirected to Github for authentication, so this
-      // function will not be called.
-  }
+  console.log(passport);
+    passport.authenticate('github');
 };
 
 module.exports.callback = function(req, res) {
