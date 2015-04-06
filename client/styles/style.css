@@ -24,6 +24,15 @@ body {
     float:left;
 }
 
+.canvas-container {
+    position:relative;
+    margin: 10px;
+    bottom: 0;
+    right:0;
+    float:right;
+    border: 3px solid purple;
+}
+
 .userVideo {
     height: 50px;
     width: 50px;
