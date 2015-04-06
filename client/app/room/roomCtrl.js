@@ -13,7 +13,7 @@
   function RoomCtrl($scope, $sce, Video, Drawing){
     $scope.userVideoSource = null;
     $scope.peerVideoSource = null;
-    $scope.canvas = null;
+    $scope.drawingCanvas = null;
 
     $scope.$on('$destroy', function(){
       $scope.uninit();
@@ -62,11 +62,18 @@
 
     $scope.initializeCanvas = function(containerClassName) {
       //create a new canvas object and get its reference
-      var canvas = Drawing.makeCanvas(containerClassName);
-      $('.' + containerClassName).append(canvas);
+      var canvas = Drawing.makeCanvas();
+      $('.canvas-container').append(canvas);
+
+      var canvasFabric = new fabric.Canvas('drawingCanvas', {
+        isDrawingMode: true
+      });
+
+      canvasFabric.setHeight(300);
+      canvasFabric.setWidth(300);
 
       //Give roomcontroller a reference to the canvas
-      $scope.canvas = canvas;
+      $scope.drawingCanvas = canvasFabric;
     };
 
     // Call the initialize function

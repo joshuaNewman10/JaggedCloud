@@ -24,12 +24,12 @@
     //This Function will create and return a new HTML% canvas element
     //set its initial position, id and size
     //it can then be appended to the DOM where/when desired
-    function makeCanvas(containerClassName) {
+    function makeCanvas() {
       var newCanvas = $('<canvas></canvas>')
           .css({position: 'absolute', top: 250, left: 250})
           .attr('width', 300)
           .attr('height', 300)
-          .addClass(containerClassName);
+          .attr('id', 'drawingCanvas');
 
       return newCanvas;
     }
@@ -40,7 +40,7 @@
     //If the canvas is successfully found and removed it will return true
     //Otherwise the canvas was not found and so will return false
     function removeCanvas(containerClassName) {
-      var canvas = $('.' + id);
+      var canvas = $('.' + containerClassName);
       if( canvas ) {
         canvas.remove();
         return true;
@@ -48,5 +48,4 @@
       return false;
     }
   }
- 
 })();
