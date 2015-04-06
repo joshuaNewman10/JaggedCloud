@@ -12,7 +12,7 @@
 
   function Drawing() {
     var instance = {
-      initializeCanvas: initializeCanvas,
+      makeCanvas: makeCanvas,
       removeCanvas: removeCanvas
     };
 
@@ -20,16 +20,16 @@
 
     //// IMPLEMENTATION /////
 
-    //Function: Drawing.initializeCanvas()
+    //Function: Drawing.makeCanvas()
     //This Function will create and return a new HTML% canvas element
     //set its initial position, id and size
     //it can then be appended to the DOM where/when desired
-    function initializeCanvas() {
+    function makeCanvas(containerClassName) {
       var newCanvas = $('<canvas></canvas>')
-          .css({position: absolute, top: 250, left: 250})
+          .css({position: 'absolute', top: 250, left: 250})
           .attr('width', 300)
           .attr('height', 300)
-          .atrr('id', 'canvasID1');
+          .addClass(containerClassName);
 
       return newCanvas;
     }
@@ -39,8 +39,8 @@
     //and then removes the canvas
     //If the canvas is successfully found and removed it will return true
     //Otherwise the canvas was not found and so will return false
-    function removeCanvas(id) {
-      var canvas = $('#' + id);
+    function removeCanvas(containerClassName) {
+      var canvas = $('.' + id);
       if( canvas ) {
         canvas.remove();
         return true;

@@ -8,11 +8,12 @@
     .module('hackbox')
     .controller('roomCtrl', RoomCtrl);
 
-  RoomCtrl.$inject = ['$scope', '$sce', 'Video'];
+  RoomCtrl.$inject = ['$scope', '$sce', 'Video', 'Drawing'];
 
-  function RoomCtrl($scope, $sce, Video){
+  function RoomCtrl($scope, $sce, Video, Drawing){
     $scope.userVideoSource = null;
     $scope.peerVideoSource = null;
+    $scope.canvas = null;
 
     $scope.$on('$destroy', function(){
       $scope.uninit();
@@ -22,12 +23,14 @@
     // This function will initialize all entities upon switching the the room state.
     $scope.init = function(){
       $scope.initializeVideo('hackbox');
+      $scope.initializeCanvas('canvas-container');
     };
 
     $scope.uninit = function(){
-      console.log('Leaving Room, shutting down video and removing listeners.')
+      console.log('Leaving Room, shutting down video, canvas and removing listeners.');
       var comm = Video.getIcecommInstance();
       comm.leave(true);
+      Drawing.removeCanvas('canvas-container');
     };
 
     // Function: RoomCtrl.initializeVideo(roomName)
@@ -55,6 +58,15 @@
       comm.on('disconnect', function(peer) {
           $scope.peerVideoSource = '';
       });
+    };
+
+    $scope.initializeCanvas = function(containerClassName) {
+      //create a new canvas object and get its reference
+      var canvas = Drawing.makeCanvas(containerClassName);
+      $('.' + containerClassName).append(canvas);
+
+      //Give roomcontroller a reference to the canvas
+      $scope.canvas = canvas;
     };
 
     // Call the initialize function
