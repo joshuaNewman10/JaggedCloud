@@ -8,14 +8,17 @@
     .module('hackbox')
     .controller('roomCtrl', RoomCtrl);
 
+  RoomCtrl.$inject = ['$scope', '$sce', 'Video', 'Drawing', 'TextEditor'];
 
-  RoomCtrl.$inject = ['$scope', '$sce', 'Video', 'Drawing', '$http'];
-
-  function RoomCtrl($scope, $sce, Video, Drawing, $http){
+  function RoomCtrl($scope, $sce, Video, Drawing, TextEditor){
     $scope.userVideoSource = null;
     $scope.peerVideoSource = null;
     $scope.drawingCanvas = null;
+    $scope.showCanvas = false;
+    $scope.editors = [];
+    $scope.editorTabs = [];
 
+    // The $destroy event is called when we leave this view
     $scope.$on('$destroy', function(){
       $scope.uninit();
     });
@@ -25,13 +28,21 @@
     $scope.init = function(){
       $scope.initializeVideo('hackbox');
       $scope.initializeCanvas('canvas-container');
+      $scope.addTextEditor();
     };
 
     $scope.uninit = function(){
       console.log('Leaving Room, shutting down video, canvas and removing listeners.');
-      var comm = Video.getIcecommInstance();
-      comm.leave(true);
+      // Remove Video/Audio
+      Video.getIcecommInstance().leave(true);
+
+      // Remove Canvas
       Drawing.removeCanvas('canvas-container');
+
+      // Remove all text editors
+      $scope.editors.forEach(function(editor){
+        editor.destroy();
+      });
     };
 
     // Function: RoomCtrl.initializeVideo(roomName)
@@ -42,7 +53,7 @@
       var comm = Video.getIcecommInstance();
 
       // Connect to the correct room.
-      comm.connect(roomName, {audio: false});
+      comm.connect(roomName, {limit: 2, audio: false});
 
       // Register user video connected event
       comm.on('local', function(peer) {
@@ -61,11 +72,6 @@
       });
     };
 
-    //Function: RoomCtrl.initializeCanvas() 
-    //This function gets a new canvas from the Drawing Factory
-    //it then appends the canvas to the DOM and wraps
-    //the canvas element inside Fabric
-    //lastly it gives a reference of the fabric object to the room controller's scope
     $scope.initializeCanvas = function(containerClassName) {
       //create a new canvas object and get its reference
       var canvas = Drawing.makeCanvas();
@@ -75,8 +81,8 @@
         isDrawingMode: true
       });
 
-      canvasFabric.setHeight(300);
-      canvasFabric.setWidth(300);
+      canvasFabric.setHeight(400);
+      canvasFabric.setWidth(650);
 
       //Give roomcontroller a reference to the canvas
       $scope.drawingCanvas = canvasFabric;
@@ -111,6 +117,43 @@
       .error(function(error){
         console.log('error', error);
       });
+    };
+    
+    $scope.addTextEditor = function(){
+      if($scope.editors.length < 5){
+        // Add new tab
+        var tab = {};
+        tab.id = $scope.editors.length;
+        tab.name = 'New Tab';
+        $scope.editorTabs.push(tab);  
+
+        // Remove active property from all editors
+        $('.editor').removeClass('active');
+
+        // Add new editor
+        var editor = {};
+        editor.id = 'editor' + $scope.editors.length;
+        $('#editors').append('<div class="editor active" id="'+ editor.id + '"></div>');
+        TextEditor.createEditor(editor.id);
+        $scope.editors.push(editor);
+      }
+      else{
+        console.log('Cannot have more than 5 editors!');
+      }
+    };
+
+    $scope.setActiveEditor = function(editorId){
+      var id = '#editor' + editorId;
+
+      // Remove active property from all editors
+      $('.editor').removeClass('active');
+
+      // Add active to the editor with the correct id. 
+      $(id).addClass('active');
+    };
+
+    $scope.toggleCanvas = function(){
+      $scope.showCanvas = !$scope.showCanvas;
     };
 
     // Call the initialize function

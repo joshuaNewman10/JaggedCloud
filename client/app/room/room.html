@@ -1,8 +1,15 @@
 <div id="room-container">
     <h1>Room</h1>
-    <button type="buton"ng-click="saveData()">Save Data</button>
-    <div class='textEditor-container'></div>
-    <div class='canvas-container'></div>
+    <button ng-click='toggleCanvas()'>Toggle Canvas</button>
+    <button ng-click='addTextEditor()'>Add Editor</button>
+    <div ng-show='!showCanvas' class='textEditor-container'>
+        <div class="tab-box"> 
+            <a ng-click="setActiveEditor(tab.id)" class="tabLink" ng-repeat='tab in editorTabs'>{{tab.name}}</a> 
+        </div>
+        <div id='editors'>
+        </div>
+    </div>
+    <div ng-show='showCanvas' class='canvas-container'></div>
     <div class='video-container'>
         <video class='userVideo' ng-src='{{userVideoSource}}' autoplay></video>
         <video class='peerVideo' ng-src='{{peerVideoSource}}' autoplay></video>
