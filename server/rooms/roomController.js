@@ -1,3 +1,3 @@
-module.exports.save = function(req, res) {
-  console.log("Trying to save room.");
+module.exports.saveCanvas = function(req, res) {
+
 };
