@@ -1,6 +1,13 @@
 body { 
     padding-top: 70px;
 }
+#editor { 
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
 
 #room-container{
     position:absolute;
@@ -11,9 +18,10 @@ body {
 .textEditor-container{
     position:relative;
     margin: 10px;
-    width: 50%;
-    height: 50%;
+    width: 60%;
+    height: 80%;
     border:3px solid green;
+    float:left;
 }
 
 .video-container{

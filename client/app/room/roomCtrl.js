@@ -24,6 +24,7 @@
     $scope.init = function(){
       $scope.initializeVideo('hackbox');
       $scope.initializeCanvas('canvas-container');
+      $scope.initializeTextEditor();
     };
 
     $scope.uninit = function(){
@@ -41,7 +42,7 @@
       var comm = Video.getIcecommInstance();
 
       // Connect to the correct room.
-      comm.connect(roomName, {audio: false});
+      comm.connect(roomName, {limit: 2, audio: false});
 
       // Register user video connected event
       comm.on('local', function(peer) {
@@ -75,6 +76,13 @@
       //Give roomcontroller a reference to the canvas
       $scope.drawingCanvas = canvasFabric;
     };
+
+    $scope.initializeTextEditor = function(){
+      var editor = ace.edit("editor");
+      editor.setTheme("ace/theme/monokai");
+      editor.getSession().setMode("ace/mode/javascript");
+    };
+
 
     // Call the initialize function
     $scope.init();
