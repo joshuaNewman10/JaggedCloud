@@ -94,11 +94,14 @@
 
       var request = {
         method: 'POST',
-        url: '/room',
+        url: '/room/save',
         headers: {
          'Content-Type': 'json'
         },
-        data: { data: JSON.stringify(drawingData) }
+        data: { 
+          roomId: '1',
+          canvas: JSON.stringify(drawingData)
+        }
       };
 
       $http(request)
