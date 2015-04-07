@@ -1,5 +1,6 @@
 /**
  * authFactory.js
+ *
  * This factory/service is responsible for handling all the client-side authentication.
  */
 

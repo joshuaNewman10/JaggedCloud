@@ -1,5 +1,6 @@
 /** 
  * roomCtrl.js
+ * 
  * This is the controller responsible for the room view. 
  * Anything needing to change the room view should be placed here. 
  */
@@ -164,6 +165,7 @@
     /**
      * Function: RoomCtrl.removeTextEditor(editorId)
      * This function will remove a text editor from the DOM.
+     *
      * @param editorId: An integer representing the ID of an editor object. Range(0 - MAX_EDITORS)
      */
     $scope.removeTextEditor = function(editorId){
@@ -189,6 +191,7 @@
     /**
      * Function: RoomCtrl.removeTextEditor(editorId)
      * This function will set the editor in the collection with the matching Id as the active editor 
+     *
      * @param editorId: An integer representing the ID of an editor object. Range(0 - MAX_EDITORS)
      */
     $scope.setActiveEditor = function(editorId){
@@ -232,8 +235,8 @@
      * A helper function to find the smallest editor.id # from 0 - limit
      * that does not exist currently in the editors collection.
      *
-     * @params arr: A collection to iterate over. 
-     * @params limit: The maximum value of an ID #
+     * @param arr: A collection to iterate over. 
+     * @param limit: The maximum value of an ID #
      * @return: The minimum ID # that does not currently exist within the collection. 
      */
     function nextSmallestId(arr, limit){

@@ -1,6 +1,9 @@
-// signinModalCtrl.js
-// This is the controller responsible for the signin Modal that appears when
-// the signin button is clicked. 
+/**
+ * signinModalCtrl.js
+ *
+ * This is the controller responsible for the signin Modal that appears when
+ * the signin button is clicked. 
+ */
 
 (function(){
 

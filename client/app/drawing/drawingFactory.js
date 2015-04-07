@@ -1,5 +1,6 @@
 /**
  * canvasFactory.js
+ *
  * This is a service designed to handle the drawing on canvas functionality within a given room.
  * It uses fabric.js, a library on top of HTML5 canvas
  * The data will be continually synced via WebSockets and saved at the end

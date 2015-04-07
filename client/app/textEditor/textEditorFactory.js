@@ -1,5 +1,6 @@
 /** 
  * textEditorFactory.js
+ * 
  * This is a service responsible for appending an Ace text editor to the DOM. 
  * It also assists in editing the editor elements. 
  */
