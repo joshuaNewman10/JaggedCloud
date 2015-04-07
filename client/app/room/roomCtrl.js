@@ -169,7 +169,12 @@
      * @param editorId: An integer representing the ID of an editor object. Range(0 - MAX_EDITORS)
      */
     $scope.removeTextEditor = function(editorId){
+      var switchEditorFocus = false;
+
       if($scope.editors.length > 1){
+        // Determine if the currently activeEditor is the one being removed
+        if( $('.activeEditor').attr('id') === 'editor' + editorId )
+          switchEditorFocus = true;
 
         // Remove the element from the DOM by element Id
         var id = '#editor' + editorId;
@@ -180,11 +185,13 @@
         $scope.editors[idxToRemove].editor.destroy();
         $scope.editors.splice(idxToRemove,1);
 
-        // Set active editor as next idx if possible, otherwise the one before. 
-        if(idxToRemove < $scope.editors.length)
-          $scope.setActiveEditor($scope.editors[idxToRemove].id);
-        else
-          $scope.setActiveEditor($scope.editors[idxToRemove-1].id);
+        // Set active editor if needed
+        if(switchEditorFocus){
+          if(idxToRemove < $scope.editors.length)
+            $scope.setActiveEditor($scope.editors[idxToRemove].id);
+          else
+            $scope.setActiveEditor($scope.editors[idxToRemove-1].id);
+        }
       }
     };
 
@@ -199,7 +206,7 @@
       // Hide all tabs and editors.
       deactivateTabsAndEditors();
 
-      // Add active to the editor with the correct id. 
+      // Add 'activeEditor' class to the editor with the correct id. Also set the tab as active.
       TextEditor.setEditorActive(editorId);
       $scope.editors[editorToFocusOn].tab.active = true;
 
