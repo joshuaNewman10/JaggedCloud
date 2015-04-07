@@ -34,6 +34,11 @@ var server = http.createServer(app).listen(port, function() {
   console.log('Server listening on port', port);
 });
 
+//Sockets Setup
+//io is the overall connection
+//Within io you can have many specific channels/pipes which are called sockets
+//We listen for specific events on sockets
+//We can also send events to ALL sockets via io.emit
 var io = require('socket.io').listen(server);
 
 io.on('connection', function(socket) {
@@ -43,8 +48,7 @@ io.on('connection', function(socket) {
       console.log('user disconnected');
   });
   socket.on('coords', function(data) {
-    console.log(data);
-    io.emit('coordinates', {data: data});
+    // console.log(data);
+    io.emit('coordinates', data);
   });
-
 });

@@ -11,9 +11,9 @@
     .module('hackbox')
     .controller('roomCtrl', RoomCtrl);
 
-  RoomCtrl.$inject = ['$scope', '$sce', '$http', 'Video', 'Drawing', 'TextEditor'];
+  RoomCtrl.$inject = ['$scope', '$sce', '$http', 'Video', 'Drawing', 'Sockets', 'TextEditor'];
 
-  function RoomCtrl($scope, $sce, $http, Video, Drawing, TextEditor){
+  function RoomCtrl($scope, $sce, $http, Video, Drawing, Sockets, TextEditor){
     $scope.userVideoSource = null;
     $scope.peerVideoSource = null;
     $scope.drawingCanvas = null;
@@ -23,6 +23,8 @@
     $scope.x = null;
     $scope.y = null;
     var MAX_EDITORS = 5;
+
+  RoomCtrl.$inject = ['$scope', '$sce', 'Video', 'Drawing','Sockets', '$http'];
 
     // The $destroy event is called when we leave this view
     $scope.$on('$destroy', function(){
@@ -110,11 +112,12 @@
       //Give roomcontroller a reference to the canvas
       $scope.drawingCanvas = canvasFabric;
 
-      canvasFabric.on('mouse:move', function(e) {
+      $scope.drawingCanvas.on('mouse:move', function(e) {
         var activeObject = e.target;
         var xCoord = e.e.clientX;
         var yCoord = e.e.clientY;
-        $scope.socket.emit('coords', {x: xCoord, y:yCoord});
+        var data = $scope.drawingCanvas.toDataURL();
+        Sockets.emit('coords', {x: xCoord, y:yCoord, canvasData: data});  
       });
     };
 
@@ -226,6 +229,38 @@
       $scope.editors[editorToFocusOn].editor.navigateLineEnd();
     };
 
+    $scope.initializeIO = function() {
+      var socket = io();
+      console.log(socket);
+      socket.on('greeting', function(data){
+        console.log('canvas data: ' + data);
+        $scope.ioStuff = data;
+        console.log('weee', $scope.ioStuff);
+        $scope.$digest();
+      });
+      $scope.socket = socket;
+      socket.on('coordinates', function(data) {
+        console.log(data);
+        $scope.x = data.data.x;
+        $scope.y = data.data.y;
+        $scope.$digest();
+        console.log(data.data.x, data.data.y, $scope.x, $scope.y);
+      });
+      Sockets.on('init', function (data) {
+        console.log('initialized!!!', data);
+      });
+
+      Sockets.on('greeting', function(data) {
+        console.log('got socket greeting data', data);
+        $scope.$digest();
+      });
+    };
+
+      // Sockets.on('coordinates', function(data) {
+        // Drawing.updateCanvas('canvas-container', data.canvasData);
+      // });
+   
+
     /**
      * Function: RoomCtrl.toggleCanvas()
      * This function will toggle the canvas on/off.
@@ -233,7 +268,9 @@
     $scope.toggleCanvas = function(){
       $scope.showCanvas = !$scope.showCanvas;
     };
-
+    $scope.init();
+  }
+  
     /**
      * Function: deactivateTabsAndEditors()
      * A helper function to set all editors and tabs as inactive. 
@@ -246,7 +283,7 @@
       $scope.editors.forEach(function(editor){
         editor.tab.active = false;
       });
-    };
+    }
 
     /**
      * Function: nextSmallestId(arr, limit)
@@ -268,7 +305,7 @@
           return i;
       }
       return 0;
-    };
+    }
 
     /**
      * Function: indexOfEditorWithId(editorId)
@@ -281,30 +318,9 @@
      */
     function indexOfEditorWithId(editorId){
       var idx = $scope.editors.map(function(editor) {
-                            return editor.id;
-                          }).indexOf(editorId);
+        return editor.id;
+      }).indexOf(editorId);
       return idx;
     }
 
-    $scope.initializeIO = function() {
-      var socket = io();
-      console.log(socket);
-      socket.on('greeting', function(data){
-        console.log('canvas data: ' + data);
-        $scope.ioStuff = data;
-        console.log('weee', $scope.ioStuff);
-        $scope.$digest();
-    });
-    $scope.socket = socket;
-    socket.on('coordinates', function(data) {
-      console.log(data);
-      $scope.x = data.data.x;
-      $scope.y = data.data.y;
-      $scope.$digest();
-      console.log(data.data.x, data.data.y, $scope.x, $scope.y);
-    });
-    };
-    // Call the initialize function
-    $scope.init();
-  }
 })();
