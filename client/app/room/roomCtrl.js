@@ -8,9 +8,10 @@
     .module('hackbox')
     .controller('roomCtrl', RoomCtrl);
 
-  RoomCtrl.$inject = ['$scope', '$sce', 'Video', 'Drawing'];
 
-  function RoomCtrl($scope, $sce, Video, Drawing){
+  RoomCtrl.$inject = ['$scope', '$sce', 'Video', 'Drawing', '$http'];
+
+  function RoomCtrl($scope, $sce, Video, Drawing, $http){
     $scope.userVideoSource = null;
     $scope.peerVideoSource = null;
     $scope.drawingCanvas = null;
@@ -60,6 +61,11 @@
       });
     };
 
+    //Function: RoomCtrl.initializeCanvas() 
+    //This function gets a new canvas from the Drawing Factory
+    //it then appends the canvas to the DOM and wraps
+    //the canvas element inside Fabric
+    //lastly it gives a reference of the fabric object to the room controller's scope
     $scope.initializeCanvas = function(containerClassName) {
       //create a new canvas object and get its reference
       var canvas = Drawing.makeCanvas();
@@ -74,6 +80,37 @@
 
       //Give roomcontroller a reference to the canvas
       $scope.drawingCanvas = canvasFabric;
+    };
+
+    //Function: RoomCtrl.saveCanvas()
+    //This function is called when the user clicks the saveCanvas button
+    //It converts the canvas data into a png image string and then
+    //makes a request to our server to store the image in the database
+    $scope.saveData = function() {
+      var drawingData = {
+        username: 'testname123',
+        data: $scope.drawingCanvas.toDataURL()
+      };
+
+      var request = {
+        method: 'POST',
+        url: '/room/save',
+        headers: {
+         'Content-Type': 'json'
+        },
+        data: { 
+          roomId: '1',
+          canvas: JSON.stringify(drawingData)
+        }
+      };
+
+      $http(request)
+      .success(function(response){
+        console.log('http response', response);
+      })
+      .error(function(error){
+        console.log('error', error);
+      });
     };
 
     // Call the initialize function
