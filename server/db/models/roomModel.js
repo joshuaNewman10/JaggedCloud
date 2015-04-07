@@ -7,8 +7,8 @@ var roomSchema = new mongoose.Schema({
     default: Date.now
   },
   users: [],
-  canvas_file: String,
-  text_file: String
+  canvas: String,
+  text: String
 });
 // NOTE: currently each room has one canvas and one text file -- may need to increase these to an array later
 
