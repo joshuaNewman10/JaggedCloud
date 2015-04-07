@@ -15,6 +15,10 @@
     $scope.userVideoSource = null;
     $scope.peerVideoSource = null;
     $scope.drawingCanvas = null;
+    $scope.ioStuff = null;
+    $scope.socket = null;
+    $scope.x = null;
+    $scope.y = null;
 
     $scope.$on('$destroy', function(){
       $scope.uninit();
@@ -25,6 +29,7 @@
     $scope.init = function(){
       $scope.initializeVideo('hackbox');
       $scope.initializeCanvas('canvas-container');
+      $scope.initializeIO();
     };
 
     $scope.uninit = function(){
@@ -80,6 +85,14 @@
 
       //Give roomcontroller a reference to the canvas
       $scope.drawingCanvas = canvasFabric;
+
+      canvasFabric.on('mouse:move', function(e) {
+        var activeObject = e.target;
+        var xCoord = e.e.clientX;
+        var yCoord = e.e.clientY;
+        $scope.socket.emit('coords', {x: xCoord, y:yCoord});
+  
+      });
     };
 
     //Function: RoomCtrl.saveCanvas()
@@ -112,6 +125,26 @@
         console.log('error', error);
       });
     };
+
+    $scope.initializeIO = function() {
+      var socket = io();
+      console.log(socket);
+      socket.on('greeting', function(data){
+          console.log('canvas data: ' + data);
+          $scope.ioStuff = data;
+          console.log('weee', $scope.ioStuff);
+          $scope.$digest();
+      });
+    $scope.socket = socket;
+    socket.on('coordinates', function(data) {
+      console.log(data);
+      $scope.x = data.data.x;
+      $scope.y = data.data.y;
+      $scope.$digest();
+      console.log(data.data.x, data.data.y, $scope.x, $scope.y);
+    });
+    };
+
 
     // Call the initialize function
     $scope.init();

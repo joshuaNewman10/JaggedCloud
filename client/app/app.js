@@ -20,7 +20,7 @@
         });
 
         // Attach token to all requests
-        $httpProvider.interceptors.push('AttachTokens');
+        // $httpProvider.interceptors.push('AttachTokens');
   })
   
   // Anytime a state changes, this function ensures that any route that needs 
