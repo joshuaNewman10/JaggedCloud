@@ -1,6 +1,8 @@
-// roomCtrl.js
-// This is the controller responsible for the room view. 
-// Anything needing to change the room view should be placed here. 
+/** 
+ * roomCtrl.js
+ * This is the controller responsible for the room view. 
+ * Anything needing to change the room view should be placed here. 
+ */
 
 (function(){
 
@@ -16,21 +18,28 @@
     $scope.drawingCanvas = null;
     $scope.showCanvas = false;
     $scope.editors = [];
-    $scope.editorTabs = [];
+    var MAX_EDITORS = 5;
 
     // The $destroy event is called when we leave this view
     $scope.$on('$destroy', function(){
       $scope.uninit();
     });
 
-    // Function: RoomCtrl.init()
-    // This function will initialize all entities upon switching the the room state.
+    /**  
+     * Function: RoomCtrl.init()
+     * This function will initialize all entities upon switching the the room state.
+     */
     $scope.init = function(){
       $scope.initializeVideo('hackbox');
       $scope.initializeCanvas('canvas-container');
       $scope.addTextEditor();
     };
 
+    /**
+     * Function: RoomCtrl.uninit()
+     * This function will be called when we leave a room.
+     * It will cleanup all entities within a given room such as video and text editors. 
+     */
     $scope.uninit = function(){
       console.log('Leaving Room, shutting down video, canvas and removing listeners.');
       // Remove Video/Audio
@@ -45,9 +54,12 @@
       });
     };
 
-    // Function: RoomCtrl.initializeVideo(roomName)
-    // roomName: A string representing the roomname to join. 
-    // This function will initialize the Video component of the room.
+    /**
+     * Function: RoomCtrl.initializeVideo(roomName)
+     * This function will initialize the Video component of the room.
+     *
+     * @param roomName: A string representing the roomname to join. 
+     */
     $scope.initializeVideo = function(roomName){
       // Create the Icecomm object and get the instance of it.
       var comm = Video.getIcecommInstance();
@@ -72,6 +84,12 @@
       });
     };
 
+    /**
+     * Function: RoomCtrl.initializeCanvas(containerClassName)
+     * This function will append a canvas element to the room. 
+     *
+     * @param containerClassName: NOT_USED_CURRENTLY
+     */
     $scope.initializeCanvas = function(containerClassName) {
       //create a new canvas object and get its reference
       var canvas = Drawing.makeCanvas();
@@ -88,10 +106,12 @@
       $scope.drawingCanvas = canvasFabric;
     };
 
-    //Function: RoomCtrl.saveCanvas()
-    //This function is called when the user clicks the saveCanvas button
-    //It converts the canvas data into a png image string and then
-    //makes a request to our server to store the image in the database
+    /**
+     * Function: RoomCtrl.saveData()
+     * This function is called when the user clicks the saveCanvas button
+     * It converts the canvas data into a png image string and then
+     * makes a request to our server to store the image in the database
+     */
     $scope.saveData = function() {
       var drawingData = {
         username: 'testname123',
@@ -119,22 +139,21 @@
       });
     };
     
+    /**
+     * Function: RoomCtrl.addTextEditor()
+     * This function will add a new text editor to the DOM. 
+     */
     $scope.addTextEditor = function(){
-      if($scope.editors.length < 5){
-        // Add new tab
-        var tab = {};
-        tab.id = $scope.editors.length;
-        tab.name = 'New Tab';
-        $scope.editorTabs.push(tab);  
+      if($scope.editors.length < MAX_EDITORS){
+        // Get the id to assign
+        var editorId = nextSmallestId($scope.editors, MAX_EDITORS);
 
-        // Remove active property from all editors
-        $('.editor').removeClass('active');
+        // Hide all editors and tabs
+        deactivateTabsAndEditors();
 
-        // Add new editor
-        var editor = {};
-        editor.id = 'editor' + $scope.editors.length;
-        $('#editors').append('<div class="editor active" id="'+ editor.id + '"></div>');
-        TextEditor.createEditor(editor.id);
+        // Add new editor, starts as active.
+        var tab = {name: 'New Tab', active: true}; 
+        var editor = {id: editorId, tab: tab, editor: TextEditor.createEditor('#editors',editorId)};
         $scope.editors.push(editor);
       }
       else{
@@ -142,20 +161,109 @@
       }
     };
 
-    $scope.setActiveEditor = function(editorId){
-      var id = '#editor' + editorId;
+    /**
+     * Function: RoomCtrl.removeTextEditor(editorId)
+     * This function will remove a text editor from the DOM.
+     * @param editorId: An integer representing the ID of an editor object. Range(0 - MAX_EDITORS)
+     */
+    $scope.removeTextEditor = function(editorId){
+      if($scope.editors.length > 1){
 
-      // Remove active property from all editors
-      $('.editor').removeClass('active');
+        // Remove the element from the DOM by element Id
+        var id = '#editor' + editorId;
+        $(id).remove();
 
-      // Add active to the editor with the correct id. 
-      $(id).addClass('active');
+        // Destroy the editor and splice the element with the matching id out of editors
+        var idxToRemove = indexOfEditorWithId(editorId);
+        $scope.editors[idxToRemove].editor.destroy();
+        $scope.editors.splice(idxToRemove,1);
+
+        // Set active editor as next idx if possible, otherwise the one before. 
+        if(idxToRemove < $scope.editors.length)
+          $scope.setActiveEditor($scope.editors[idxToRemove].id);
+        else
+          $scope.setActiveEditor($scope.editors[idxToRemove-1].id);
+      }
     };
 
+    /**
+     * Function: RoomCtrl.removeTextEditor(editorId)
+     * This function will set the editor in the collection with the matching Id as the active editor 
+     * @param editorId: An integer representing the ID of an editor object. Range(0 - MAX_EDITORS)
+     */
+    $scope.setActiveEditor = function(editorId){
+      var editorToFocusOn = indexOfEditorWithId(editorId);
+      // Hide all tabs and editors.
+      deactivateTabsAndEditors();
+
+      // Add active to the editor with the correct id. 
+      TextEditor.setEditorActive(editorId);
+      $scope.editors[editorToFocusOn].tab.active = true;
+
+      // Focus on the editor and set cursor to end.
+      $scope.editors[editorToFocusOn].editor.focus();
+      $scope.editors[editorToFocusOn].editor.navigateLineEnd();
+    };
+
+    /**
+     * Function: RoomCtrl.toggleCanvas()
+     * This function will toggle the canvas on/off.
+     */
     $scope.toggleCanvas = function(){
       $scope.showCanvas = !$scope.showCanvas;
     };
 
+    /**
+     * Function: deactivateTabsAndEditors()
+     * A helper function to set all editors and tabs as inactive. 
+     */
+    function deactivateTabsAndEditors(){
+      // Remove active class from all editors
+      TextEditor.deactivateAllEditors();
+
+      // Remove activeTab class from all tabs
+      $scope.editors.forEach(function(editor){
+        editor.tab.active = false;
+      });
+    };
+
+    /**
+     * Function: nextSmallestId(arr, limit)
+     * A helper function to find the smallest editor.id # from 0 - limit
+     * that does not exist currently in the editors collection.
+     *
+     * @params arr: A collection to iterate over. 
+     * @params limit: The maximum value of an ID #
+     * @return: The minimum ID # that does not currently exist within the collection. 
+     */
+    function nextSmallestId(arr, limit){
+      var ids = {};
+      for(var i = 0; i < arr.length; i++){
+        var editor = arr[i];
+        ids[editor.id] = true;
+      }
+      for(var i = 0; i < limit; i++){
+        if(ids[i] !== true)
+          return i;
+      }
+      return 0;
+    };
+
+    /**
+     * Function: indexOfEditorWithId(editorId)
+     * A helper function to find the smallest editor.id # from 0 - limit
+     * that does not exist currently in the editors collection.
+     *
+     * @param editorId: An integer representing the ID of the editor to find. Range(0 - MAX_EDITORS)
+     * @return: The index in the editors collection which corresponds to the editor with the 
+     * matching Id. 
+     */
+    function indexOfEditorWithId(editorId){
+      var idx = $scope.editors.map(function(editor) {
+                            return editor.id;
+                          }).indexOf(editorId);
+      return idx;
+    }
     // Call the initialize function
     $scope.init();
   }

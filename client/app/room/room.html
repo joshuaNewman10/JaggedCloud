@@ -4,7 +4,10 @@
     <button ng-click='addTextEditor()'>Add Editor</button>
     <div ng-show='!showCanvas' class='textEditor-container'>
         <div class="tab-box"> 
-            <a ng-click="setActiveEditor(tab.id)" class="tabLink" ng-repeat='tab in editorTabs'>{{tab.name}}</a> 
+            <div ng-class='{"tab-container": !editor.tab.active, "activeTab-container": editor.tab.active}' ng-click="setActiveEditor(editor.id)" ng-repeat='editor in editors'>
+                <div ng-class='{tab: !editor.tab.active, activeTab: editor.tab.active}'>{{editor.tab.name}}</div>
+                <a href='#' class='removeEditor-button' ng-click='removeTextEditor(editor.id); $event.stopPropagation();'></a>
+            </div> 
         </div>
         <div id='editors'>
         </div>
