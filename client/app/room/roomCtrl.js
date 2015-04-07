@@ -86,7 +86,7 @@
     //This function is called when the user clicks the saveCanvas button
     //It converts the canvas data into a png image string and then
     //makes a request to our server to store the image in the database
-    $scope.saveCanvas = function() {
+    $scope.saveData = function() {
       var drawingData = {
         username: 'testname123',
         data: $scope.drawingCanvas.toDataURL()
