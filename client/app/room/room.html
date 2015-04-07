@@ -3,6 +3,7 @@
     <button ng-click='toggleCanvas()'>Toggle Canvas</button>
     <button ng-click='addTextEditor()'>Add Editor</button>
     <button type="buton"ng-click="saveData()">Save Data</button>
+    <div><p>x:{{x}} y:{{y}}</p></div>
     <div ng-show='!showCanvas' class='textEditor-container'>
         <div class="tab-box"> 
             <div ng-class='{"tab-container": !editor.tab.active, "activeTab-container": editor.tab.active}' ng-click="setActiveEditor(editor.id)" ng-repeat='editor in editors'>
