@@ -24,7 +24,7 @@
     $scope.y = null;
     var MAX_EDITORS = 5;
 
-  RoomCtrl.$inject = ['$scope', '$sce', 'Video', 'Drawing','Sockets', '$http'];
+    RoomCtrl.$inject = ['$scope', '$sce', 'Video', 'Drawing','Sockets', '$http'];
 
     // The $destroy event is called when we leave this view
     $scope.$on('$destroy', function(){
@@ -231,53 +231,25 @@
 
     $scope.initializeIO = function() {
       var socket = io();
-      console.log(socket);
-      socket.on('greeting', function(data){
-        console.log('canvas data: ' + data);
-        $scope.ioStuff = data;
-        console.log('weee', $scope.ioStuff);
-        $scope.$digest();
-      });
       $scope.socket = socket;
-      socket.on('coordinates', function(data) {
-        console.log(data);
-        $scope.x = data.data.x;
-        $scope.y = data.data.y;
-        $scope.$digest();
-        console.log(data.data.x, data.data.y, $scope.x, $scope.y);
-      });
+
       Sockets.on('init', function (data) {
         console.log('initialized!!!', data);
       });
 
-      Sockets.on('greeting', function(data) {
-        console.log('got socket greeting data', data);
-        $scope.$digest();
-      });
       Sockets.on('coordinates', function(data) {
         Drawing.updateCanvas(data.canvasData);
       });
     };
 
-      // Sockets.on('coordinates', function(data) {
-        // Drawing.updateCanvas('canvas-container', data.canvasData);
-      // });
-   
-
     /**
      * Function: RoomCtrl.toggleCanvas()
      * This function will toggle the canvas on/off.
-     */
+    */
     $scope.toggleCanvas = function(){
       $scope.showCanvas = !$scope.showCanvas;
     };
-    $scope.init();
-  }
-  
-    /**
-     * Function: deactivateTabsAndEditors()
-     * A helper function to set all editors and tabs as inactive. 
-     */
+
     function deactivateTabsAndEditors(){
       // Remove active class from all editors
       TextEditor.deactivateAllEditors();
@@ -325,5 +297,13 @@
       }).indexOf(editorId);
       return idx;
     }
+    
+    $scope.init();
+  }
+  
+    /**
+     * Function: deactivateTabsAndEditors()
+     * A helper function to set all editors and tabs as inactive. 
+     */
 
 })();
