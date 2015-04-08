@@ -36,8 +36,8 @@
     
     /**Function: Sockets.emit()
      *
-     *This Function emits generic socket events, sends the data to the server
-     *and then also will execute a callback if specified
+     * This Function emits generic socket events, sends the data to the server
+     * and then also will execute a callback if specified
      */
     function emit(eventName, data, callback) {
       socket.emit(eventName, data, function() {
