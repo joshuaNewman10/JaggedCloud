@@ -1,8 +1,19 @@
 <div id="room-container">
     <h1>Room</h1>
+    <button ng-click='toggleCanvas()'>Toggle Canvas</button>
+    <button ng-click='addTextEditor()'>Add Editor</button>
     <button type="buton"ng-click="saveData()">Save Data</button>
-    <div class='textEditor-container'></div>
-    <div class='canvas-container'></div>
+    <div ng-show='!showCanvas' class='textEditor-container'>
+        <div class="tab-box"> 
+            <div ng-class='{"tab-container": !editor.tab.active, "activeTab-container": editor.tab.active}' ng-click="setActiveEditor(editor.id)" ng-repeat='editor in editors'>
+                <div ng-class='{tab: !editor.tab.active, activeTab: editor.tab.active}'>{{editor.tab.name}}</div>
+                <a href='#' class='removeEditor-button' ng-click='removeTextEditor(editor.id); $event.stopPropagation();'></a>
+            </div> 
+        </div>
+        <div id='editors'>
+        </div>
+    </div>
+    <div ng-show='showCanvas' class='canvas-container'></div>
     <div class='video-container'>
         <video class='userVideo' ng-src='{{userVideoSource}}' autoplay></video>
         <video class='peerVideo' ng-src='{{peerVideoSource}}' autoplay></video>
