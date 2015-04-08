@@ -2,6 +2,7 @@
     <h1>Room</h1>
     <button ng-click='toggleCanvas()'>Toggle Canvas</button>
     <button ng-click='addTextEditor()'>Add Editor</button>
+    <div><p>x:{{drawingXCoord}} y:{{drawingYCoord}}</p></div>
     <button type="buton"ng-click="saveData()">Save Data</button>
     <div ng-show='!showCanvas' class='textEditor-container'>
         <div class="tab-box"> 

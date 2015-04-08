@@ -16,7 +16,8 @@
   function Drawing() {
     var instance = {
       makeCanvas: makeCanvas,
-      removeCanvas: removeCanvas
+      removeCanvas: removeCanvas,
+      updateCanvas: updateCanvas
     };
 
     return instance;
@@ -55,6 +56,21 @@
         return true;
       }
       return false;
+    }
+
+    //Function: Drawing.updateCanvas()
+    //This Function takes in canvas data in the stringified png format
+    //It then updates the canvas with the data
+    //This happens on every mousemove (really mouseup)
+    function updateCanvas(data) {
+      var fabricCanvasContainer = $('.lower-canvas');
+      var cx = fabricCanvasContainer[0].getContext('2d');
+      var imageObj = new Image();
+      imageObj.src = data;
+      imageObj.onload = function(){
+        cx.drawImage(this, 0, 0);
+      };
+
     }
   }
 })();
