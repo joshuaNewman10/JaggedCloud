@@ -21,7 +21,7 @@ module.exports.save = function(req, res) {
         res.send(201, room);      
       }
     }
-  });
+  );
 }
 
 
