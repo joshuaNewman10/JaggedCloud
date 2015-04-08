@@ -1,21 +1,21 @@
 <div id="room-container">
     <h1>Room</h1>
     <button ng-click='toggleCanvas()'>Toggle Canvas</button>
-    <button ng-click='addTextEditor()'>Add Editor</button>
     <div><p>x:{{drawingXCoord}} y:{{drawingYCoord}}</p></div>
     <button type="buton"ng-click="saveData()">Save Data</button>
-    <div ng-show='!showCanvas' class='textEditor-container'>
+    <div ng-controller='textEditorCtrl' ng-show='!showCanvas' class='textEditor-container'>
         <div class="tab-box"> 
             <div ng-class='{"tab-container": !editor.tab.active, "activeTab-container": editor.tab.active}' ng-click="setActiveEditor(editor.id)" ng-repeat='editor in editors'>
                 <div ng-class='{tab: !editor.tab.active, activeTab: editor.tab.active}'>{{editor.tab.name}}</div>
-                <a href='#' class='removeEditor-button' ng-click='removeTextEditor(editor.id); $event.stopPropagation();'></a>
+                <a class='removeEditor-button' ng-click='removeTextEditor(editor.id); $event.stopPropagation();'></a>
             </div> 
         </div>
+        <button ng-click='addTextEditor()'>+</button>
         <div id='editors'>
         </div>
     </div>
     <div ng-show='showCanvas' class='canvas-container'></div>
-    <div class='video-container'>
+    <div ng-controller='videoCtrl' class='video-container'>
         <video class='userVideo' ng-src='{{userVideoSource}}' autoplay></video>
         <video class='peerVideo' ng-src='{{peerVideoSource}}' autoplay></video>
     </div>
