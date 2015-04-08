@@ -11,9 +11,9 @@
     .module('hackbox')
     .controller('roomCtrl', RoomCtrl);
 
-  RoomCtrl.$inject = ['$scope', '$sce', '$http', 'Drawing', 'Sockets'];
+  RoomCtrl.$inject = ['$scope', '$http', 'Drawing', 'Sockets'];
 
-  function RoomCtrl($scope, $sce, $http, Drawing, Sockets){
+  function RoomCtrl($scope, $http, Drawing, Sockets){
     $scope.drawingCanvas = null;
     $scope.showCanvas = false;
     $scope.socket = null;
@@ -120,7 +120,7 @@
         Drawing.updateCanvas(data.canvasData);
       });
     };
-    
+
     /**
      * Function: RoomCtrl.toggleCanvas()
      * This function will toggle the canvas on/off.
