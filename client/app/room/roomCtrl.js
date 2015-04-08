@@ -11,9 +11,9 @@
     .module('hackbox')
     .controller('roomCtrl', RoomCtrl);
 
-  RoomCtrl.$inject = ['$scope', '$sce', 'Video', 'Drawing', 'TextEditor'];
+  RoomCtrl.$inject = ['$scope', '$sce', '$http', 'Video', 'Drawing', 'TextEditor'];
 
-  function RoomCtrl($scope, $sce, Video, Drawing, TextEditor){
+  function RoomCtrl($scope, $sce, $http, Video, Drawing, TextEditor){
     $scope.userVideoSource = null;
     $scope.peerVideoSource = null;
     $scope.drawingCanvas = null;
@@ -65,7 +65,7 @@
       // Create the Icecomm object and get the instance of it.
       var comm = Video.getIcecommInstance();
 
-      // Connect to the correct room.
+      // Connect to the correct room. Room supports a maximum of 2 people. 
       comm.connect(roomName, {limit: 2, audio: false});
 
       // Register user video connected event
