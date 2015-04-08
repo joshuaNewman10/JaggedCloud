@@ -25,7 +25,9 @@
     function on(eventName, callback) {
       socket.on(eventName, function() {
         var args = Array.prototype.slice.call(arguments);
-        callback.apply(socket, args);
+        if( callback ) {
+          callback.apply(socket, args);
+        }
       });
     }
     
@@ -35,7 +37,9 @@
     function emit(eventName, data, callback) {
       socket.emit(eventName, data, function() {
         var args = Array.prototype.slice.call(arguments);
-        callback.apply(socket, args);  
+        if( callback ) {
+          callback.apply(socket, args);  
+        }     
       });
     }
   };

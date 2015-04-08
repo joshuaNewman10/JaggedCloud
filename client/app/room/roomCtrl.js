@@ -112,12 +112,12 @@
       //Give roomcontroller a reference to the canvas
       $scope.drawingCanvas = canvasFabric;
 
-      $scope.drawingCanvas.on('mouse:move', function(e) {
+      canvasFabric.on('mouse:move', function(e) {
         var activeObject = e.target;
         var xCoord = e.e.clientX;
         var yCoord = e.e.clientY;
         var data = $scope.drawingCanvas.toDataURL();
-        Sockets.emit('coords', {x: xCoord, y:yCoord, canvasData: data});  
+        Sockets.emit('coords', {x: xCoord, y: yCoord, canvasData: data});
       });
     };
 
@@ -253,6 +253,9 @@
       Sockets.on('greeting', function(data) {
         console.log('got socket greeting data', data);
         $scope.$digest();
+      });
+      Sockets.on('coordinates', function(data) {
+        Drawing.updateCanvas(data.canvasData);
       });
     };
 
