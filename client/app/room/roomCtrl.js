@@ -208,7 +208,6 @@
         }
       }
     };
-
     /**
      * Function: RoomCtrl.removeTextEditor(editorId)
      * This function will set the editor in the collection with the matching Id as the active editor 
@@ -248,6 +247,25 @@
     */
     $scope.toggleCanvas = function(){
       $scope.showCanvas = !$scope.showCanvas;
+    };
+    
+    $scope.initializeIO = function() {
+      var socket = io();
+      console.log(socket);
+      socket.on('greeting', function(data){
+          console.log('canvas data: ' + data);
+          $scope.ioStuff = data;
+          console.log('weee', $scope.ioStuff);
+          $scope.$digest();
+      });
+    $scope.socket = socket;
+    socket.on('coordinates', function(data) {
+      console.log(data);
+      $scope.x = data.data.x;
+      $scope.y = data.data.y;
+      $scope.$digest();
+      console.log(data.data.x, data.data.y, $scope.x, $scope.y);
+    });
     };
 
     function deactivateTabsAndEditors(){
@@ -297,7 +315,8 @@
       }).indexOf(editorId);
       return idx;
     }
-    
+
+    // Call the initialize function
     $scope.init();
   }
   
