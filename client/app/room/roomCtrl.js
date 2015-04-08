@@ -51,7 +51,7 @@
 
       // Remove all text editors
       $scope.editors.forEach(function(editor){
-        editor.destroy();
+        editor.editor.destroy();
       });
     };
 
