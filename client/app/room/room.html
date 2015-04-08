@@ -1,14 +1,9 @@
 <div id="room-container">
     <h1>Room</h1>
-<<<<<<< HEAD
     <button ng-click='toggleCanvas()'>Toggle Canvas</button>
     <button ng-click='addTextEditor()'>Add Editor</button>
     <div><p>x:{{drawingXCoord}} y:{{drawingYCoord}}</p></div>
-=======
-    <div><p>x:{{x}} y:{{y}}</p></div>
->>>>>>> 74d303bb093e5bb5e9da0891e6ebfe56e506e3f4
     <button type="buton"ng-click="saveData()">Save Data</button>
-    <div><p>x:{{x}} y:{{y}}</p></div>
     <div ng-show='!showCanvas' class='textEditor-container'>
         <div class="tab-box"> 
             <div ng-class='{"tab-container": !editor.tab.active, "activeTab-container": editor.tab.active}' ng-click="setActiveEditor(editor.id)" ng-repeat='editor in editors'>
