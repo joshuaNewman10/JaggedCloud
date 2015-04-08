@@ -49,8 +49,8 @@
      * @param containerClassName: The class to find elements by in the DOM. 
      * @return: True if canvas was removed, false if no action was taken. 
      */
-    function removeCanvas(containerClassName) {
-      var canvas = $('.' + containerClassName);
+    function removeCanvas() {
+      var canvas = $('.canvas-container'); //this might need to be the lower canvas
       if( canvas ) {
         canvas.remove();
         return true;

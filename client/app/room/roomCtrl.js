@@ -15,6 +15,7 @@
 
   function RoomCtrl($scope, $http, Sockets){
     $scope.showCanvas = false;
+    $scope.roomID = '';
 
     // The $destroy event is called when we leave this view
     $scope.$on('$destroy', function(){
@@ -58,8 +59,9 @@
          'Content-Type': 'json'
         },
         data: { 
-          roomId: '1',
-          canvas: JSON.stringify(drawingData)
+          roomID: $scope.roomID,
+          canvas: JSON.stringify(drawingData),
+          textEditor: JSON.stringify(textEditorData)
         }
       };
 

@@ -7,13 +7,12 @@
 (function() {
   angular
     .module('hackbox')
-    .controller('drawingCtrl', drawingCtrl);
+    .controller('drawingCtrl', DrawingCtrl);
 
   DrawingCtrl.$inject = ['$scope', 'Drawing', 'Sockets'];
 
   function DrawingCtrl($scope, Drawing, Sockets) {
     $scope.drawingCanvas = null;
-    $scope.showCanvas = false;
     $scope.socket = null;
     $scope.x = null;
     $scope.y = null;
@@ -83,8 +82,6 @@
         Sockets.emit('coords', {x: xCoord, y: yCoord, canvasData: data});
       });
     };
-
-
-
+    $scope.init();
   }
 })();
