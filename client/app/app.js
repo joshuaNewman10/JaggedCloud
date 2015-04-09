@@ -17,6 +17,11 @@
             controller: 'roomCtrl',
             templateUrl: 'app/room/room.html',
             authenticate: true
+        })
+        .state('dashboard', {
+            url: '/dashboard',
+            controller: 'dashboardCtrl',
+            templateUrl: 'app/dashboard/dashboard.html'
         });
 
         // Attach token to all requests
