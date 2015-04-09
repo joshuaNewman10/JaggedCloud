@@ -1,17 +1,28 @@
+var db = require('../config.js');
 var mongoose = require('mongoose');
+
+
+// TODO: double check syntax for text array
 
 
 // SCHEMAS: each schema maps to a 'collection' in MongoDB (analogous to SQL table) and defines the shape of the 'documents' within that colletion (documents are analogous to a row in a SQL table)
 var roomSchema = new mongoose.Schema({
+
   date_created: {
     type: Date,
     default: Date.now
   },
-  users: [],
+
+  is_open: {
+    default: false
+  },
+
   canvas: String,
-  text: String
+  text: [String], // each element will be a string
+  notes: String,
+  start_time: Date,
+  created_by: String // will be a user object
 });
-// NOTE: currently each room has one canvas and one text file -- may need to increase these to an array later
 
 
 // MODELS: a model is a class with which we construct documents (rows in a table)

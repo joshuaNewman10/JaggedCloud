@@ -4,17 +4,22 @@ var handleError = function(error) {
 
 
 // TODO: for all queries, confirm what I am expecting:  { roomID: Integer, canvas: String, textData: String }
-// TODO: check if reference to roomID is correct syntax
+// TODO: check syntax for reference to roomID
 
 
 
 // instantiation pattern: var partyRoom = new Room() --> need to pass data into room upon instantiation?
 module.exports.create = function(req, res) {
-  Room.create({}, function(err, room){
+  var user = req.data.user;
+  var startTime = req.data.startTime;
+  var email = req.data.email;
+
+  Room.create({email: email, user: user, start_time: startTime}, function(err, room){
     if (err) { handleError(err); }
     else if (room) {
       console.log(room + ': room successfully created');
-      res.send(201, room);      
+      res.send(201, room);
+    }      
   });
 }
 
@@ -23,13 +28,13 @@ module.exports.create = function(req, res) {
 module.exports.save = function(req, res) {
   var roomID = req.data.roomId;
   var canvas = req.data.canvas;
-  var text = req.data.textData;
+  var text = req.data.textEditor;
 
   Room.findOneAndUpdate({'_id': roomID}, {canvas: canvas, text: text}, {upsert: true},
     function(err, room){
       if (err) { handleError(err); }
       else if (room) {
-        console.log(room + ': room successfully updated');
+        console.log(room._id + ': room successfully updated');
         res.send(201, room);      
       }
     }
@@ -50,3 +55,8 @@ module.exports.fetch = function(req, res) {
     }
   });
 }
+
+
+
+
+
