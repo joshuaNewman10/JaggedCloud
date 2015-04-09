@@ -45,6 +45,7 @@
     /**
      * Function: Video.getIcecommInstance()
      * This function returns an Icecomm object. If it does not exist, it creates one. 
+     *
      * @return: The Icecomm instance if possible, or else null. 
      */
     function getIcecommInstance(){

@@ -11,9 +11,9 @@
     .module('hackbox')
     .controller('roomCtrl', RoomCtrl);
 
-  RoomCtrl.$inject = ['$scope', '$http', 'Sockets'];
+  RoomCtrl.$inject = ['$scope', '$http', '$stateParams','Sockets'];
 
-  function RoomCtrl($scope, $http, Sockets){
+  function RoomCtrl($scope, $http, $stateParams, Sockets){
     $scope.showCanvas = false;
     $scope.roomID = '';
 
@@ -82,6 +82,7 @@
     };
 
     // Call the initialize function
+    console.log('Joining Interview with ID: ' + $stateParams.roomId);
     $scope.init();
   }
 })();

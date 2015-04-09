@@ -10,10 +10,11 @@
     .module('hackbox')
     .controller('textEditorCtrl', TextEditorCtrl);
 
-  TextEditorCtrl.$inject = ['$scope' ,'TextEditor'];
+  TextEditorCtrl.$inject = ['$scope' , 'TextEditor', 'Video'];
 
-  function TextEditorCtrl($scope, TextEditor){
+  function TextEditorCtrl($scope, TextEditor, Video){
     $scope.editors = [];
+    $scope.okToSend = true;
     var MAX_EDITORS = 5;
 
     // The $destroy event is called when we leave this view
@@ -27,6 +28,15 @@
      */
     $scope.init = function(){
       $scope.addTextEditor();
+
+      // Setup Icecomm listener for incoming data
+      Video.getIcecommInstance().on('data', function(peer) {
+        $scope.okToSend = false;
+        var editorIdx = indexOfEditorWithId(peer.data.editorId);
+        if(editorIdx !== -1)
+          $scope.editors[editorIdx].editor.setValue(peer.data.data,1);
+        $scope.okToSend = true;
+      });
     };
 
     /**
@@ -54,8 +64,21 @@
         deactivateTabsAndEditors();
 
         // Add new editor, starts as active.
-        var tab = {name: 'New Tab', active: true}; 
-        var editor = {id: editorId, tab: tab, editor: TextEditor.createEditor('#editors',editorId)};
+        var tab = {name: 'New Tab ' + editorId,
+                   active: true}; 
+        var editor = {id: editorId, 
+                      tab: tab, 
+                      editor: TextEditor.createEditor('#editors',editorId) };
+
+        // Setup ace editor listener for change in text
+        editor.editor.on('change', function(event){
+          var text = editor.editor.getSession().getValue();
+          var editorId = editor.id;
+
+          if($scope.okToSend)
+            Video.getIcecommInstance().send({data: text, editorId: editorId});
+        });
+
         $scope.editors.push(editor);
       }
       else{
