@@ -1,6 +1,8 @@
+var Room = require('../db/models/roomModel');
+
 var handleError = function(error) {
   console.log('the following error has occurred: ' + error);
-}
+};
 
 
 // TODO: for all queries, confirm what I am expecting:  { roomID: Integer, canvas: String, textData: String }
@@ -21,7 +23,7 @@ module.exports.create = function(req, res) {
       res.send(201, room);
     }      
   });
-}
+};
 
 
 // update pattern: Model.update(conditions, doc, [options], [callback])
@@ -39,22 +41,27 @@ module.exports.save = function(req, res) {
       }
     }
   );
-}
+};
 
 
 module.exports.fetch = function(req, res) {
+  console.log('In room controller fetch');
 // first check if the room exists
 // check if user made the room -- if yes, send back all data
 // if no, send back only part of the data
-  var roomID = req.data.roomID;
 
-  Room.findById('_id', function(err, room){
-    if (err) { handleError(err); }
+  // var roomID = req.data.roomID;
+  console.log('request:', req.params.id.slice(1));
+  Room.findById(req.params.id, function(err, room){
+    if (err) { 
+      handleError(err); 
+      res.send(404, 'no room data');
+    }
     else if (room) {
-      res.send(200, room)
+      res.send(200, room);
     }
   });
-}
+};
 
 
 

@@ -6,7 +6,7 @@
 
   Room.$inject = ['$http'];
 
-  function Room(){
+  function Room($http){
 
     var instance = {
       createRoom: createRoom,
@@ -23,6 +23,7 @@
         url: '/room/create',
         data: room
       }).then(function(response){
+        console.log('Response from creating room!');
         return response;        
       });
     }
@@ -38,11 +39,12 @@
     }
     
     function getRoom(roomId){
+      console.log(roomId);
       return $http({
         method: 'GET',
-        url: '/room',
-        data: roomId
+        url: '/room/get' + roomId
       }).then(function(response){
+        console.log('Response from getting room!', response);
         return response;        
       });
     }

@@ -29,8 +29,8 @@ var userSchema = new mongoose.Schema({
     default: Date.now
   },
 
-  used_rooms: [{ type: Schema.Types.ObjectId, ref: '???' }],
-  scheduled_rooms: [{ type: Schema.Types.ObjectId, ref: '???' }]
+  // used_rooms: [{ type: Schema.Types.ObjectId, ref: '???' }],
+  // scheduled_rooms: [{ type: Schema.Types.ObjectId, ref: '???' }]
   
 });
 
