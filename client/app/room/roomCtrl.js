@@ -11,14 +11,11 @@
     .module('hackbox')
     .controller('roomCtrl', RoomCtrl);
 
-  RoomCtrl.$inject = ['$scope', '$http', 'Drawing', 'Sockets'];
+  RoomCtrl.$inject = ['$scope', '$http', 'Sockets'];
 
-  function RoomCtrl($scope, $http, Drawing, Sockets){
-    $scope.drawingCanvas = null;
+  function RoomCtrl($scope, $http, Sockets){
     $scope.showCanvas = false;
-    $scope.socket = null;
-    $scope.x = null;
-    $scope.y = null;
+    $scope.roomID = '';
 
     // The $destroy event is called when we leave this view
     $scope.$on('$destroy', function(){
@@ -30,8 +27,7 @@
      * This function will initialize all entities upon switching the the room state.
      */
     $scope.init = function(){
-      $scope.initializeCanvas();
-      $scope.initializeIO();
+      console.log('Initializing room controller');
     };
 
     /**
@@ -41,38 +37,6 @@
      */
     $scope.uninit = function(){
       console.log('Leaving Room!');
-
-      // Remove Canvas
-      Drawing.removeCanvas('canvas-container');
-    };
-
-
-    /**
-     * Function: RoomCtrl.initializeCanvas(containerClassName)
-     * This function will append a canvas element to the room. 
-     */
-    $scope.initializeCanvas = function() {
-      //create a new canvas object and get its reference
-      var canvas = Drawing.makeCanvas();
-      $('.canvas-container').append(canvas);
-
-      var canvasFabric = new fabric.Canvas('drawingCanvas', {
-        isDrawingMode: true
-      });
-
-      canvasFabric.setHeight(400);
-      canvasFabric.setWidth(650);
-
-      //Give roomcontroller a reference to the canvas
-      $scope.drawingCanvas = canvasFabric;
-
-      canvasFabric.on('mouse:move', function(e) {
-        var activeObject = e.target;
-        var xCoord = e.e.clientX;
-        var yCoord = e.e.clientY;
-        var data = $scope.drawingCanvas.toDataURL();
-        Sockets.emit('coords', {x: xCoord, y: yCoord, canvasData: data});
-      });
     };
 
     /**
@@ -82,6 +46,7 @@
      * makes a request to our server to store the image in the database
      */
     $scope.saveData = function() {
+      console.log('Saving canvas and text editor data...');
       var drawingData = {
         username: 'testname123',
         data: $scope.drawingCanvas.toDataURL()
@@ -94,8 +59,9 @@
          'Content-Type': 'json'
         },
         data: { 
-          roomId: '1',
-          canvas: JSON.stringify(drawingData)
+          roomID: $scope.roomID,
+          canvas: JSON.stringify(drawingData),
+          textEditor: JSON.stringify(textEditorData)
         }
       };
 
@@ -107,20 +73,6 @@
         console.log('error', error);
       });
     };
-
-    $scope.initializeIO = function() {
-      var socket = io();
-      $scope.socket = socket;
-
-      Sockets.on('init', function (data) {
-        console.log('initialized!!!', data);
-      });
-
-      Sockets.on('coordinates', function(data) {
-        Drawing.updateCanvas(data.canvasData);
-      });
-    };
-
     /**
      * Function: RoomCtrl.toggleCanvas()
      * This function will toggle the canvas on/off.
