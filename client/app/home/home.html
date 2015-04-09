@@ -5,7 +5,7 @@
         <ul>
           <li ng-controller='signinCtrl'><a ng-click='openModal()' href="#/signin">Sign In</a></li>
           <li><a ng-click='logout()' href="/auth/logout">Logout</a></li>
-          <li><a href="#/room">Go to Room</a></li>
+          <li><a ui-sref='room({roomId: "hackbox"})'>Go to Room</a></li>
         </ul>
       </div>
     </div><!-- /.container-fluid -->

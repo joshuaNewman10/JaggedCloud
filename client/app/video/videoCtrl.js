@@ -10,9 +10,9 @@
     .module('hackbox')
     .controller('videoCtrl', VideoCtrl);
 
-  VideoCtrl.$inject = ['$scope' ,'$sce', 'Video'];
+  VideoCtrl.$inject = ['$scope' ,'$sce', '$stateParams', 'Video'];
 
-  function VideoCtrl($scope, $sce, Video){
+  function VideoCtrl($scope, $sce, $stateParams, Video){
     $scope.userVideoSource = null;
     $scope.peerVideoSource = null;
 
@@ -61,7 +61,7 @@
       Video.getIcecommInstance().leave(true);
     };
     
-    $scope.init('hackbox');
+    $scope.init($stateParams.roomId);
   }
 
 })();

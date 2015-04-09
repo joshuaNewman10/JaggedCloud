@@ -5,6 +5,20 @@
   app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
       $urlRouterProvider.otherwise('/');
 
+      var authenticated = ['$q', 'Auth', function ($q, Auth) {
+              var deferred = $q.defer();
+              Auth.isAuthenticated()
+                .then(function (response) {
+                  console.log(response)
+                  if (response.data) {
+                    deferred.resolve();
+                  } else {
+                    deferred.reject('Not logged in');
+                  }
+                });
+              return deferred.promise;
+            }];
+
       // Register all states for the application
       $stateProvider
         .state('home', {
@@ -13,24 +27,22 @@
             templateUrl: 'app/home/home.html',
         })
         .state('room', {
-            url: '/room',
+            url: '/room/:roomId',
             controller: 'roomCtrl',
             templateUrl: 'app/room/room.html',
-            authenticate: true
+            // resolve: {
+            //   authenticated: authenticated
+            // }
         });
 
         // Attach token to all requests
         // $httpProvider.interceptors.push('AttachTokens');
   })
   
-  // Anytime a state changes, this function ensures that any route that needs 
-  // authentication is authenticated.
-  .run(function ($rootScope, $state, $stateParams, Auth, Video) {
-    $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams){
-      if (toState && toState.authenticate && !Auth.isAuthenticated()) {
-        $state.go('home');
-        event.preventDefault();
-      }
+  .run(function ($rootScope, $state, $log) {
+    $rootScope.$on('$stateChangeError', function () {
+      // Redirect user to our home page
+      $state.go('home');
     });
   });
   console.log('App loaded successfully');

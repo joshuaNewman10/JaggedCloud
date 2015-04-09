@@ -42,8 +42,13 @@
      * This function will unauthenticate the user
      */
     function logout(){
-      $window.localStorage.removeItem('hackboxAuth');
-      $state.go('home', {}, {reload: true});
+      return $http({
+        method: 'GET',
+        url: '/auth/logout'
+      }).then(function(response){
+        $state.go('home', {}, {reload: true});
+        return response;        
+      });
     }
     
     /**
@@ -51,8 +56,10 @@
      * This function will unAuthenticate the user by removing the local storage object. 
      */
     function isAuthenticated(){
-      return true;
-     // return !!$window.localStorage.getItem('hackboxAuth');
+      return $http({
+        method: 'POST',
+        url: '/auth/checkloggedin'
+      });
     }
   }
 })();

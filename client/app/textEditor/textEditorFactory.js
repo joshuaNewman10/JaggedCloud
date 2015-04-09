@@ -37,6 +37,7 @@
       var editor = ace.edit('editor' + editorId);
       var defaultText = '// Enter code here.';
 
+      editor.$blockScrolling = Infinity;
       editor.setTheme("ace/theme/monokai");
       editor.getSession().setMode("ace/mode/javascript");
       editor.setShowPrintMargin(false);
