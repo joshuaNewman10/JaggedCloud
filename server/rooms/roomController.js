@@ -47,10 +47,6 @@ module.exports.fetch = function(req, res) {
 // first check if the room exists
 // check if user made the room -- if yes, send back all data
 // if no, send back only part of the data
-<<<<<<< HEAD
-=======
-  var roomID = req.body.roomID;
->>>>>>> update new schema
 
   // var roomID = req.data.roomID;
   console.log('request:', req.params.id.slice(1));
