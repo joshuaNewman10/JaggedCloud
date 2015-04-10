@@ -33,7 +33,6 @@ passport.use(new GitHubStrategy({
     callbackURL: process.env.GITHUB_CB || 'http://localhost:3000/auth/github/callback'
   },
   function(accessToken, refreshToken, profile, done) {
-    // my code: 
     User.findOne({ github_id: profile.id }, function(err, user) {
       if(err) {
         console.error('Error: ', err);
