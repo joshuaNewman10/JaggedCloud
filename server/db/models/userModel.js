@@ -1,12 +1,10 @@
 var db = require('../config.js');
 var mongoose = require('mongoose');
-
-
-// TODO: check syntax for referencing objectID in another schema
+var Schema = mongoose.Schema;
 
 
 // SCHEMA: each schema maps to a 'collection' in MongoDB (analogous to SQL table) and defines the shape of the 'documents' within that colletion (documents are analogous to a row in a SQL table)
-var userSchema = new mongoose.Schema({
+var userSchema = new Schema({
   
   name: {
     first: String,
@@ -28,8 +26,8 @@ var userSchema = new mongoose.Schema({
     default: Date.now
   },
 
-  // used_rooms: [{ type: Schema.Types.ObjectId, ref: '???' }],
-  // scheduled_rooms: [{ type: Schema.Types.ObjectId, ref: '???' }]
+  used_rooms: [{ type: Schema.Types.ObjectId, ref: 'Room' }],
+  future_rooms: [{ type: Schema.Types.ObjectId, ref: 'Room' }]
   
 });
 

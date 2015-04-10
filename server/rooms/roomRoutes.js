@@ -10,4 +10,5 @@ module.exports = function(router){
   router.get('/get', roomController.fetch);
 
   router.get('/get:id', roomController.fetch);
+
 };
