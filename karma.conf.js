@@ -15,7 +15,7 @@ module.exports = function(config){
 
       'https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.1.js',
       //These are the actual files in our codebase we want to test
-
+      'client/app/app.js',
       'client/app/**/*.js',
       'node_modules/angular-mocks/angular-mocks.js',
  
