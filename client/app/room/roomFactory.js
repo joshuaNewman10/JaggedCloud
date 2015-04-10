@@ -18,6 +18,7 @@
 
     ///// IMPLEMENTATION /////
     function createRoom(room){
+      console.log(room);
       return $http({
         method: 'POST',
         url: '/room/create',

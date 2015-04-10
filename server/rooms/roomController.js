@@ -4,27 +4,25 @@ var handleError = function(error) {
   console.log('the following error has occurred: ' + error);
 };
 
-
 // TODO: for all queries, confirm what I am expecting:  { roomID: Integer, canvas: String, textData: String }
 // TODO: check syntax for reference to roomID
 
-
-
 // instantiation pattern: var partyRoom = new Room() --> need to pass data into room upon instantiation?
 module.exports.create = function(req, res) {
-  var user = req.data.user;
-  var startTime = req.data.startTime;
-  var email = req.data.email;
-
-  Room.create({email: email, user: user, start_time: startTime}, function(err, room){
-    if (err) { handleError(err); }
-    else if (room) {
-      console.log(room + ': room successfully created');
-      res.send(201, room);
-    }      
-  });
+  console.log(req.body);
+  // var user = req.data.user;
+  // var startTime = req.data.startTime;
+  // var email = req.data.email;
+  console.log(' in room creation');
+  res.send(200, 'sup world');
+  // Room.create({email: email, user: user, start_time: startTime}, function(err, room){
+  //   if (err) { handleError(err); }
+  //   else if (room) {
+  //     console.log(room + ': room successfully created');
+  //     res.send(201, room);
+  //   }      
+  // });
 };
-
 
 // update pattern: Model.update(conditions, doc, [options], [callback])
 module.exports.save = function(req, res) {
