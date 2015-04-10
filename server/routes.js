@@ -1,6 +1,8 @@
 var morgan = require('morgan');
 var passport = require('passport');
 var session = require('express-session');
+var bodyParser = require('body-parser');
+
 
 module.exports = function(app, express) {
 
@@ -11,7 +13,8 @@ module.exports = function(app, express) {
 
   // http request logger for development 
   app.use(morgan('dev'));
-
+  app.use(bodyParser.urlencoded({extended: true}));
+  app.use(bodyParser.json());
   // initialize passport and sessions
   // app.use(express.session({ secret: 'keyboard cat' }));
   app.use(passport.initialize());
@@ -19,7 +22,6 @@ module.exports = function(app, express) {
 
   // serve html and css 
   app.use(express.static(__dirname + '/../client'));
-  
   // create paths for authentication, and user and room data storage
   app.use('/auth', authRouter);
   app.use('/user', userRouter);

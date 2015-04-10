@@ -9,19 +9,18 @@ var handleError = function(error) {
 
 // instantiation pattern: var partyRoom = new Room() --> need to pass data into room upon instantiation?
 module.exports.create = function(req, res) {
-  console.log(req.body);
-  // var user = req.data.user;
-  // var startTime = req.data.startTime;
-  // var email = req.data.email;
+  console.log('create request.body', req.body);
+  var user = req.body.name;
+  var startTime = req.body.time;
+  var email = req.body.email;
   console.log(' in room creation');
-  res.send(200, 'sup world');
-  // Room.create({email: email, user: user, start_time: startTime}, function(err, room){
-  //   if (err) { handleError(err); }
-  //   else if (room) {
-  //     console.log(room + ': room successfully created');
-  //     res.send(201, room);
-  //   }      
-  // });
+  Room.create({email: email, user: user, start_time: startTime}, function(err, room){
+    if (err) { handleError(err); }
+    else if (room) {
+      console.log(room + ': room successfully created');
+      res.send(201, room);
+    }      
+  });
 };
 
 // update pattern: Model.update(conditions, doc, [options], [callback])
