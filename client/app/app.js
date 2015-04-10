@@ -30,9 +30,9 @@
             url: '/room/:roomId',
             controller: 'roomCtrl',
             templateUrl: 'app/room/room.html',
-            // resolve: {
-            //   authenticated: authenticated
-            // }
+            resolve: {
+              authenticated: authenticated
+            }
         });
 
         // Attach token to all requests

@@ -14,12 +14,12 @@ var GITHUB_CLIENT_SECRET =  process.env.GITHUB_CLIENT_SECRET;
 //   have a database of user records, the complete GitHub profile is serialized
 //   and deserialized.
 passport.serializeUser(function(user, done) {
-  console.log('Serializing: ', user);
-  done(null, user);
+  console.log('Serializing: ', user.github_id);
+  done(null, user.github_id);
 });
 
-passport.deserializeUser(function(obj, done) {
-  console.log('Deserializing: ', obj);
+passport.deserializeUser(function(user, done) {
+  console.log('Deserializing: ', user);
   done(null, user);
 });
 
@@ -30,32 +30,30 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new GitHubStrategy({
     clientID: GITHUB_CLIENT_ID,
     clientSecret: GITHUB_CLIENT_SECRET,
-    callbackURL: 'http://localhost:3000/auth/github/callback'
+    callbackURL: process.env.githubCallback || 'http://localhost:3000/auth/github/callback'
   },
   function(accessToken, refreshToken, profile, done) {
     // my code: 
-    User.findOne({ githubId: profile.id }, function(err, user) {
+    User.findOne({ github_id: profile.id }, function(err, user) {
       if(err) {
         console.error('Error: ', err);
       }
       if(!user) {
-        console.log('Trying to create a user: ', user);
-        User.create({ githubId: profile.id, accessToken: accessToken, refreshToken: refreshToken }, function(err, user) {
-          console.log('blah blah blah');
+        console.log(profile);
+        User.create({ email: profile._json.email, github_id: profile.id, access_token: accessToken, refresh_token: refreshToken, profile_photo: profile._json.avatar_url }, function(err, user) {
           if(err) {
             console.error('Error: ', err);
           }
           if(user) {
-            console.log('Creating user');
+            console.log('Creating user', user);
           }
         })
         .then(function(user) {
-          console.log('Saved user');
+          console.log('Saved user', user);
           return done(null, user);
         });
       } else {
-        console.log('Found user');
-        console.log(user);
+        console.log('Found user', user);
         return done(null, user);
       }
     });
