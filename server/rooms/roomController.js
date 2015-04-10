@@ -14,6 +14,7 @@ module.exports.create = function(req, res) {
   var startTime = req.body.time;
   var email = req.body.email;
   console.log(' in room creation');
+
   Room.create({email: email, user: user, start_time: startTime}, function(err, room){
     if (err) { handleError(err); }
     else if (room) {
@@ -25,9 +26,9 @@ module.exports.create = function(req, res) {
 
 // update pattern: Model.update(conditions, doc, [options], [callback])
 module.exports.save = function(req, res) {
-  var roomID = req.data.roomId;
-  var canvas = req.data.canvas;
-  var text = req.data.textEditor;
+  var roomID = req.body.roomId;
+  var canvas = req.body.canvas;
+  var text = req.body.textEditor;
 
   Room.findOneAndUpdate({'_id': roomID}, {canvas: canvas, text: text}, {upsert: true},
     function(err, room){
@@ -46,6 +47,10 @@ module.exports.fetch = function(req, res) {
 // first check if the room exists
 // check if user made the room -- if yes, send back all data
 // if no, send back only part of the data
+<<<<<<< HEAD
+=======
+  var roomID = req.body.roomID;
+>>>>>>> update new schema
 
   // var roomID = req.data.roomID;
   console.log('request:', req.params.id.slice(1));
