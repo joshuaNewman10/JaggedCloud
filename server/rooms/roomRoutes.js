@@ -5,13 +5,13 @@ var roomController = require('./roomController.js');
 
 
 module.exports = function(router){
+
   router.post('/save', roomController.save);
-};
 
-module.exports = function(router){
-  router.post('/???', roomController.create);
-};
+  router.post('/create', roomController.create);
 
-module.exports = function(router){
-  router.post('/???', roomController.fetch);
+  router.get('/get', roomController.fetch);
+
+  router.get('/get:id', roomController.fetch);
+
 };

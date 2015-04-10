@@ -7,6 +7,16 @@
           <li><a ng-click='logout()' href="/auth/logout">Logout</a></li>
           <li><a ui-sref='room({roomId: "hackbox"})'>Go to Room</a></li>
         </ul>
+        <div ng-controller="createInterviewCtrl">
+          <h1>Create an Interview</h1>
+          <form novalidate class="simple-form">
+            Name: <input type="text" ng-model="interview.name"/><br />
+            E-mail: <input type="email" ng-model="interview.email" /><br />
+            Time:   <input type="datetime-local" ng-model="interview.time"/>
+            <input type="button" ng-click="reset()" value="Reset" />
+            <input type="submit" ng-click="createInterview(interview)" value="Submit" />
+          </form>
+        </div>
       </div>
     </div><!-- /.container-fluid -->
 </div>

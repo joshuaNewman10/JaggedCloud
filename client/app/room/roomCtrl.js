@@ -11,11 +11,11 @@
     .module('hackbox')
     .controller('roomCtrl', RoomCtrl);
 
-  RoomCtrl.$inject = ['$scope', '$http', '$stateParams','Sockets'];
+  RoomCtrl.$inject = ['$scope', '$http', '$stateParams','Sockets', 'Room'];
 
-  function RoomCtrl($scope, $http, $stateParams, Sockets){
+  function RoomCtrl($scope, $http, $stateParams, Sockets, Room){
     $scope.showCanvas = false;
-    $scope.roomID = '';
+    $scope.roomID = $stateParams.roomId;
 
     // The $destroy event is called when we leave this view
     $scope.$on('$destroy', function(){
@@ -28,6 +28,8 @@
      */
     $scope.init = function(){
       console.log('Initializing room controller');
+      console.log('About to call create room');
+      Room.getRoom($scope.roomID);
     };
 
     /**
