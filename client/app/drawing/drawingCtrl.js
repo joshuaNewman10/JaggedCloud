@@ -52,7 +52,8 @@
       });
 
       Sockets.on('coordinates', function(data) {
-        Drawing.updateCanvas(data.canvasData);
+        console.log(data);
+        // Drawing.updateCanvas(data.canvasData);
       });
     };
 
@@ -62,11 +63,14 @@
     */
     $scope.addCanvas = function() {
       var canvas = Drawing.makeCanvas();
-      $('.canvas-container').append(canvas);
+      $('.drawing-container').append(canvas);
 
       var canvasFabric = new fabric.Canvas('drawingCanvas', {
         isDrawingMode: true
       });
+
+      canvasFabric.freeDrawingBrush = new fabric['circle'+ 'Brush'](canvasFabric);
+
 
       canvasFabric.setHeight(400);
       canvasFabric.setWidth(650);
@@ -74,13 +78,18 @@
       //Give roomcontroller a reference to the canvas
       $scope.drawingCanvas = canvasFabric;
 
-      canvasFabric.on('mouse:move', function(e) {
+      $scope.drawingCanvas.on('mouse:move', function(e) {
         var activeObject = e.target;
         var xCoord = e.e.clientX;
         var yCoord = e.e.clientY;
         var data = $scope.drawingCanvas.toDataURL();
         Sockets.emit('coords', {x: xCoord, y: yCoord, canvasData: data});
       });
+    };
+
+    $scope.toggleDrawingMode = function() {
+      $scope.drawingCanvas.isDrawingMode = !$scope.drawingCanvas.isDrawingMode;
+     
     };
     $scope.init();
   }

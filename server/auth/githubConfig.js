@@ -3,8 +3,8 @@ var passport = require('passport');
 var GitHubStrategy = require('passport-github').Strategy;
 var User = require('../db/models/userModel.js');
 
-var GITHUB_CLIENT_ID =  process.env.GITHUB_CLIENT_ID;
-var GITHUB_CLIENT_SECRET =  process.env.GITHUB_CLIENT_SECRET;
+var GITHUB_CLIENT_ID =  'bc68d7b8606aaaf61a75'; //process.env.GITHUB_CLIENT_ID;
+var GITHUB_CLIENT_SECRET =  '4c7dbc98543abd0c2d94e0ae03997d6950b30e9a'; //process.env.GITHUB_CLIENT_SECRET;
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
