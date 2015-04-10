@@ -42,7 +42,7 @@
   .run(function ($rootScope, $state, $log) {
     $rootScope.$on('$stateChangeError', function () {
       // Redirect user to our home page
-      $state.go('home');
+      $state.go('home', {reload: true});
     });
   });
   console.log('App loaded successfully');

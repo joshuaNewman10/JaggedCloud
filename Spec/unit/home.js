@@ -29,14 +29,14 @@ describe('homeCtrl', function() {
 describe('Video/Icecomm Service', function() {
     beforeEach(module('hackbox'));
 
-    var Video;
+    var IcecommWrapper;
 
-    beforeEach(inject(function(_Video_) {
-        Video = _Video_;
+    beforeEach(inject(function(_IcecommWrapper_) {
+        IcecommWrapper = _IcecommWrapper_;
     }));
 
     it('should have all the necessary methods', function(){
-        expect(Video.getIcecommInstance).to.not.be.undefined;
+        expect(IcecommWrapper.getIcecommInstance).to.not.be.undefined;
     });
 });
 
