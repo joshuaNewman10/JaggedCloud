@@ -65,18 +65,17 @@
       var canvas = Drawing.makeCanvas();
       $('.drawing-container').append(canvas);
 
-      var canvasFabric = new fabric.Canvas('drawingCanvas', {
+      $scope.drawingCanvas = new fabric.Canvas('drawingCanvas', {
         isDrawingMode: true
       });
 
-      canvasFabric.freeDrawingBrush = new fabric['circle'+ 'Brush'](canvasFabric);
+
+      $scope.drawingCanvas.freeDrawingBrush = new fabric['circle'+ 'Brush']($scope.drawingCanvas);
 
 
-      canvasFabric.setHeight(400);
-      canvasFabric.setWidth(650);
+      $scope.drawingCanvas.setHeight(400);
+      $scope.drawingCanvas.setWidth(650);
 
-      //Give roomcontroller a reference to the canvas
-      $scope.drawingCanvas = canvasFabric;
 
       $scope.drawingCanvas.on('mouse:move', function(e) {
         var activeObject = e.target;
