@@ -40,7 +40,7 @@
     }
     
     function getRoom(roomId){
-      console.log(roomId);
+      console.log('Getting room data for room: ', roomId);
       return $http({
         method: 'GET',
         url: '/room/get' + roomId

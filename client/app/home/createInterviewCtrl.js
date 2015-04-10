@@ -16,7 +16,6 @@
       };
 
       $scope.createInterview = function(a,b,c) {
-        console.log('what the hell', arguments);
         Room.createRoom($scope.interview);
       };
 
