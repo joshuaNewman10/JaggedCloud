@@ -10,9 +10,9 @@
     .module('hackbox')
     .controller('videoCtrl', VideoCtrl);
 
-  VideoCtrl.$inject = ['$scope' ,'$sce', '$stateParams', 'Video'];
+  VideoCtrl.$inject = ['$scope' ,'$sce', '$stateParams', 'IcecommWrapper'];
 
-  function VideoCtrl($scope, $sce, $stateParams, Video){
+  function VideoCtrl($scope, $sce, $stateParams, IcecommWrapper){
     $scope.userVideoSource = null;
     $scope.peerVideoSource = null;
 
@@ -29,7 +29,7 @@
      */
     $scope.init = function(roomName){
       // Create the Icecomm object and get the instance of it.
-      var comm = Video.getIcecommInstance();
+      var comm = IcecommWrapper.getIcecommInstance();
 
       // Connect to the correct room. Room supports a maximum of 2 people. 
       comm.connect(roomName, {limit: 2, audio: false});
@@ -58,7 +58,7 @@
      */
     $scope.uninit = function(){
       console.log('Shutting down video and removing listeners.');
-      Video.getIcecommInstance().leave(true);
+      IcecommWrapper.getIcecommInstance().leave(true);
     };
     
     $scope.init($stateParams.roomId);
