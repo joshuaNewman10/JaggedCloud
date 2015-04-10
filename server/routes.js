@@ -22,6 +22,7 @@ module.exports = function(app, express) {
 
   // serve html and css 
   app.use(express.static(__dirname + '/../client'));
+
   // create paths for authentication, and user and room data storage
   app.use('/auth', authRouter);
   app.use('/user', userRouter);
