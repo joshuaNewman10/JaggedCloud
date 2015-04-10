@@ -32,6 +32,7 @@
      * @return: Canvas element to append to DOM. 
      */
     function makeCanvas() {
+      console.log('making a canvas');
       var newCanvas = $('<canvas></canvas>')
           .css({position: 'absolute', top: 250, left: 250})
           .attr('width', 300)
@@ -68,6 +69,7 @@
       var imageObj = new Image();
       imageObj.src = data;
       imageObj.onload = function(){
+        console.log('drawn image');
         cx.drawImage(this, 0, 0);
       };
 
