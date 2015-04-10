@@ -16,7 +16,8 @@
   IcecommWrapper.$inject = [];
 
   function IcecommWrapper(){
-
+    var comm = null;
+    
     var instance = {
       getIcecommInstance: getIcecommInstance,
       setDataListener: setDataListener,
@@ -26,7 +27,6 @@
     return instance;
 
     ///// IMPLEMENTATION /////
-    var comm = null;
 
     /**
      * Function: Icecomm.getIcecommInstance()

@@ -21,5 +21,12 @@
       Auth.logout();
       console.log('Logging out!');
     };
+
+
+    // Upon loading home, if the user is authenticated
+    // Get his list of interviews upcoming. 
+    // Populate the list using an ng-repeat and make each div clickable
+    // On click, send him to the room/roomId which will make a get request
+    // to the server. 
   }
 })();
