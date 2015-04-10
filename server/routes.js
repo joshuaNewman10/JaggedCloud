@@ -2,7 +2,7 @@ var morgan = require('morgan');
 var passport = require('passport');
 var session = require('express-session');
 var bodyParser = require('body-parser');
-
+var MongoStore = require('connect-mongo')(session);
 
 module.exports = function(app, express) {
 
@@ -23,6 +23,15 @@ module.exports = function(app, express) {
   // serve html and css 
   app.use(express.static(__dirname + '/../client'));
 
+  // serve static files
+  app.use(express.static(__dirname + '/../client'));
+
+  // required for passport sessions
+  app.use(bodyParser());
+  app.use( session({ key: 'session', secret: 'SUPER SECRET', store: new MongoStore({ url: 'mongodb://localhost/hackbox'}) }) );
+  app.use(passport.initialize());
+  app.use(passport.session());
+  
   // create paths for authentication, and user and room data storage
   app.use('/auth', authRouter);
   app.use('/user', userRouter);
