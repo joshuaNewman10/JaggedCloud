@@ -36,4 +36,3 @@ var userSchema = new mongoose.Schema({
 
 // MODELS: a model is a class with which we construct documents (rows in a table)
 module.exports = mongoose.model('User', userSchema);
-
