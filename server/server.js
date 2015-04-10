@@ -31,7 +31,7 @@ require('./routes')(app, express);
 
 
 var server = http.createServer(app).listen(port, function() {
-  console.log('Server listening on port', port);
+  // console.log('Server listening on port', port);
 });
 
 //Sockets Setup
