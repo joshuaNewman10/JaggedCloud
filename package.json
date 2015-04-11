@@ -4,7 +4,8 @@
   "description": "technical interview platform",
   "main": "client/index.html",
   "scripts": {
-    "start": "node server/server.js"
+    "test": "grunt test",
+    "start": "node ./server/server.js"
   },
   "repository": {
     "type": "git",
