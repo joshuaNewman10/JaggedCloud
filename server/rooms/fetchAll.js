@@ -30,6 +30,7 @@ module.exports.fetchAll = function(req, res) {
 
           else {
             var roomData = {
+// TODO: created_by is not showing up -- check create function
               created_by: room.created_by,
               start_time: room.start_time,
               is_open: room.is_open,
@@ -38,14 +39,20 @@ module.exports.fetchAll = function(req, res) {
             roomsArray.push(roomData);
           }
 
-        console.log('ROOMS ARRAY: ', roomsArray);
-        // res.send(200, rooms);
+          console.log('length', roomsArray.length);
+          if (roomsArray.length === rooms.length) {
+            console.log('ROOMS ARRAY: ', roomsArray);
+            res.send(202, roomsArray);
+          }
+
         });
+        
 
       }
+      
     }
   });
 
-// could I just do Rooms.findAll where created_by === githubId
+
 }
 

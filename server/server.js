@@ -22,7 +22,7 @@
 var express = require('express');
 var http = require('http');
 var app = express();
-var db = require('./db/config.js');
+// var db = require('./db/config.js');
 
 // console.log('Server.js: Environmental variables:', process.env);
 var port = process.env.PORT || 3000;
