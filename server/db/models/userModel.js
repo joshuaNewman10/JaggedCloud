@@ -25,7 +25,7 @@ var userSchema = new Schema({
   access_token: String,
   refresh_token: String,
   profile_photo: String,
-  rooms: [{ type: Schema.Types.ObjectId, ref: 'Room' }],
+  rooms: [String]
 });
 
 
