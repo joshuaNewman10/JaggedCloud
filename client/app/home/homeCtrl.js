@@ -10,11 +10,22 @@
     .module('hackbox')
     .controller('homeCtrl', HomeCtrl);
 
-  HomeCtrl.$inject = ['$scope' ,'$modal', '$log', 'Auth', 'Room'];
+  HomeCtrl.$inject = ['$scope' ,'$modal', '$state','$log', 'Auth', 'Room'];
 
-  function HomeCtrl($scope, $modal, $log, Auth, Room){
+  function HomeCtrl($scope, $modal, $state, $log, Auth, Room){
 
-    $scope.incompleteInterviews = [];
+    $scope.incompleteInterviews = [{
+            company: 'Hack Reactor',
+            start_time: '10:00',
+            created_by: 'HackBox Team',
+            roomId: 'hackbox2'
+          },
+          {
+            company: 'Hack Reactor2',
+            start_time: '20:00',
+            created_by: 'HackBox Team2',
+            roomId: 'hackbox3'
+          }];
 
     $scope.init = function(){
       Room.getUpcomingInterviews(function(response){
@@ -43,7 +54,8 @@
     };
 
     $scope.joinRoom = function(interview){
-      console.log('Joining: ' + interview.roomId)
+      console.log('Joining: ' + interview.roomId);
+      $state.go('room', {roomId: interview.roomId})
     } 
 
     $scope.init();
