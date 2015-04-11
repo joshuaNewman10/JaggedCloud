@@ -38,7 +38,8 @@ module.exports.fetchOne = function(req, res) {
         res.send(200, room);
       }
       else {
-        res.send(200, candidateRoom);
+        // TODO: create candidateRoom object that contains only the data the the candidate should see
+        res.send(200, room); // candidateRoom
       }
     }
 
