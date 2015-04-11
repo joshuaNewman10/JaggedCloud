@@ -26,9 +26,8 @@ var userSchema = new Schema({
     default: Date.now
   },
 
-  used_rooms: [{ type: Schema.Types.ObjectId, ref: 'Room' }],
-  future_rooms: [{ type: Schema.Types.ObjectId, ref: 'Room' }]
-  
+  rooms: [{ type: Schema.Types.ObjectId, ref: 'Room' }],
+    
 });
 
 

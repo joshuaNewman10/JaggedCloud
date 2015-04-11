@@ -29,93 +29,86 @@ module.exports.create = function(req, res) {
 };
 
 // update pattern: Model.update(conditions, doc, [options], [callback])
-module.exports.save = function(req, res) {
-  var roomId = req.body.roomId;
-  var canvas = req.body.canvas;
-  var text = req.body.textEditor;
+// module.exports.save = function(req, res) {
+//   var roomId = req.body.roomId;
+//   var canvas = req.body.canvas;
+//   var text = req.body.textEditor;
 
-  Room.findOneAndUpdate({'_id': roomId}, {canvas: canvas, text: text}, {upsert: true},
-    function(err, room){
-      if (err) { handleError(err); }
-      else if (room) {
-        console.log(room._id + ': room successfully updated');
-        res.send(201, room);      
-      }
-    }
-  );
-};
-
-
-module.exports.fetch = function(req, res) {
-  console.log('In room controller fetch');
-  var roomId = req.body.roomId;
-
-// first check if the room exists
-// check if user made the room -- if yes, send back all data
-// if no, send back only part of the data
-// TODO: only give back data if is_open is set to true
-
-  console.log('request: ', roomId);
-  Room.findById(roomId, function(err, room){
-    if (err) { 
-      handleError(err); 
-      res.send(404, 'no room data');
-    }
-    else if (room) {
-      res.send(200, room);
-    }
-  });
-};
+//   Room.findOneAndUpdate({'_id': roomId}, {canvas: canvas, text: text}, {upsert: true},
+//     function(err, room){
+//       if (err) { handleError(err); }
+//       else if (room) {
+//         console.log(room._id + ': room successfully updated');
+//         res.send(201, room);      
+//       }
+//     }
+//   );
+// };
 
 
+// module.exports.fetch = function(req, res) {
+//   console.log('In room controller fetch');
+//   var roomId = req.body.roomId;
+//   var githubId = req.user;
 
-module.exports.fetchAllRooms = function(req, res) {
-  console.log('req.session' + req.session);
+// // TODO: only give back data if is_open is set to true
+//   console.log('request: ', roomId);
+//   Room.findById(roomId, function(err, room){
+//     var candidateRoom = {}
+//     candidateRoom.canvas = 
+//     if (err) { 
+//       handleError(err); 
+//       res.send(404, 'no room data');
+//     }
 
-  console.log('test');
-  var userId = req.session;
-  var rooms = [];
+//     else if (room && room.isOpen) {
+// // check if current user is the person who made the room -- if yes, send back all data
+//       if(githubId === room.githubId) {
+//         res.send(200, room);
+//       }
+// // if no, send back only part of the data
+//       else {
+//         res.send(200, candidateRoom)
+//       }
+//     }
+//   });
+// };
+
+
+// module.exports.fetchAllRooms = function(req, res) {
+//   var githubId = req.user;
+//   var rooms = [];
   
-// find user by id and retrieve their 'future rooms'
-// roomIds will be an array -- each element should be just a roomId (not an object)
-  var roomIds = User.findById(userId, 'future_rooms', function(err, userRooms){
-    console.log('in the callback');
-    if (err) { 
-      handleError(err); 
-      console.log('cannot find user');
-      res.send(404, 'cannot find user by ID');
-    }
-    else if (userRooms) {
-      console.log('user rooms: ' + userRooms);
-    }
-  });
+// // find user by id and retrieve rooms
+//   User.find({github_id: githubId}, 'rooms', function(err, user){
+//     if (err) { 
+//       handleError(err); 
+//       res.send(404, 'cannot find user by ID');
+//     }
 
-// not sure if this will work -- iterate over roomIds array
-  for (var i = 0; i < roomIds.length; i++) {
-    Room.findById(roomIds[i], function(err, room){
-      if (err) { 
-        handleError(err); 
-        res.send(404, 'no room data');
-      }
-      else if (room) {
-        // var roomData = {};
-        rooms.push(room);
-        res.send(200, rooms);
-      }
-    });
-  } 
+//     else if (user) {
+//       var rooms = user.rooms;
+//       console.log('user object: ', user);
+//       console.log('rooms: ', rooms);
+      
+//       for (var i = 0; i < rooms.length; i++) {
+//         console.log('in for loop. room: ', rooms);
+//         Room.findById(rooms[i], function(err, room){
+//           if (err) { 
+//             handleError(err); 
+//             res.send(404, 'no room data');
+//           }
 
-}
-
-
-// return an array of objects with the following (each obj is a room)
-// Snapshot of all rooms
-//   date created
-//   start time
-//   created_by
-//   roomId
+//           else if (room) {
+//             // var roomData = {};
+//             rooms.push(room);
+//             res.send(200, rooms);
+//           }
+//         });
+//       }
+//     }
+//   });
+// }
 
 
-
-
-
+//   return: date_created, start_time, created_by, room_id

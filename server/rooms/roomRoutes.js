@@ -1,14 +1,19 @@
-var roomController = require('./roomController.js');
+var create = require('./create.js');
+var fetch = require('./fetch.js');
+var fetchAll = require('./fetchAll.js');
+var save = require('./save.js');
 
 
 module.exports = function(router){
 
-  router.post('/save', roomController.save);
+  router.post('/save', save.save);
 
-  router.post('/create', roomController.create);
+  router.post('/create', create.create);
 
-  router.get('/get', roomController.fetch);
+  router.get('/get', fetch.fetch);
 
-  router.get('/get:id', roomController.fetch);
+  router.get('/get:id', fetch.fetch);
+
+  router.get('/home', fetchAll.fetchAllRooms);
 
 };

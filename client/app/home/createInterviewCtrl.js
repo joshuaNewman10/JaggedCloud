@@ -12,7 +12,7 @@
       $scope.interview = {name: "John Doe", email: "john@email.com", time: ''};
 
       $scope.reset = function() {
-        console.log('reset');
+        Room.getIncompleteInterviews();
       };
 
       $scope.createInterview = function(a,b,c) {

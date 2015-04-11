@@ -11,7 +11,8 @@
     var instance = {
       createRoom: createRoom,
       getRoom: getRoom,
-      saveRoom: saveRoom
+      saveRoom: saveRoom,
+      getIncompleteInterviews: getIncompleteInterviews
     };
 
     return instance;
@@ -36,6 +37,13 @@
         data: room
       }).then(function(response){
         return response;        
+      });
+    }
+
+    function getIncompleteInterviews(){
+      return $http({
+        method: 'GET',
+        url: '/room/home'
       });
     }
     
