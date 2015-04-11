@@ -64,14 +64,15 @@
     //It then updates the canvas with the data
     //This happens on every mousemove (really mouseup)
     function updateCanvas(data) {
-      var fabricCanvasContainer = $('.lower-canvas');
-      var cx = fabricCanvasContainer[0].getContext('2d');
-      var imageObj = new Image();
-      imageObj.src = data;
-      imageObj.onload = function(){
-        console.log('drawn image');
-        cx.drawImage(this, 0, 0);
-      };
+      console.log(data);
+      // var fabricCanvasContainer = $('.lower-canvas');
+      // var cx = fabricCanvasContainer[0].getContext('2d');
+      // var imageObj = new Image();
+      // imageObj.src = data;
+      // imageObj.onload = function(){
+      //   console.log('drawn image');
+      //   cx.drawImage(this, 0, 0);
+      // };
 
     }
   }
