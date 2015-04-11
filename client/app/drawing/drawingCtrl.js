@@ -47,7 +47,7 @@
       $scope.socket = socket;
 
       Sockets.on('init', function (data) {
-       console.log('initialized!!!', data);
+       console.log('Socket connection initialized!', data);
       });
 
       Sockets.on('coordinates', function(data) {
