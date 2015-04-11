@@ -1,19 +1,15 @@
-var create = require('./create.js');
-var fetchOne = require('./fetchOne.js');
-var fetchAll = require('./fetchAll.js');
-var save = require('./save.js');
-
+var roomController = require('./roomController.js');
 
 module.exports = function(router){
 
-  router.post('/save', save.save);
+  router.post('/save', roomController.save);
 
-  router.post('/create', create.create);
+  router.post('/create', roomController.create);
 
-  router.get('/get', fetchOne.fetchOne);
+  router.get('/get', roomController.fetchOne);
 
-  router.get('/get:id', fetchOne.fetchOne);
+  router.get('/get:id', roomController.fetchOne);
 
-  router.get('/home', fetchAll.fetchAll);
+  router.get('/home', roomController.fetchAll);
 
 };
