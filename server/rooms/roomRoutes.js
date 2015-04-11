@@ -1,5 +1,5 @@
 var create = require('./create.js');
-var fetch = require('./fetch.js');
+var fetchOne = require('./fetchOne.js');
 var fetchAll = require('./fetchAll.js');
 var save = require('./save.js');
 
@@ -10,10 +10,10 @@ module.exports = function(router){
 
   router.post('/create', create.create);
 
-  router.get('/get', fetch.fetch);
+  router.get('/get', fetchOne.fetchOne);
 
-  router.get('/get:id', fetch.fetch);
+  router.get('/get:id', fetchOne.fetchOne);
 
-  router.get('/home', fetchAll.fetchAllRooms);
+  router.get('/home', fetchAll.fetchAll);
 
 };

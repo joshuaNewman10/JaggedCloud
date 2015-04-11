@@ -6,7 +6,6 @@ var handleError = function(error) {
 };
 
 
-// do we want to store other information with the room id? perhaps -- person having interview and their email address
 module.exports.create = function(req, res) {
   var startTime = req.body.time;
   var githubId = req.user;
@@ -16,13 +15,13 @@ module.exports.create = function(req, res) {
   Room.create({ created_by: githubId, start_time: startTime, is_open: isOpen }, function(err, room){
     if (err) { handleError(err); }
     else if (room) {
-      console.log('room successfully created! ' + room);
+      console.log('room successfully created!');
 
-// save the room to the user who created it
+// add the room to the user's array of rooms
       User.findOneAndUpdate({github_id: githubId}, {$push: {rooms: [room._id]}}, {upsert: true}, function(err, user){
         if (err) { handleError(err); }
         else if (user) {
-          console.log('successfully added new room to user : ', user);
+          console.log('successfully added new room to user!' + user);
         }
       });
       res.send(201, room);

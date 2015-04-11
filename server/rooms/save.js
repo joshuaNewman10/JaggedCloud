@@ -6,17 +6,18 @@ var handleError = function(error) {
 };
 
 
-// update pattern: Model.update(conditions, doc, [options], [callback])
+
 module.exports.save = function(req, res) {
+  var notes = req.body.notes;
   var roomId = req.body.roomId;
   var canvas = req.body.canvas;
   var text = req.body.textEditor;
 
-  Room.findOneAndUpdate({'_id': roomId}, {canvas: canvas, text: text}, {upsert: true},
+  Room.findOneAndUpdate({'_id': roomId}, {canvas: canvas, text: text, notes: notes}, {upsert: true},
     function(err, room){
       if (err) { handleError(err); }
       else if (room) {
-        console.log(room._id + ': room successfully updated');
+        console.log('room successfully updated');
         res.send(201, room);      
       }
     }

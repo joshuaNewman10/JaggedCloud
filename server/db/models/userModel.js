@@ -16,18 +16,16 @@ var userSchema = new Schema({
     unique: true
   },
 
-  github_id: String,
-  access_token: String,
-  refresh_token: String,
-  profile_photo: String,
-
   date_created: {
     type: Date,
     default: Date.now
   },
 
+  github_id: String,
+  access_token: String,
+  refresh_token: String,
+  profile_photo: String,
   rooms: [{ type: Schema.Types.ObjectId, ref: 'Room' }],
-    
 });
 
 

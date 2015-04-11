@@ -16,10 +16,10 @@ var roomSchema = new mongoose.Schema({
   },
   
   canvas: String,
-  text: [String], // each element will be a string
+  text: [String],
   notes: String,
   start_time: Date,
-  created_by: String, // this is an email; will be a user object
+  created_by: String, // githubId
 });
 
 
