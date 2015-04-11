@@ -48,6 +48,6 @@ io.on('connection', function(socket) {
       console.log('user disconnected');
   });
   socket.on('coords', function(data) {
-    io.emit('coordinates', data);
+    socket.broadcast.emit('coordinates', data);
   });
 });

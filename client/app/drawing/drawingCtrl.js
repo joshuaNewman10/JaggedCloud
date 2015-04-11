@@ -14,6 +14,7 @@
   function DrawingCtrl($scope, Drawing, Sockets) {
     $scope.drawingCanvas = null;
     $scope.socket = null;
+    $scope.intervalID = null;
     
     //The $destroy event is called when we leave this view
     $scope.$on('destroy', function() {
@@ -50,8 +51,9 @@
       });
 
       Sockets.on('coordinates', function(data) {
-        console.log(data);
-        // Drawing.updateCanvas(data.canvasData);
+        var obj = JSON.parse(data);
+        console.log(obj);
+        $scope.drawingCanvas.loadFromJSON(obj, $scope.drawingCanvas.renderAll.bind($scope.drawingCanvas));
       });
     };
 
@@ -67,21 +69,24 @@
         isDrawingMode: true
       });
 
-
       $scope.drawingCanvas.freeDrawingBrush = new fabric['Circle'+ 'Brush']($scope.drawingCanvas);
-
-
       $scope.drawingCanvas.setHeight(400);
       $scope.drawingCanvas.setWidth(650);
 
-
-      $scope.drawingCanvas.on('mouse:move', function(e) {
-        var activeObject = e.target;
-        var xCoord = e.e.clientX;
-        var yCoord = e.e.clientY;
-        // var data = $scope.drawingCanvas.toDataURL();
-        Sockets.emit('coords', {x: 4, y: 2, canvasData: '4'});
-      });
+      // $scope.drawingCanvas.on('mouse:down', function(e) {
+        $scope.drawingCanvas.on('mouse:down', function(options) {
+          $scope.intervalID = setInterval(function() {
+            var json = JSON.stringify( $scope.drawingCanvas.toJSON() );
+            Sockets.emit('coords', json);
+            console.log('emit!');
+          }, 50);
+        });
+        $scope.drawingCanvas.on('mouse:up', function() {
+          console.log('interval cleared');
+          clearInterval($scope.intervalID);
+          var json = JSON.stringify( $scope.drawingCanvas.toJSON() );
+          Sockets.emit('coords', json);
+        });
     };
 
     $scope.toggleDrawingMode = function() {
