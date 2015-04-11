@@ -51,14 +51,17 @@
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
-<row name="name_first" null="1" autoincrement="0">
+<row name="name.first" null="1" autoincrement="0">
 <datatype>VARCHAR</datatype>
 <default>NULL</default></row>
-<row name="name_last" null="1" autoincrement="0">
+<row name="name.last" null="1" autoincrement="0">
 <datatype>VARCHAR</datatype>
 <default>NULL</default></row>
 <row name="email" null="1" autoincrement="0">
 <datatype>VARCHAR</datatype>
+<default>NULL</default></row>
+<row name="date_created" null="1" autoincrement="0">
+<datatype>DATE</datatype>
 <default>NULL</default></row>
 <row name="github_id" null="1" autoincrement="0">
 <datatype>ENUM</datatype>
@@ -69,11 +72,11 @@
 <row name="refresh_token" null="1" autoincrement="0">
 <datatype>VARCHAR</datatype>
 <default>NULL</default></row>
-<row name="old_rooms" null="1" autoincrement="0">
-<datatype>BLOB</datatype>
+<row name="profile_photo" null="1" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
 <default>NULL</default></row>
-<row name="future_rooms" null="1" autoincrement="0">
-<datatype>VARCHAR</datatype>
+<row name="rooms" null="1" autoincrement="0">
+<datatype>BLOB</datatype>
 <default>NULL</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
@@ -83,8 +86,17 @@
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
+<row name="is_open" null="1" autoincrement="0">
+<datatype>INT</datatype>
+<default>NULL</default></row>
 <row name="date_created" null="1" autoincrement="0">
 <datatype>DATE</datatype>
+<default>NULL</default></row>
+<row name="start_time" null="1" autoincrement="0">
+<datatype>TIME</datatype>
+<default>NULL</default></row>
+<row name="created_by" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
 <default>NULL</default></row>
 <row name="canvas" null="1" autoincrement="0">
 <datatype>MEDIUMTEXT</datatype>
@@ -94,15 +106,6 @@
 <default>NULL</default></row>
 <row name="notes" null="1" autoincrement="0">
 <datatype>VARCHAR</datatype>
-<default>NULL</default></row>
-<row name="start_time" null="1" autoincrement="0">
-<datatype>TIME</datatype>
-<default>NULL</default></row>
-<row name="is_open" null="1" autoincrement="0">
-<datatype>INT</datatype>
-<default>NULL</default></row>
-<row name="created_by" null="1" autoincrement="0">
-<datatype>INTEGER</datatype>
 <default>NULL</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
