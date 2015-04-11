@@ -6,3 +6,5 @@ client/lib/bower_components/
 .DS_Store
 env.config.js
 *.env
+server/ssl
+*.pem
