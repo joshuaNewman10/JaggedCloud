@@ -14,8 +14,6 @@
   function DrawingCtrl($scope, Drawing, Sockets) {
     $scope.drawingCanvas = null;
     $scope.socket = null;
-    $scope.x = null;
-    $scope.y = null;
     
     //The $destroy event is called when we leave this view
     $scope.$on('destroy', function() {
