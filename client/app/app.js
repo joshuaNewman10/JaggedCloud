@@ -9,7 +9,6 @@
               var deferred = $q.defer();
               Auth.isAuthenticated()
                 .then(function (response) {
-                  console.log(response)
                   if (response.data) {
                     deferred.resolve();
                   } else {
