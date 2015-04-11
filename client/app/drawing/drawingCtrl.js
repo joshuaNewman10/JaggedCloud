@@ -9,12 +9,10 @@
     .module('hackbox')
     .controller('drawingCtrl', DrawingCtrl);
 
-  DrawingCtrl.$inject = ['$scope', 'Drawing', 'Sockets'];
+  DrawingCtrl.$inject = ['$scope', 'Drawing'];
 
-  function DrawingCtrl($scope, Drawing, Sockets) {
+  function DrawingCtrl($scope, Drawing) {
     $scope.drawingCanvas = null;
-    $scope.socket = null;
-    $scope.intervalID = null;
     
     //The $destroy event is called when we leave this view
     $scope.$on('destroy', function() {
@@ -42,19 +40,7 @@
     };
 
     $scope.initializeIO = function() {
-      console.log('Initializing Sockets IO');
-      var socket = io();
-      $scope.socket = socket;
-
-      Sockets.on('init', function (data) {
-       console.log('Socket connection initialized!', data);
-      });
-
-      Sockets.on('coordinates', function(data) {
-        var obj = JSON.parse(data);
-        console.log(obj);
-        $scope.drawingCanvas.loadFromJSON(obj, $scope.drawingCanvas.renderAll.bind($scope.drawingCanvas));
-      });
+      Drawing.initializeIO();
     };
 
     /**
@@ -62,31 +48,7 @@
      * This function adds a new Fabric Canvas to the DOM
     */
     $scope.addCanvas = function() {
-      var canvas = Drawing.makeCanvas();
-      $('.drawing-container').append(canvas);
-
-      $scope.drawingCanvas = new fabric.Canvas('drawingCanvas', {
-        isDrawingMode: true
-      });
-
-      $scope.drawingCanvas.freeDrawingBrush = new fabric['Circle'+ 'Brush']($scope.drawingCanvas);
-      $scope.drawingCanvas.setHeight(400);
-      $scope.drawingCanvas.setWidth(650);
-
-      // $scope.drawingCanvas.on('mouse:down', function(e) {
-        $scope.drawingCanvas.on('mouse:down', function(options) {
-          $scope.intervalID = setInterval(function() {
-            var json = JSON.stringify( $scope.drawingCanvas.toJSON() );
-            Sockets.emit('coords', json);
-            console.log('emit!');
-          }, 50);
-        });
-        $scope.drawingCanvas.on('mouse:up', function() {
-          console.log('interval cleared');
-          clearInterval($scope.intervalID);
-          var json = JSON.stringify( $scope.drawingCanvas.toJSON() );
-          Sockets.emit('coords', json);
-        });
+      $scope.drawingCanvas = Drawing.makeCanvas();
     };
 
     $scope.toggleDrawingMode = function() {

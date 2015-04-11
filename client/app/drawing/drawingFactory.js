@@ -11,11 +11,16 @@
     .module('hackbox')
     .factory('Drawing', Drawing);
 
-  Drawing.$inject = [];
+  Drawing.$inject = ['Sockets'];
 
-  function Drawing() {
+  function Drawing(Sockets) {
+    var _fabricCanvas = null;
+    var _socket = null;
+    var _intervalID = null;
+
     var instance = {
       makeCanvas: makeCanvas,
+      initializeIO: initializeIO,
       removeCanvas: removeCanvas,
       updateCanvas: updateCanvas
     };
@@ -39,7 +44,30 @@
           .attr('height', 300)
           .attr('id', 'drawingCanvas');
 
-      return newCanvas;
+      $('.drawing-container').append(newCanvas);
+
+      _fabricCanvas = new fabric.Canvas('drawingCanvas', {
+        isDrawingMode: true
+      });
+
+      _fabricCanvas.freeDrawingBrush = new fabric['Circle'+ 'Brush'](_fabricCanvas);
+      _fabricCanvas.setHeight(400);
+      _fabricCanvas.setWidth(650);
+
+      return _fabricCanvas;
+    }
+
+    function initializeIO() {
+      console.log('Initializing Sockets IO');
+      _socket = io();
+
+      Sockets.on('init', function (initialData) {
+       console.log('Socket connection initialized!', initialData);
+      });
+
+      Sockets.on('coordinates', updateCanvas);
+      _fabricCanvas.on('mouse:down', sendData); 
+      _fabricCanvas.on('mouse:up', clearData);       
     }
 
     /**
@@ -64,20 +92,23 @@
     //It then updates the canvas with the data
     //This happens on every mousemove (really mouseup)
     function updateCanvas(data) {
-      console.log('i dont want this data');
-      // var fabricCanvasContainer = $('.lower-canvas');
-      // var cx = fabricCanvasContainer[0].getContext('2d');
-      // console.log(data);
-      // canvas.loadFromJSON(c)
-      // var xCoord = data.x;
-      // var yCoord = data.y;
-      // console.log('update canvas coords', x, y);
-      // var imageObj = new Image();
-      // imageObj.src = data;
-      // imageObj.onload = function(){
-        // console.log('drawn image');
-        // cx.drawImage(this, 0, 0);
-      // };
+      var obj = JSON.parse(data);
+      _fabricCanvas.loadFromJSON(obj, _fabricCanvas.renderAll.bind(_fabricCanvas));
+    }
+
+    function sendData(options) {
+      _intervalID = setInterval(function() {
+        var json = JSON.stringify( _fabricCanvas.toJSON() );
+        Sockets.emit('coords', json);
+        console.log('emit!');
+      }, 50);
+    }
+
+    function clearData() {
+      console.log('interval cleared');
+      clearInterval(_intervalID);
+      var json = JSON.stringify( _fabricCanvas.toJSON() );
+      Sockets.emit('coords', json);
     }
   }
 })();
