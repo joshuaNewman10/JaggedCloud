@@ -14,18 +14,7 @@
 
   function HomeCtrl($scope, $modal, $state, $log, Auth, Room){
 
-    $scope.incompleteInterviews = [{
-            company: 'Hack Reactor',
-            start_time: '10:00',
-            created_by: 'HackBox Team',
-            roomId: 'hackbox2'
-          },
-          {
-            company: 'Hack Reactor2',
-            start_time: '20:00',
-            created_by: 'HackBox Team2',
-            roomId: 'hackbox3'
-          }];
+    $scope.incompleteInterviews = [];
 
     $scope.init = function(){
       Room.getUpcomingInterviews(function(response){
@@ -35,8 +24,8 @@
           var interview = {
             company: 'Hack Reactor',
             start_time: interview.start_time,
-            created_by: 'HackBox Team',
-            roomId: interview.roomId
+            created_by: interview.created_by,
+            roomId: interview.id
           };
 
           $scope.incompleteInterviews.push(interview);

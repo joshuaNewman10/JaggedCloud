@@ -30,8 +30,10 @@
       console.log('Initializing room controller');
       Room.getRoom($scope.roomID, function(response){
         TextEditor.addTextEditor();
-        TextEditor.setEditorText(response.text, 0);
         TextEditor.initializeDataListener();
+
+        if(response.text)
+          TextEditor.setEditorText(response.text[0], 0);
       });
     };
 

@@ -50,10 +50,8 @@ module.exports.save = function(req, res) {
 
 // TODO: complete candidateRoom object that contains only the data the the candidate should see
 module.exports.fetchOne = function(req, res) {
-  var roomId = req.body.roomId;
+  var roomId = req.params.id;
   var githubId = req.user;
-  var startTime = req.body.time;
-  var isOpen = Date.now() >= Date.parse(startTime);
 
   Room.findById(roomId, function(err, room){
     console.log('ROOM: ',room);
@@ -64,6 +62,8 @@ module.exports.fetchOne = function(req, res) {
     //   text: text
     // }
     // console.log(candidateRoom);
+    var isOpen = (Date.now() > Date.parse(room.start_time));
+
     if (err) { 
       handleError(err); 
       res.send(404, 'no room data');

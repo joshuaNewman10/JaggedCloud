@@ -42,14 +42,13 @@
     
     function getRoom(roomId, callback){
       console.log('Getting room data for room: ', roomId);
-      callback({text: 'YOU SHOULD SEE THIS'});
 
-      // return $http({
-      //   method: 'GET',
-      //   url: '/room/get' + roomId
-      // }).then(function(response){
-      //   callback(response);
-      // });        
+      return $http({
+        method: 'GET',
+        url: '/room/get' + roomId
+      }).then(function(response){
+        callback(response);
+      });        
     }
 
     function getUpcomingInterviews(callback){
