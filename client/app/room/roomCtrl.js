@@ -11,9 +11,9 @@
     .module('hackbox')
     .controller('roomCtrl', RoomCtrl);
 
-  RoomCtrl.$inject = ['$scope', '$http', '$stateParams','Sockets', 'Room'];
+  RoomCtrl.$inject = ['$scope', '$http', '$stateParams', 'Room'];
 
-  function RoomCtrl($scope, $http, $stateParams, Sockets, Room){
+  function RoomCtrl($scope, $http, $stateParams, Room){
     $scope.showCanvas = false;
     $scope.roomID = $stateParams.roomId;
 

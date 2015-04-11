@@ -9,13 +9,10 @@
     .module('hackbox')
     .controller('drawingCtrl', DrawingCtrl);
 
-  DrawingCtrl.$inject = ['$scope', 'Drawing', 'Sockets'];
+  DrawingCtrl.$inject = ['$scope', 'Drawing'];
 
-  function DrawingCtrl($scope, Drawing, Sockets) {
+  function DrawingCtrl($scope, Drawing) {
     $scope.drawingCanvas = null;
-    $scope.socket = null;
-    $scope.x = null;
-    $scope.y = null;
     
     //The $destroy event is called when we leave this view
     $scope.$on('destroy', function() {
@@ -43,17 +40,7 @@
     };
 
     $scope.initializeIO = function() {
-      console.log('Initializing Sockets IO');
-      var socket = io();
-      $scope.socket = socket;
-
-      Sockets.on('init', function (data) {
-       console.log('initialized!!!', data);
-      });
-
-      Sockets.on('coordinates', function(data) {
-        Drawing.updateCanvas(data.canvasData);
-      });
+      Drawing.initializeIO();
     };
 
     /**
@@ -61,26 +48,12 @@
      * This function adds a new Fabric Canvas to the DOM
     */
     $scope.addCanvas = function() {
-      var canvas = Drawing.makeCanvas();
-      $('.canvas-container').append(canvas);
+      $scope.drawingCanvas = Drawing.makeCanvas();
+    };
 
-      var canvasFabric = new fabric.Canvas('drawingCanvas', {
-        isDrawingMode: true
-      });
-
-      canvasFabric.setHeight(400);
-      canvasFabric.setWidth(650);
-
-      //Give roomcontroller a reference to the canvas
-      $scope.drawingCanvas = canvasFabric;
-
-      canvasFabric.on('mouse:move', function(e) {
-        var activeObject = e.target;
-        var xCoord = e.e.clientX;
-        var yCoord = e.e.clientY;
-        var data = $scope.drawingCanvas.toDataURL();
-        Sockets.emit('coords', {x: xCoord, y: yCoord, canvasData: data});
-      });
+    $scope.toggleDrawingMode = function() {
+      $scope.drawingCanvas.isDrawingMode = !$scope.drawingCanvas.isDrawingMode;
+     
     };
     $scope.init();
   }
