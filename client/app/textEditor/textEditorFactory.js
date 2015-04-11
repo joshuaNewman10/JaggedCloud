@@ -20,6 +20,7 @@
     var instance = {
       initializeDataListener: initializeDataListener,
       getEditors: getEditors,
+      setEditorText: setEditorText,
       addTextEditor: addTextEditor,
       setActiveEditor: setActiveEditor,
       removeTextEditor: removeTextEditor,
@@ -40,7 +41,7 @@
         _okToSend = false;
         var editorIdx = indexOfEditorWithId(peer.data.editorId);
         if(editorIdx !== -1)
-          _editors[editorIdx].editor.setValue(peer.data.data,1);
+          _editors[editorIdx].editor.getSession().setValue(peer.data.data,1);
         _okToSend = true;
       });
     };
@@ -155,6 +156,11 @@
       });
 
       _editors = [];
+    };
+
+    function setEditorText(text, editorId){
+      var editorIdx = indexOfEditorWithId(editorId);
+      _editors[editorIdx].editor.getSession().setValue(text,1);
     };
 
     ///////////////////////// Helper Functions /////////////////////////
