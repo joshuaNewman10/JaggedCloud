@@ -26,8 +26,8 @@
      * This function will initialize a single editor and initialize the data listener on icecomm
      */
     $scope.init = function(){
-      TextEditor.addTextEditor();
-      TextEditor.initializeDataListener();
+      // TextEditor.addTextEditor();
+      // TextEditor.initializeDataListener();
     };
 
 

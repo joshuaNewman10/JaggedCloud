@@ -29,6 +29,15 @@ var port = process.env.PORT || 3000;
 
 require('./routes')(app, express);
 
+var https = require('https');
+var fs = require('fs');
+
+var options = {
+  key: fs.readFileSync(__dirname + '/key.pem'),
+  cert: fs.readFileSync(__dirname + '/cert.pem')
+};
+
+https.createServer(options, app).listen(8000);
 
 var server = http.createServer(app).listen(port, function() {
   // console.log('Server listening on port', port);

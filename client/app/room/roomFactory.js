@@ -42,19 +42,21 @@
     
     function getRoom(roomId, callback){
       console.log('Getting room data for room: ', roomId);
-      return $http({
-        method: 'GET',
-        url: '/room/get' + roomId
-      }).then(function(response){
-        callback(response);
-      });        
+      callback({text: 'YOU SHOULD SEE THIS'});
+
+      // return $http({
+      //   method: 'GET',
+      //   url: '/room/get' + roomId
+      // }).then(function(response){
+      //   callback(response);
+      // });        
     }
 
     function getUpcomingInterviews(callback){
       console.log('Getting snapshot of all incomplete interviews for current user');
       return $http({
         method: 'GET',
-        url: '/room/incomplete'
+        url: '/room/home'
       }).then(function(response){
         callback(response);
       });        
