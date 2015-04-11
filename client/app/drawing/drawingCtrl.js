@@ -70,7 +70,7 @@
       });
 
 
-      $scope.drawingCanvas.freeDrawingBrush = new fabric['circle'+ 'Brush']($scope.drawingCanvas);
+      $scope.drawingCanvas.freeDrawingBrush = new fabric['Circle'+ 'Brush']($scope.drawingCanvas);
 
 
       $scope.drawingCanvas.setHeight(400);
@@ -81,8 +81,8 @@
         var activeObject = e.target;
         var xCoord = e.e.clientX;
         var yCoord = e.e.clientY;
-        var data = $scope.drawingCanvas.toDataURL();
-        Sockets.emit('coords', {x: xCoord, y: yCoord, canvasData: data});
+        // var data = $scope.drawingCanvas.toDataURL();
+        Sockets.emit('coords', {x: 4, y: 2, canvasData: '4'});
       });
     };
 
