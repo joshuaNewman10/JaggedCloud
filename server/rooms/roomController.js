@@ -17,7 +17,7 @@ module.exports.create = function(req, res) {
     if (err) { handleError(err); }
     else if (room) {
       console.log('room successfully created!');
-      
+
       User.findOneAndUpdate({github_id: githubId}, {$push: {rooms: [room._id]}}, {upsert: true}, function(err, user){
         if (err) { handleError(err); }
         else if (user) {
@@ -84,7 +84,7 @@ module.exports.fetchOne = function(req, res) {
 };
 
 
-// find user by id and retrieve rooms
+// find user by id and retrieve rooms -- note: error handling is jank; pushes null to array if err
 module.exports.fetchAll = function(req, res) {
   var githubId = req.user;
   var roomsArray = [];
@@ -99,7 +99,7 @@ module.exports.fetchAll = function(req, res) {
         Room.findById(rooms[i], function(err, room){
           if (err) { 
             handleError(err); 
-            res.send(404, 'no room data');
+            roomsArray.push(null);
           }
           else {
             var roomData = {
