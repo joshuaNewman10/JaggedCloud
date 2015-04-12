@@ -1,36 +1,15 @@
-// var express = require('express');
-// var http = require('http');
-// var app = express();
-// var db = require('./db/config.js');
-// var io = require('socket.io')(http);
-
-// console.log('Server.js: Environmental variables:', process.env);
-
-// io.on('connection', function(socket){
-//   console.log('a user connected');
-// });
-
-
-// var port = process.env.port || 3000;
-// require('./routes')(app, express);
-
-
-// app.listen(port, function() {
-//   console.log('listening on ', port);
-// });
-
+// require dependencies
 var express = require('express');
 var http = require('http');
 var https = require('https');
 var app = express();
 var db = require('./db/config.js');
 var fs = require('fs');
-
-// console.log('Server.js: Environmental variables:', process.env);
 var port = process.env.PORT || 3000;
 
 // var httpsPort = 8000;
 
+var app = express();
 require('./routes')(app, express);
 
 // var options = {
