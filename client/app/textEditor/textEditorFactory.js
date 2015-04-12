@@ -23,6 +23,7 @@
       setEditorText: setEditorText,
       addTextEditor: addTextEditor,
       setActiveEditor: setActiveEditor,
+      resizeAllEditors: resizeAllEditors,
       removeTextEditor: removeTextEditor,
       removeAllEditors: removeAllEditors
     };
@@ -145,7 +146,7 @@
     };
 
     /**
-     * Function: TextEditor.uninit()
+     * Function: TextEditor.removeAllEditors()
      * This function will be called when we leave a room.
      * It will destroy all editors currently in use. 
      */
@@ -158,11 +159,31 @@
       _editors = [];
     };
 
+    /**
+     * Function: TextEditor.setEditorText(text, editorId)
+     * This function will be called when we leave a room.
+     * It will destroy all editors currently in use.
+     *
+     * @param text: The text to place in the editor
+     * @param editorId: The ID of the editor to change 
+     */
     function setEditorText(text, editorId){
       var editorIdx = indexOfEditorWithId(editorId);
       _editors[editorIdx].editor.getSession().setValue(text,1);
     };
 
+    /**
+     * Function: TextEditor.resizeAllEditors()
+     * This function will rerender all the editors. 
+     * This helps the use experience when changing visibility
+     */
+    function resizeAllEditors(){
+      // Force a rerender of editors
+      _editors.forEach(function(editor){
+        editor.editor.resize();
+        editor.editor.renderer.updateFull()
+      });
+    };
     ///////////////////////// Helper Functions /////////////////////////
 
     /**  
