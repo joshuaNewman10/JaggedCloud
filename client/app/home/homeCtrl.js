@@ -10,9 +10,29 @@
     .module('hackbox')
     .controller('homeCtrl', HomeCtrl);
 
-  HomeCtrl.$inject = ['$scope' ,'$modal', '$log', 'Auth'];
+  HomeCtrl.$inject = ['$scope' ,'$modal', '$state','$log', 'Auth', 'Room'];
 
-  function HomeCtrl($scope, $modal, $log, Auth){
+  function HomeCtrl($scope, $modal, $state, $log, Auth, Room){
+
+    $scope.incompleteInterviews = [];
+
+    $scope.init = function(){
+      Room.getUpcomingInterviews(function(response){
+        
+        // Populate incompleteInterviews with snapshot
+        response.data.forEach(function(interview){
+          var interview = {
+            company: 'Hack Reactor',
+            start_time: interview.start_time,
+            created_by: interview.created_by,
+            roomId: interview.id
+          };
+
+          $scope.incompleteInterviews.push(interview);
+        });
+      });
+    };
+
     /**
      * Function: HomeCtrl.logout()
      * This function will log the user out.
@@ -22,6 +42,12 @@
       console.log('Logging out!');
     };
 
+    $scope.joinRoom = function(interview){
+      console.log('Joining: ' + interview.roomId);
+      $state.go('room', {roomId: interview.roomId})
+    } 
+
+    $scope.init();
 
     // Upon loading home, if the user is authenticated
     // Get his list of interviews upcoming. 

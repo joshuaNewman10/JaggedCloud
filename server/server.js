@@ -21,17 +21,28 @@
 
 var express = require('express');
 var http = require('http');
+var https = require('https');
 var app = express();
 var db = require('./db/config.js');
+var fs = require('fs');
 
 // console.log('Server.js: Environmental variables:', process.env);
 var port = process.env.PORT || 3000;
+var httpsPort = 8000;
 
 require('./routes')(app, express);
 
+var options = {
+  key: fs.readFileSync(__dirname + '/ssl/key.pem'),
+  cert: fs.readFileSync(__dirname + '/ssl/cert.pem')
+};
+
+https.createServer(options, app).listen(httpsPort, function(){
+    console.log('Https server listening on port', httpsPort);
+});
 
 var server = http.createServer(app).listen(port, function() {
-  // console.log('Server listening on port', port);
+  console.log('Server listening on port', port);
 });
 
 //Sockets Setup

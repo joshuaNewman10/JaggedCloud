@@ -11,9 +11,9 @@
     .module('hackbox')
     .controller('roomCtrl', RoomCtrl);
 
-  RoomCtrl.$inject = ['$scope', '$http', '$stateParams', 'Room'];
+  RoomCtrl.$inject = ['$scope', '$http', '$stateParams', 'TextEditor', 'Room'];
 
-  function RoomCtrl($scope, $http, $stateParams, Room){
+  function RoomCtrl($scope, $http, $stateParams, TextEditor, Room){
     $scope.showCanvas = false;
     $scope.roomID = $stateParams.roomId;
 
@@ -28,8 +28,13 @@
      */
     $scope.init = function(){
       console.log('Initializing room controller');
-      console.log('About to call create room');
-      Room.getRoom($scope.roomID);
+      Room.getRoom($scope.roomID, function(response){
+        TextEditor.addTextEditor();
+        TextEditor.initializeDataListener();
+
+        if(response.text)
+          TextEditor.setEditorText(response.text[0], 0);
+      });
     };
 
     /**

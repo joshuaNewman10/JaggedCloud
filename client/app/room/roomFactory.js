@@ -11,7 +11,8 @@
     var instance = {
       createRoom: createRoom,
       getRoom: getRoom,
-      saveRoom: saveRoom
+      saveRoom: saveRoom,
+      getUpcomingInterviews: getUpcomingInterviews
     };
 
     return instance;
@@ -39,16 +40,25 @@
       });
     }
     
-    function getRoom(roomId){
+    function getRoom(roomId, callback){
       console.log('Getting room data for room: ', roomId);
+
       return $http({
         method: 'GET',
         url: '/room/get' + roomId
       }).then(function(response){
-        console.log('Response from getting room!', response);
-        return response;        
-      });
+        callback(response);
+      });        
     }
 
+    function getUpcomingInterviews(callback){
+      console.log('Getting snapshot of all incomplete interviews for current user');
+      return $http({
+        method: 'GET',
+        url: '/room/home'
+      }).then(function(response){
+        callback(response);
+      });        
+    }
   }
 })();
