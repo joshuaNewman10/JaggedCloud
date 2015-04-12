@@ -86,6 +86,9 @@
      */
     $scope.toggleCanvas = function(){
       $scope.showCanvas = !$scope.showCanvas;
+      if(!$scope.showCanvas){
+        TextEditor.resizeAllEditors();
+      }
     };
 
     // Call the initialize function
