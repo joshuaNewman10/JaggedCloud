@@ -36,7 +36,7 @@ module.exports.save = function(req, res) {
   var canvas = req.body.canvas;
   var text = req.body.textEditor;
 
-  Room.findOneAndUpdate({'_id': roomId}, {canvas: canvas, text: text, notes: notes}, {upsert: true},
+  Room.findOneAndUpdate({_id: roomId}, {canvas: canvas, text: text, notes: notes}, {upsert: true},
     function(err, room){
       if (err) { handleError(err); }
       else if (room) {
@@ -73,10 +73,11 @@ module.exports.fetchOne = function(req, res) {
     }
     // if current user is room creator send back all room data, else send candidateRoom
     else if (room && isOpen) {
-      if(githubId === room.creted_by) {
+      if(githubId === room.created_by) {
         res.send(200, room);
       }
       else {
+        console.log(room);
         res.send(200, room); // change to candidateRoom once obj is complete
       }
     }
@@ -93,7 +94,7 @@ module.exports.fetchAll = function(req, res) {
       handleError(err); 
       res.send(404, 'cannot find user by ID');
     }
-    if(user) {
+    else if(user) {
       var rooms = user.rooms;
       for (var i = 0; i < rooms.length; i++) {
         Room.findById(rooms[i], function(err, room){
@@ -106,7 +107,9 @@ module.exports.fetchAll = function(req, res) {
               created_by: room.created_by,
               start_time: room.start_time,
               is_open: room.is_open,
-              id: room._id
+              id: room._id,
+              text: room.text[0],
+              canvas: room.canvas
             }
             roomsArray.push(roomData);
           }
@@ -118,6 +121,9 @@ module.exports.fetchAll = function(req, res) {
       }
     } else {
       res.send(304);
+    }
+    else {
+      res.send(404, 'User not found!');
     }
   });
 }
