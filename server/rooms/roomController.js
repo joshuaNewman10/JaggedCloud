@@ -11,9 +11,10 @@ module.exports.create = function(req, res) {
   var startTime = req.body.time;
   var githubId = req.user;
   var email = req.body.email;
+  var name = req.body.name;
   var isOpen = Date.now() >= Date.parse(startTime);
 
-  Room.create({ created_by: githubId, start_time: startTime, is_open: isOpen }, function(err, room){
+  Room.create({ created_by: githubId, start_time: startTime, is_open: isOpen, candidateName: name, candidateEmail: email }, function(err, room){
     if (err) { handleError(err); }
     else if (room) {
       console.log('room successfully created!');
@@ -73,7 +74,7 @@ module.exports.fetchOne = function(req, res) {
     }
     // if current user is room creator send back all room data, else send candidateRoom
     else if (room && isOpen) {
-      if(githubId === room.creted_by) {
+      if(githubId === room.created_by) {
         res.send(200, room);
       }
       else {
@@ -106,6 +107,7 @@ module.exports.fetchAll = function(req, res) {
               created_by: room.created_by,
               start_time: room.start_time,
               is_open: room.is_open,
+              candidateName: room.candidateName,
               id: room._id
             }
             roomsArray.push(roomData);

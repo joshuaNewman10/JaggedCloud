@@ -24,7 +24,7 @@
           var interview = {
             company: 'Hack Reactor',
             start_time: interview.start_time,
-            created_by: interview.created_by,
+            candidate: interview.candidateName,
             roomId: interview.id
           };
 
