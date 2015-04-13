@@ -59,6 +59,7 @@
     $scope.saveData = function() {
       console.log('Saving canvas and text editor data...');
       $scope.saving = true;
+
       var drawingData = JSON.stringify(Drawing.getCanvas().toJSON());
 
       var textEditorData = TextEditor.getEditors()[0].editor.getSession().getValue();
