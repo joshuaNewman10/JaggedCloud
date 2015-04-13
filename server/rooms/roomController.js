@@ -73,7 +73,7 @@ module.exports.fetchOne = function(req, res) {
     }
     // if current user is room creator send back all room data, else send candidateRoom
     else if (room && isOpen) {
-      if(githubId === room.creted_by) {
+      if(githubId === room.created_by) {
         res.send(200, room);
       }
       else {
