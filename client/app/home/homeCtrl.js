@@ -62,8 +62,9 @@
         });
         // Reset create interview object
         $scope.newInterview = {};
+        });
       });
-    };
+    }
 
     /**
      * Function: HomeCtrl.logout()
