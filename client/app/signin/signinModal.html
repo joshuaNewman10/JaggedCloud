@@ -1,20 +1,3 @@
-<div>
-  <div>
-    <h2>Sign in</h2>
-  </div>
-    <form class="form-signin">
-        <div class="form-group">
-          <label for="username">Username</label>
-          <input class="form-control" type="text" name="username"required>
-        </div>
-
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input class="form-control" type="password" name="password" required>
-        </div>
-
-        <div id="sign-in-error" ng-show="inputError">Incorrect username/password</div>
-        <button class="btn btn-default" type="submit" value="Submit"><a href='/auth/github'>Sign in with Github</a></button>
-        <button class="btn btn-default" type="submit" value="Cancel" ng-click='cancel()'>Cancel</button>
-    </form>
+<div class="signin">
+  <button class="btn btn-default github-signin-btn" type="submit" value="Submit"><a href='/auth/github' class="github-signin-link"><i class="fa fa-github"></i> Sign in with Github</a></button>
 </div>
