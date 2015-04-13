@@ -13,7 +13,7 @@
 
 [![Build Status](https://secure.travis-ci.org/JaggedCloud/JaggedCloud.png)](http://travis-ci.org/JaggedCloud/JaggedCloud)
 
-
+[![Stories in Ready](https://badge.waffle.io/jaggedcloud/jaggedcloud.svg?label=In%20Progress&title=In%20Progress)](http://waffle.io/jaggedcloud/jaggedcloud)
 ## Table of Contents
 
 1. [Usage](#Usage)
