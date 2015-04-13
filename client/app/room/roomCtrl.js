@@ -11,9 +11,9 @@
     .module('hackbox')
     .controller('roomCtrl', RoomCtrl);
 
-  RoomCtrl.$inject = ['$scope', '$http', '$stateParams', 'TextEditor', 'Room'];
+  RoomCtrl.$inject = ['$scope', '$http', '$stateParams', 'TextEditor', 'Room', 'Drawing'];
 
-  function RoomCtrl($scope, $http, $stateParams, TextEditor, Room){
+  function RoomCtrl($scope, $http, $stateParams, TextEditor, Room, Drawing){
     $scope.showCanvas = false;
     $scope.roomID = $stateParams.roomId;
 
@@ -32,8 +32,11 @@
         TextEditor.addTextEditor();
         TextEditor.initializeDataListener();
 
-        if(response.text)
-          TextEditor.setEditorText(response.text[0], 0);
+        if(response.data.text){
+          TextEditor.setEditorText(response.data.text[0], 0);
+        }
+
+        Drawing.updateCanvas(response.data.canvas);
       });
     };
 
@@ -54,21 +57,17 @@
      */
     $scope.saveData = function() {
       console.log('Saving canvas and text editor data...');
-      var drawingData = {
-        username: 'testname123',
-        data: $scope.drawingCanvas.toDataURL()
-      };
+      var drawingData = JSON.stringify(Drawing.getCanvas().toJSON());
+
+      var textEditorData = TextEditor.getEditors()[0].editor.getSession().getValue();
 
       var request = {
         method: 'POST',
         url: '/room/save',
-        headers: {
-         'Content-Type': 'json'
-        },
         data: { 
-          roomID: $scope.roomID,
-          canvas: JSON.stringify(drawingData),
-          textEditor: JSON.stringify(textEditorData)
+          roomId: $scope.roomID,
+          canvas: drawingData,
+          textEditor: textEditorData
         }
       };
 
