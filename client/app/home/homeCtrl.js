@@ -23,8 +23,9 @@
         response.data.forEach(function(interview){
           var interview = {
             company: 'Hack Reactor',
-            start_time: interview.start_time,
             candidate: interview.candidateName,
+            start_time: new Date(Date.parse(interview.start_time)).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', weekday: 'short', year: 'numeric', month: 'long', day: 'numeric', timeZoneName: 'long'}),
+            created_by: interview.created_by,
             roomId: interview.id
           };
 
