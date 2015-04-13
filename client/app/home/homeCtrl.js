@@ -13,24 +13,55 @@
   HomeCtrl.$inject = ['$scope' ,'$modal', '$state','$log', 'Auth', 'Room'];
 
   function HomeCtrl($scope, $modal, $state, $log, Auth, Room){
-
+    $scope.showCreateInterview = false;
     $scope.incompleteInterviews = [];
+    $scope.showLoadingCreateInterview = false;
+    $scope.newInterview = {};
 
     $scope.init = function(){
-      Room.getUpcomingInterviews(function(response){
-        
-        // Populate incompleteInterviews with snapshot
-        response.data.forEach(function(interview){
-          var interview = {
-            company: 'Hack Reactor',
-            candidate: interview.candidateName,
-            start_time: new Date(Date.parse(interview.start_time)).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', weekday: 'short', year: 'numeric', month: 'long', day: 'numeric', timeZoneName: 'long'}),
-            created_by: interview.created_by,
-            roomId: interview.id
-          };
+      Auth.isAuthenticated().then(function(response){
+        if(response.data){
+          console.log("User is logged in, getting all interviews.")
+          $scope.showCreateInterview = true;
+          Room.getUpcomingInterviews(function(response){
+            
+            // Populate incompleteInterviews with snapshot
+            response.data.forEach(function(interview){
+              var interview = {
+                company: 'Hack Reactor',
+                start_time: interview.start_time,
+                created_by: interview.created_by,
+                roomId: interview.id
+              };
+              $scope.incompleteInterviews.push(interview);
+            });
+          });
+        }
+        else{
+          console.log('User is not logged in');
+        }
+      });
+    };
 
-          $scope.incompleteInterviews.push(interview);
+    $scope.createInterview = function() {
+      $scope.showLoadingCreateInterview = true;
+      Room.createRoom($scope.newInterview).then(function(){
+        Room.getUpcomingInterviews(function(response){
+          $scope.incompleteInterviews = [];
+          // Populate incompleteInterviews with snapshot
+          response.data.forEach(function(interview){
+            var interview = {
+              company: 'Hack Reactor',
+              start_time: interview.start_time,
+              created_by: interview.created_by,
+              roomId: interview.id
+            };
+            $scope.incompleteInterviews.push(interview);
+            $scope.showLoadingCreateInterview = false;
+          });
         });
+        // Reset create interview object
+        $scope.newInterview = {};
       });
     };
 

@@ -24,9 +24,6 @@
         method: 'POST',
         url: '/room/create',
         data: room
-      }).then(function(response){
-        console.log('Response from creating room!');
-        return response;        
       });
     }
 

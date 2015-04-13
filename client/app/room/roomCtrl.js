@@ -15,8 +15,8 @@
 
   function RoomCtrl($scope, $http, $stateParams, TextEditor, Room, Drawing){
     $scope.showCanvas = false;
-    $scope.roomID = $stateParams.roomId;
     $scope.saving = false;
+    $scope.roomID = $stateParams.roomId;
 
     // The $destroy event is called when we leave this view
     $scope.$on('$destroy', function(){
@@ -30,14 +30,19 @@
     $scope.init = function(){
       console.log('Initializing room controller');
       Room.getRoom($scope.roomID, function(response){
+        // Add an editor to the room
         TextEditor.addTextEditor();
         TextEditor.initializeDataListener();
 
+        // If there is text saved, set the editors text to that. 
         if(response.data.text){
           TextEditor.setEditorText(response.data.text[0], 0);
         }
 
-        Drawing.updateCanvas(response.data.canvas);
+        // Update the canvas with the saved data
+        if(response.data.canvas){
+          Drawing.updateCanvas(response.data.canvas);
+        }
       });
     };
 
@@ -74,8 +79,7 @@
         }
       };
 
-      $http(request)
-      .success(function(response){
+      $http(request).success(function(response){
         console.log('http response', response);
       })
       .error(function(error){

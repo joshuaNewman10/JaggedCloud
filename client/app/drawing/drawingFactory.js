@@ -68,9 +68,16 @@
       _fabricCanvas.on('mouse:up', clearData);       
     }
 
+    /**
+     * Function: Drawing.getCanvas()
+     * This function is a getter for the canvas. 
+     *
+     * @return: The instance of the canvas
+     */
     function getCanvas(){
       return _fabricCanvas;
     }
+
     /**
      * Function: Drawing.removeCanvas(containerClassName)
      * This Function finds a canvas on screen with the specified id
