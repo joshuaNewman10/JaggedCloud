@@ -59,7 +59,6 @@
             $scope.incompleteInterviews.push(interview);
             $scope.showLoadingCreateInterview = false;
           });
-        });
         // Reset create interview object
         $scope.newInterview = {};
         });
