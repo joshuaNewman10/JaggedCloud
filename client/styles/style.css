@@ -247,3 +247,10 @@ a:visited:hover {
 .activeEditor { 
     display: block;
 }
+
+
+.loading_spinner{
+  margin-left: 10px;
+  width:25px;
+  height:25px;
+}
