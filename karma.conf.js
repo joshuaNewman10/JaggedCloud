@@ -20,7 +20,8 @@ module.exports = function(config){
       'node_modules/angular-mocks/angular-mocks.js',
  
       //These are the spec unit test files where our tests lives
-      'Spec/unit/home.js'
+      // 'Spec/unit/home.js',
+      'Spec/unit/room.js'
     ],
 
     // files to exclude
@@ -34,7 +35,7 @@ module.exports = function(config){
     frameworks: ['jasmine', 'chai'],
  
     //The browsers we want to test against, we can add others such as ie
-    browsers : ['Chrome', 'PhantomJS', 'Firefox'],
+    browsers : ['Chrome', 'PhantomJS'], //add Firefox back
  
     //Reports the result of our tests, progress is the default
     reporters: ['progress'],
