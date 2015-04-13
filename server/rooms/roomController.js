@@ -109,6 +109,7 @@ module.exports.fetchAll = function(req, res) {
               start_time: room.start_time,
               is_open: room.is_open,
               candidateName: room.candidateName,
+              candidateEmail: room.candidateEmail,
               id: room._id,
               text: room.text[0],
               canvas: room.canvas

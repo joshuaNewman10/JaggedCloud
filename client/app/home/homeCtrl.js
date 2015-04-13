@@ -19,6 +19,7 @@
     $scope.newInterview = {};
 
     $scope.init = function(){
+<<<<<<< HEAD
       Auth.isAuthenticated().then(function(response){
         if(response.data){
           console.log("User is logged in, getting all interviews.")
