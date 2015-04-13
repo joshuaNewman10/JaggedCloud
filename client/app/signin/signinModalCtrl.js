@@ -14,9 +14,14 @@
   SigninModalCtrl.$inject = ['$scope','$modalInstance', 'Auth'];
 
   function SigninModalCtrl($scope, $modalInstance, Auth){
-    
+    $scope.loading = false;
+
     $scope.submit = function () {
       Auth.signIn();
+    };
+
+    $scope.showLoading = function(){
+      $scope.loading = true;
     };
 
     $scope.cancel = function () {
