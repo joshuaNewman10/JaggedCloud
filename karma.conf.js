@@ -12,15 +12,16 @@ module.exports = function(config){
       'client/lib/bower_components/angular/angular.min.js',
       'client/lib/bower_components/angular-route/angular-route.min.js',
       'client/lib/bower_components/angular-ui-router/release/angular-ui-router.min.js',
+      'node_modules/angular-mocks/angular-mocks.js',
+      'client/lib/bower_components/socket.io/test/socket.io.js',
 
       'https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.1.js',
       //These are the actual files in our codebase we want to test
       'client/app/app.js',
       'client/app/**/*.js',
-      'node_modules/angular-mocks/angular-mocks.js',
- 
+
       //These are the spec unit test files where our tests lives
-      // 'Spec/unit/home.js',
+      'Spec/unit/home.js',
       'Spec/unit/room.js'
     ],
 

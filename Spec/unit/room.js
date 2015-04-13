@@ -1,6 +1,6 @@
 var expect = chai.expect;
 /*
-Unit test suite for the page the interview view page (main page of app)
+Unit test suite for the page the interview room view (main page of app)
 */
 
 //////////////////// Controllers ////////////////////
