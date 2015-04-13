@@ -17,6 +17,7 @@
     $scope.showCanvas = false;
     $scope.saving = false;
     $scope.roomID = $stateParams.roomId;
+    $scope.saving = false;
 
     // The $destroy event is called when we leave this view
     $scope.$on('$destroy', function(){
@@ -34,15 +35,22 @@
         TextEditor.addTextEditor();
         TextEditor.initializeDataListener();
 
+<<<<<<< HEAD
         // If there is text saved, set the editors text to that. 
+=======
+>>>>>>> b0dc80edefa0eed0ebb690968f3a854bd019d8ce
         if(response.data.text){
           TextEditor.setEditorText(response.data.text[0], 0);
         }
 
+<<<<<<< HEAD
         // Update the canvas with the saved data
         if(response.data.canvas){
           Drawing.updateCanvas(response.data.canvas);
         }
+=======
+        Drawing.updateCanvas(response.data.canvas);
+>>>>>>> b0dc80edefa0eed0ebb690968f3a854bd019d8ce
       });
     };
 
@@ -64,7 +72,7 @@
     $scope.saveData = function() {
       console.log('Saving canvas and text editor data...');
       $scope.saving = true;
-      
+
       var drawingData = JSON.stringify(Drawing.getCanvas().toJSON());
 
       var textEditorData = TextEditor.getEditors()[0].editor.getSession().getValue();

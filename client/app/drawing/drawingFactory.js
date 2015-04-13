@@ -68,6 +68,9 @@
       _fabricCanvas.on('mouse:up', clearData);       
     }
 
+    function getCanvas(){
+      return _fabricCanvas;
+    }
     /**
      * Function: Drawing.getCanvas()
      * This function is a getter for the canvas. 
