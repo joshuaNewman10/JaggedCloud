@@ -6,11 +6,6 @@ var Schema = mongoose.Schema;
 // SCHEMA: each schema maps to a 'collection' in MongoDB (analogous to SQL table) and defines the shape of the 'documents' within that colletion (documents are analogous to a row in a SQL table)
 var userSchema = new Schema({
   
-  name: {
-    first: String,
-    last: String
-  },
-
   email: {
     type: String,
     unique: true
@@ -21,6 +16,7 @@ var userSchema = new Schema({
     default: Date.now
   },
 
+  name: String,
   github_id: String,
   access_token: String,
   refresh_token: String,
