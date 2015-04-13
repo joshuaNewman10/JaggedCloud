@@ -35,22 +35,15 @@
         TextEditor.addTextEditor();
         TextEditor.initializeDataListener();
 
-<<<<<<< HEAD
         // If there is text saved, set the editors text to that. 
-=======
->>>>>>> b0dc80edefa0eed0ebb690968f3a854bd019d8ce
         if(response.data.text){
           TextEditor.setEditorText(response.data.text[0], 0);
         }
 
-<<<<<<< HEAD
         // Update the canvas with the saved data
         if(response.data.canvas){
           Drawing.updateCanvas(response.data.canvas);
         }
-=======
-        Drawing.updateCanvas(response.data.canvas);
->>>>>>> b0dc80edefa0eed0ebb690968f3a854bd019d8ce
       });
     };
 
