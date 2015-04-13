@@ -125,9 +125,6 @@ module.exports.fetchAll = function(req, res) {
     else {
       res.send(304, 'User not found!');
     }
-    else {
-      res.send(404, 'User not found!');
-    }
   });
 }
 
