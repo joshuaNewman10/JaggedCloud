@@ -128,3 +128,5 @@ module.exports.fetchAll = function(req, res) {
   });
 }
 
+module.exports.remove = function(req, res) {}
+
