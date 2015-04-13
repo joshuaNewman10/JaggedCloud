@@ -22,6 +22,7 @@
       makeCanvas: makeCanvas,
       initializeIO: initializeIO,
       removeCanvas: removeCanvas,
+      getCanvas: getCanvas,
       updateCanvas: updateCanvas
     };
 
@@ -67,6 +68,19 @@
       _fabricCanvas.on('mouse:up', clearData);       
     }
 
+    function getCanvas(){
+      return _fabricCanvas;
+    }
+    /**
+     * Function: Drawing.getCanvas()
+     * This function is a getter for the canvas. 
+     *
+     * @return: The instance of the canvas
+     */
+    function getCanvas(){
+      return _fabricCanvas;
+    }
+
     /**
      * Function: Drawing.removeCanvas(containerClassName)
      * This Function finds a canvas on screen with the specified id
@@ -89,8 +103,7 @@
     //It then updates the canvas with the data
     //This happens on every mousemove (really mouseup)
     function updateCanvas(data) {
-      var obj = JSON.parse(data);
-      _fabricCanvas.loadFromJSON(obj, _fabricCanvas.renderAll.bind(_fabricCanvas));
+      _fabricCanvas.loadFromJSON(data, _fabricCanvas.renderAll.bind(_fabricCanvas));
     }
 
     function sendData(options) {

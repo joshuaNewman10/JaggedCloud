@@ -11,11 +11,13 @@
     .module('hackbox')
     .controller('roomCtrl', RoomCtrl);
 
-  RoomCtrl.$inject = ['$scope', '$http', '$stateParams', 'TextEditor', 'Room'];
+  RoomCtrl.$inject = ['$scope', '$http', '$stateParams', 'TextEditor', 'Room', 'Drawing'];
 
-  function RoomCtrl($scope, $http, $stateParams, TextEditor, Room){
+  function RoomCtrl($scope, $http, $stateParams, TextEditor, Room, Drawing){
     $scope.showCanvas = false;
+    $scope.saving = false;
     $scope.roomID = $stateParams.roomId;
+    $scope.saving = false;
 
     // The $destroy event is called when we leave this view
     $scope.$on('$destroy', function(){
@@ -29,11 +31,19 @@
     $scope.init = function(){
       console.log('Initializing room controller');
       Room.getRoom($scope.roomID, function(response){
+        // Add an editor to the room
         TextEditor.addTextEditor();
         TextEditor.initializeDataListener();
 
-        if(response.text)
-          TextEditor.setEditorText(response.text[0], 0);
+        // If there is text saved, set the editors text to that. 
+        if(response.data.text){
+          TextEditor.setEditorText(response.data.text[0], 0);
+        }
+
+        // Update the canvas with the saved data
+        if(response.data.canvas){
+          Drawing.updateCanvas(response.data.canvas);
+        }
       });
     };
 
@@ -54,30 +64,30 @@
      */
     $scope.saveData = function() {
       console.log('Saving canvas and text editor data...');
-      var drawingData = {
-        username: 'testname123',
-        data: $scope.drawingCanvas.toDataURL()
-      };
+      $scope.saving = true;
+
+      var drawingData = JSON.stringify(Drawing.getCanvas().toJSON());
+
+      var textEditorData = TextEditor.getEditors()[0].editor.getSession().getValue();
 
       var request = {
         method: 'POST',
         url: '/room/save',
-        headers: {
-         'Content-Type': 'json'
-        },
         data: { 
-          roomID: $scope.roomID,
-          canvas: JSON.stringify(drawingData),
-          textEditor: JSON.stringify(textEditorData)
+          roomId: $scope.roomID,
+          canvas: drawingData,
+          textEditor: textEditorData
         }
       };
 
-      $http(request)
-      .success(function(response){
+      $http(request).success(function(response){
         console.log('http response', response);
       })
       .error(function(error){
         console.log('error', error);
+      })
+      .then(function(){
+        $scope.saving = false;
       });
     };
     /**
