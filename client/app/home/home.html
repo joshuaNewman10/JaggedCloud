@@ -13,8 +13,8 @@
          <h2>Upcoming Interviews</h2>
         </div>
         <div class='interviews-container'>
-          <div class='homeSearch'>
-            Search: <input ng-model="searchText">
+          <div class='homeSearch-container'>
+            <input class="homeSearch" ng-model="searchText" placeholder="Search">
           </div>
           <div class='interview' ng-repeat='interview in incompleteInterviews | orderBy: "start_time" | filter:searchText' ng-click='joinRoom(interview)'>
               <div class="close" ng-click="$event.stopPropagation()"><a ng-click='remove(interview.roomId)'><i class="fa fa-times"></i></a></div>

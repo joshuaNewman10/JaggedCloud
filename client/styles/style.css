@@ -267,6 +267,13 @@ a:visited:hover {
   width:25px;
   height:25px;
 }
-.homeSearch{
+
+.homeSearch-container{
   margin: 10px;
+  text-align: center;
+}
+
+.homeSearch {
+  font-size: 22px;
+  width: 50%;
 }
