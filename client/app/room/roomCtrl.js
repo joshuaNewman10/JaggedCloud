@@ -28,14 +28,22 @@
     $scope.init = function(){
       console.log('Initializing room controller');
       Room.getRoom($scope.roomID, function(response){
-        // Add an editor to the room
-        TextEditor.addTextEditor();
-        TextEditor.initializeDataListener();
 
         // If there is text saved, set the editors text to that. 
-        if(response.data.text){
-          TextEditor.setEditorText(response.data.text[0], 0);
+        if(response.data.text.length > 0){
+          response.data.text.forEach(function(savedText, i){
+            // Add an editor to the room
+            TextEditor.addTextEditor();
+            TextEditor.setEditorText(savedText, i);
+          });
+          TextEditor.setActiveEditor(0);
+        } 
+        else{
+          // Add an editor to the room
+          TextEditor.addTextEditor();
         }
+        // Initialize the listener for incoming text
+        TextEditor.initializeDataListener();
 
         // Update the canvas with the saved data
         if(response.data.canvas){
@@ -69,7 +77,10 @@
       $scope.saving = true;
 
       var drawingData = JSON.stringify(Drawing.getCanvas().toJSON());
-      var textEditorData = TextEditor.getEditors()[0].editor.getSession().getValue();
+      var textEditorData = [];
+      TextEditor.getEditors().forEach(function(editor){
+        textEditorData.push(editor.editor.getSession().getValue());
+      });
 
       var request = {
         method: 'POST',
