@@ -15,8 +15,9 @@
         resolve: {
           items: function () {
             return $scope.items;
-          }
-        }
+          },
+        },
+        scope: $scope
       });
     };
   }

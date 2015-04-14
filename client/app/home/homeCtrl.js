@@ -33,7 +33,7 @@
           $scope.showLogout = true;
 
           // Refresh all interviews and display
-          refreshInterviews();
+          $scope.refreshInterviews();
         }
         else{
           console.log('User is not logged in');
@@ -66,7 +66,7 @@
      * This function will refresh all interviews for a user and add them to 
      * a list. 
      */
-    function refreshInterviews(){
+     $scope.refreshInterviews = function(){
       Room.getUpcomingInterviews(function(response){
         $scope.incompleteInterviews = [];
         // Populate incompleteInterviews with snapshot

@@ -16,12 +16,21 @@
   function ScheduleModalCtrl($scope, $modalInstance, Room, $state){
     $scope.loading = false;
 
+    /**
+     * Function: HomeCtrl.createInterview()
+     * This function will create a new interview. It calls refresh to update the DOM
+     * with the list of all interviews for the user. 
+     */
     $scope.createInterview = function() {
       $scope.showLoadingCreateInterview = true;
-      Room.createRoom($scope.newInterview).then(function(){
+      Room.createRoom($scope.newInterview, function(){
         $scope.showLoadingCreateInterview = false;
+        $scope.newInterview.name = null;
+        $scope.newInterview.email = null;
+        $scope.newInterview.time = null;
+        $modalInstance.dismiss('cancel');
+        $scope.refreshInterviews();
       });
-      $modalInstance.dismiss('cancel');
     };
 
     $scope.showLoading = function(){
