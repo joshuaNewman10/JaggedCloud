@@ -48,10 +48,10 @@ module.exports.save = function(req, res) {
   );
 };
 
-
+// need to use req.PARAMS.id here because this is a get request
 // TODO: complete candidateRoom object that contains only the data the the candidate should see
 module.exports.fetchOne = function(req, res) {
-  var roomId = req.body.id;
+  var roomId = req.params.id;
   var githubId = req.user;
 
   Room.findById(roomId, function(err, room){
@@ -129,8 +129,10 @@ module.exports.fetchAll = function(req, res) {
   });
 }
 
+
+// this one is req.BODY.id because we are using a delete request (so not sending a body)
 module.exports.remove = function(req, res) {
-  var roomId = req.body.roomId;
+  var roomId = req.params.roomId;
   Room.findOneAndRemove({_id: roomId}, function(err, room) {
     if (err) { 
       handleError(err); 
