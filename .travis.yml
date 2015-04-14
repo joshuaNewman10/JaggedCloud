@@ -10,7 +10,7 @@ before_script:
 deploy:
   provider: heroku
   api_key:
-    secure: UR0JICmjtflCyXQ9NNCGf4C0PmtDv3j0LEEIE+pXKgo1KFFZcorcHxgMaDQpStrdF/abNIG32P/rzs1myCO9xBH5NiZ1lJhrGbE5te0c0iWxqiMFnSuyDR+UhVhNByJ2KXS/QKFsyRi6vLpfJqtS4q5UQlsMNspQIbDAZWjjnCA=
+    secure: Yocwkwm74gp1YMbE6AJ73/t/+t6G0Td9wR+zq9q5wtHl41iddF+S5y9D5JFJ8yXh/ICH4pUuIqI1RScOq2cBL4Sb/OVzIGbXdBLTgTP6OsTkD4JhcegDiiXRrngWJP9VTf4vLFlvH2bqPgAbqlArgpZC0rtjpFgMfvevZR4uhSw=
   app: hackbox
   on:
     repo: JaggedCloud/JaggedCloud
