@@ -130,13 +130,13 @@ module.exports.fetchAll = function(req, res) {
 }
 
 
-// this one is req.BODY.id because we are using a delete request (so not sending a body)
+// this one is req.BODY.id because we are using a delete request (so not sending a bodya)
 module.exports.remove = function(req, res) {
   var roomId = req.params.roomId;
   Room.findOneAndRemove({_id: roomId}, function(err, room) {
     if (err) { 
       handleError(err); 
-      res.send(404, 'no room data');
+      res.send(404, 'room not found');
     }
     else{
       res.send(200, 'room deleted');
