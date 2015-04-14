@@ -9,6 +9,7 @@ module.exports = function(config){
     // files to include, ordered by dependencies
     files : [
       //These are the library dependency files we need to run our tests
+      'https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.17/require.js',
       'client/lib/bower_components/fabric/dist/fabric.js',
       'client/lib/bower_components/angular/angular.min.js',
       'client/lib/bower_components/angular-route/angular-route.min.js',
@@ -23,8 +24,8 @@ module.exports = function(config){
       'client/app/**/*.js',
 
       //These are the spec unit test files where our tests lives
-      'Spec/unit/home.js',
-      'Spec/unit/room.js'
+      'Spec/unit/home.js'
+      // 'Spec/unit/room.js'
       // 'Spec/unit/drawing.js'
     ],
 
