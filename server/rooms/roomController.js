@@ -63,7 +63,7 @@ module.exports.fetchOne = function(req, res) {
     //   text: text
     // }
     // console.log(candidateRoom);
-    var isOpen = (Date.now() > Date.parse(room.start_time));
+    var isOpen = (Date.now() > Date.parse(room.start_time)) || githubId === room.created_by;
 
     if (err) { 
       handleError(err); 

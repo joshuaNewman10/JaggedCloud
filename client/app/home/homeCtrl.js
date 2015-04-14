@@ -33,27 +33,13 @@
           $scope.showLogout = true;
 
           // Refresh all interviews and display
-          refreshInterviews();
+          $scope.refreshInterviews();
         }
         else{
           console.log('User is not logged in');
         }
       });
     };
-
-    /**
-     * Function: HomeCtrl.createInterview()
-     * This function will create a new interview. It calls refresh to update the DOM
-     * with the list of all interviews for the user. 
-     */
-    $scope.createInterview = function() {
-      $scope.showLoadingCreateInterview = true;
-      Room.createRoom($scope.newInterview, function(){
-        refreshInterviews();
-        // Reset create interview object
-        $scope.newInterview = {};
-      });
-    }
 
     /**
      * Function: HomeCtrl.logout()
@@ -80,7 +66,7 @@
      * This function will refresh all interviews for a user and add them to 
      * a list. 
      */
-    function refreshInterviews(){
+     $scope.refreshInterviews = function(){
       Room.getUpcomingInterviews(function(response){
         $scope.incompleteInterviews = [];
         // Populate incompleteInterviews with snapshot
