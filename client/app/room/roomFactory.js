@@ -18,16 +18,19 @@
     return instance;
 
     ///// IMPLEMENTATION /////
-    function createRoom(room){
-      console.log('create room request!',room);
+    function createRoom(room, callback){
+      console.log('Creating room!',room);
       return $http({
         method: 'POST',
         url: '/room/create',
         data: room
+      }).then(function(response){
+        callback(response);
       });
     }
 
     function saveRoom(room){
+      console.log('Saving current room!',room);
       return $http({
         method: 'POST',
         url: '/room/save',

@@ -3,8 +3,8 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
         <ul class="nav nav-tabs navbar">
           <li class="divider-vertical title"><a href="#/">HackBox</a></li>
-          <li class="divider-vertical" ng-controller='signinCtrl'><a ng-click='openModal()' href="#/signin">Sign In</a></li>
-          <li class="divider-vertical"><a ng-click='logout()' href="/auth/logout">Logout</a></li>
+          <li class="divider-vertical" ng-controller='signinCtrl' ng-show='!showLogout'><a ng-click='openModal()' href="#/signin">Sign In</a></li>
+          <li class="divider-vertical" ng-show='showLogout'><a ng-click='logout()' href="/auth/logout">Logout</a></li>
           <li class="divider-vertical"><a ui-sref='room({roomId: "hackbox"})'>Go to Room</a></li>
         </ul>
         <div>

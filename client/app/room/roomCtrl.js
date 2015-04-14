@@ -67,7 +67,6 @@
       $scope.saving = true;
 
       var drawingData = JSON.stringify(Drawing.getCanvas().toJSON());
-
       var textEditorData = TextEditor.getEditors()[0].editor.getSession().getValue();
 
       var request = {
