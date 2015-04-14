@@ -23,6 +23,7 @@
         </div>
         <div class='interviews-container'>
           <div class='interview' ng-repeat='interview in incompleteInterviews' ng-click='joinRoom(interview)'>
+              <div class="close" ng-click="$event.stopPropagation()"><a href="/room/remove"><i class="fa fa-times"></i></a></div>
               <h2 class='company'>{{interview.company}}</h2>
               <div class='startTime'>@ {{interview.start_time}}</div>
               <div class='createdBy'>with {{interview.candidate}}</div>
