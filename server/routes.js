@@ -11,8 +11,8 @@ module.exports = function(app, express) {
 
   // http request logger for development 
   app.use(morgan('dev'));
-  app.use(bodyParser.json({limit: '50mb'}));
-  app.use(bodyParser.urlencoded({extended: true, limit: '50mb'}));
+  app.use(bodyParser.json({limit: '10mb'}));
+  app.use(bodyParser.urlencoded({extended: true, limit: '10mb'}));
 
   // serve fav icon and static files 
   app.use(favicon(__dirname + '/../client/lib/favicon.ico'));
