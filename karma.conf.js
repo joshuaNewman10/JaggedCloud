@@ -39,7 +39,7 @@ module.exports = function(config){
     frameworks: ['jasmine', 'chai'],
  
     //The browsers we want to test against, we can add others such as ie
-    browsers : ['Chrome', 'Firefox'], //add Firefox back
+    browsers : ['Chrome', 'PhantomJS'], //add Firefox back
  
     //Reports the result of our tests, progress is the default
     reporters: ['progress'],
