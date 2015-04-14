@@ -8,7 +8,7 @@ body {
 .navbar {
   border-bottom: 1px solid #9078AD;
   border-left: 1px solid #9078AD;
-  width: 30%;
+  width: 35%;
   min-height: 10px;
   margin: 5px 0 0 0;
   top: 0px;
@@ -92,6 +92,10 @@ a:visited:hover {
   margin: 0 auto 0 auto;
 }
 
+.schedule-container {
+  height: 300px;
+}
+
 .userinput {
   font-size: 16px;
   height: 30px;
@@ -99,6 +103,7 @@ a:visited:hover {
 }
 
 .form {
+  text-align: center;
 }
 
 .buttons {
@@ -258,11 +263,10 @@ a:visited:hover {
 
 
 .loading_spinner{
-  margin-left: 10px;
+  margin: 5px 5px 5px 15px;
   width:25px;
   height:25px;
 }
-
 .homeSearch{
   margin: 10px;
 }
