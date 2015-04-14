@@ -51,7 +51,7 @@ module.exports.save = function(req, res) {
 
 // TODO: complete candidateRoom object that contains only the data the the candidate should see
 module.exports.fetchOne = function(req, res) {
-  var roomId = req.params.id;
+  var roomId = req.body.id;
   var githubId = req.user;
 
   Room.findById(roomId, function(err, room){
@@ -129,5 +129,16 @@ module.exports.fetchAll = function(req, res) {
   });
 }
 
-module.exports.remove = function(req, res) {}
+module.exports.remove = function(req, res) {
+  var roomId = req.body.roomId;
+  Room.findOneAndRemove({_id: roomId}, function(err, room) {
+    if (err) { 
+      handleError(err); 
+      res.send(404, 'no room data');
+    }
+    else{
+      res.send(200, 'room deleted');
+    }
+  });
+}
 
