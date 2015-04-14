@@ -70,7 +70,7 @@
         deactivateTabsAndEditors();
 
         // Add new editor, starts as active.
-        var tab = {name: 'New Tab ' + editorId,
+        var tab = {name: 'Tab ' + editorId,
                    active: true}; 
         var editor = {id: editorId, 
                       tab: tab, 

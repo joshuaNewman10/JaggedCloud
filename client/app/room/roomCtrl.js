@@ -18,8 +18,14 @@
     $scope.saving = false;
     $scope.roomID = $stateParams.roomId;
     $scope.saving = false;
+    $scope.saveInterval = null;
+    var AUTOSAVE_FREQUENCY_MS = 10000;
 
-
+    // The $destroy event is called when we leave this view
+    $scope.$on('$destroy', function(){
+      $scope.uninit();
+      clearInterval($scope.saveInterval);
+    });
 
     /**  
      * Function: RoomCtrl.init()
@@ -27,20 +33,37 @@
      */
     $scope.init = function(){
       console.log('Initializing room controller');
+
+      // Fetch the room from the database
       Room.getRoom($scope.roomID, function(response){
-        // Add an editor to the room
-        TextEditor.addTextEditor();
-        TextEditor.initializeDataListener();
 
         // If there is text saved, set the editors text to that. 
-        if(response.data.text){
-          TextEditor.setEditorText(response.data.text[0], 0);
+        if(response.data.text.length > 0){
+          response.data.text.forEach(function(savedText, i){
+            TextEditor.addTextEditor($scope.saveData);
+            TextEditor.setEditorText(savedText, i);
+          });
+          TextEditor.setActiveEditor(0);
+        } 
+        else{
+          TextEditor.addTextEditor($scope.saveData);
         }
+
+        // Initialize the listener for incoming text
+        TextEditor.initializeDataListener();
+
+        // Assign the save keyboard shortcut to each editor
+        assignKBShortcuts();
 
         // Update the canvas with the saved data
         if(response.data.canvas){
           Drawing.updateCanvas(response.data.canvas);
         }
+
+        // Start interval for saving
+        $scope.saveInterval = setInterval(function(){
+          $scope.saveData();
+        }, AUTOSAVE_FREQUENCY_MS);
       });
     };
 
@@ -53,10 +76,14 @@
       console.log('Leaving Room!');
     };
 
-    // The $destroy event is called when we leave this view
-    $scope.$on('$destroy', function(){
-      $scope.uninit();
-    });
+    /**
+     * Function: RoomCtrl.addEditor()
+     * This function is called when the user clicks the '+' button to add a new text editor.
+     */
+    $scope.addEditor = function(){
+      TextEditor.addTextEditor();
+      assignKBShortcuts();
+    };
 
     /**
      * Function: RoomCtrl.saveData()
@@ -68,9 +95,14 @@
       console.log('Saving canvas and text editor data...');
       $scope.saving = true;
 
+      // Get canvas data and text editor data
       var drawingData = JSON.stringify(Drawing.getCanvas().toJSON());
-      var textEditorData = TextEditor.getEditors()[0].editor.getSession().getValue();
+      var textEditorData = [];
+      TextEditor.getEditors().forEach(function(editor){
+        textEditorData.push(editor.editor.getSession().getValue());
+      });
 
+      // Build AJAX request and send
       var request = {
         method: 'POST',
         url: '/room/save',
@@ -91,6 +123,7 @@
         $scope.saving = false;
       });
     };
+
     /**
      * Function: RoomCtrl.toggleCanvas()
      * This function will toggle the canvas on/off.
@@ -101,6 +134,26 @@
         TextEditor.resizeAllEditors();
       }
     };
+
+    /////////////// Helper Functions ///////////////
+    /**
+     * Function: assignKBShortcuts()
+     * This function will assign the KB shortcut for saving to the editor. 
+     */
+    function assignKBShortcuts(){
+      // Assign the save keyboard shortcut to each editor
+      TextEditor.getEditors().forEach(function(editor){
+          editor.editor.commands.addCommand({  name: 'saveFile',
+                                        bindKey: {
+                                        win: 'Ctrl-S',
+                                        mac: 'Command-S',
+                                        sender: 'editor|cli'
+                                     },
+                                      exec: $scope.saveData
+          });
+      });
+    }
+    /////////////// End Helper Functions ///////////////
 
     // Call the initialize function
     console.log('Joining Interview with ID: ' + $stateParams.roomId);

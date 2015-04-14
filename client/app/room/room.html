@@ -13,14 +13,14 @@
                 <a class='removeEditor-button' ng-click='removeTextEditor(editor.id); $event.stopPropagation();'></a>
             </div> 
         </div>
-        <button class="addtab-btn" ng-click='addTextEditor()'><i class="fa fa-plus"></i></button>
+        <button class="addtab-btn" ng-click='addEditor()'><i class="fa fa-plus"></i></button>
         <div id='editors'>
         </div>
     </div>
     <div ng-controller='drawingCtrl' ng-show="showCanvas" class='drawing-container'>
     </div>
     <div ng-controller='videoCtrl' class='video-container'>
-        <video class='userVideo' ng-src='{{userVideoSource}}' autoplay></video>
+        <video class='userVideo' muted='true' ng-src='{{userVideoSource}}' autoplay></video>
         <video class='peerVideo' ng-src='{{peerVideoSource}}' autoplay></video>
     </div>
 </div>
