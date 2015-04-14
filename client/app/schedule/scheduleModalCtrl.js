@@ -11,20 +11,17 @@
     .module('hackbox')
     .controller('scheduleModalCtrl', ScheduleModalCtrl);
 
-  ScheduleModalCtrl.$inject = ['$scope','$modalInstance', 'Room'];
+  ScheduleModalCtrl.$inject = ['$scope','$modalInstance', 'Room', '$state'];
 
-  function ScheduleModalCtrl($scope, $modalInstance, Room){
+  function ScheduleModalCtrl($scope, $modalInstance, Room, $state){
     $scope.loading = false;
-
 
     $scope.createInterview = function() {
       $scope.showLoadingCreateInterview = true;
       Room.createRoom($scope.newInterview).then(function(){
         $scope.showLoadingCreateInterview = false;
       });
-      // Reset create interview object
-      $scope.newInterview = {};
-      //TODO: refresh page to display new interview once modal closes
+      $modalInstance.dismiss('cancel');
     };
 
     $scope.showLoading = function(){
