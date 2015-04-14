@@ -30,18 +30,8 @@ describe('drawingCtrl', function() {
       expect($rootScope.addCanvas).to.not.be.undefined;
       expect($rootScope.toggleDrawingMode).to.not.be.undefined;
 
-      //Properties
-      // expect($rootScope.drawingCanvas).to.not.be.undefined;
+      // Properties
+      expect($rootScope.drawingCanvas).to.not.be.undefined;
     });
   });
-
-  // describe('addCanvas', function() {
-  //   it('should create a fabric canvas and set the value of the scope variable', function() {
-  //     var $scope = {};
-  //     var controller = $controller('drawingCtrl', {$scope: $scope});
-
-  //     $
-  //   });
-
-  // });
 });
