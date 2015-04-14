@@ -9,8 +9,8 @@ before_script:
 - bower install
 deploy:
   provider: heroku
-  api_key:
-    secure: Yocwkwm74gp1YMbE6AJ73/t/+t6G0Td9wR+zq9q5wtHl41iddF+S5y9D5JFJ8yXh/ICH4pUuIqI1RScOq2cBL4Sb/OVzIGbXdBLTgTP6OsTkD4JhcegDiiXRrngWJP9VTf4vLFlvH2bqPgAbqlArgpZC0rtjpFgMfvevZR4uhSw=
   app: hackbox
   on:
     repo: JaggedCloud/JaggedCloud
+  api_key:
+    secure: gk8ZNrOBxVGWzqsjfw3MK4ClxAixjqS32iju3kWR5+8flq1K/suff7EloqvbO6Ye4nb9WQerc0Y9vl7JObUjEakL4uxcFnaHufslss9qn6VO6NuLvpe3+6iKkM8QFRGlh9OraSvoNCsJ+GyUIlSkYe8nhOmwm8qEuUuWfC7Vq28=
