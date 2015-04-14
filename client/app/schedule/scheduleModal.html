@@ -1,0 +1,17 @@
+<div class="schedule-container">
+<div class="schedule">Schedule an Interview</div>
+  <form class="form" novalidate name='interviewForm'>
+    <div class="form-group">
+    <input class="userinput" type="text" ng-model="newInterview.name" placeholder="Interviewee's Name" ng-class="{'error': interviewForm.$invalid && interviewForm.$dirty}"required/>
+    <input class="userinput" type="email" ng-model="newInterview.email" placeholder="Interviewee's Email" ng-class="{'error': interviewForm.$invalid && interviewForm.$dirty}"required/>
+    </div>
+    <div class="form-group">
+    <input class="userinput" type="datetime-local" ng-model="newInterview.time" placeholder="Interview Start Time" required/>
+    </div>
+    <div class="form-group">
+    <input class="userinput" type="submit" ng-click="createInterview(); interviewForm.$setUntouched();" value="Submit" ng-disabled='interviewForm.$invalid' />
+    <img id='createInterviewSpinner' class='loading_spinner' src="../assets/loading_spinner.gif" ng-show='showLoadingCreateInterview'></img>
+    </div>
+  </form>
+</div>
+</div>
