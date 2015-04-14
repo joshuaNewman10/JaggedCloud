@@ -8,7 +8,7 @@
 
   function SigninCtrl($scope, $modal, $log){
     
-    $scope.openModal = function () {
+    $scope.openSigninModal = function () {
       var modalInstance = $modal.open({
         templateUrl: '/app/signin/signinModal.html',
         controller: 'signinModalCtrl',
