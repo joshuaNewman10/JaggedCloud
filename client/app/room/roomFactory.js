@@ -12,22 +12,26 @@
       createRoom: createRoom,
       getRoom: getRoom,
       saveRoom: saveRoom,
-      getUpcomingInterviews: getUpcomingInterviews
+      getUpcomingInterviews: getUpcomingInterviews,
+      deleteRoom: deleteRoom
     };
 
     return instance;
 
     ///// IMPLEMENTATION /////
-    function createRoom(room){
-      console.log('create room request!',room);
+    function createRoom(room, callback){
+      console.log('Creating room!',room);
       return $http({
         method: 'POST',
         url: '/room/create',
         data: room
+      }).then(function(response){
+        callback(response);
       });
     }
 
     function saveRoom(room){
+      console.log('Saving current room!',room);
       return $http({
         method: 'POST',
         url: '/room/save',
@@ -53,6 +57,17 @@
       return $http({
         method: 'GET',
         url: '/room/home'
+      }).then(function(response){
+        callback(response);
+      });        
+    }
+
+    function deleteRoom(roomId, callback){
+      console.log('Deleting Room: ', roomId);
+
+      return $http({
+        method: 'DELETE',
+        url: '/room/remove' + roomId
       }).then(function(response){
         callback(response);
       });        
