@@ -11,12 +11,7 @@
     $scope.openSigninModal = function () {
       var modalInstance = $modal.open({
         templateUrl: '/app/signin/signinModal.html',
-        controller: 'signinModalCtrl',
-        resolve: {
-          items: function () {
-            return $scope.items;
-          }
-        }
+        controller: 'signinModalCtrl'
       });
     };
   }

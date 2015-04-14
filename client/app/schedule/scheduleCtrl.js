@@ -12,11 +12,6 @@
       var modalInstance = $modal.open({
         templateUrl: '/app/schedule/scheduleModal.html',
         controller: 'scheduleModalCtrl',
-        resolve: {
-          items: function () {
-            return $scope.items;
-          },
-        },
         scope: $scope
       });
     };

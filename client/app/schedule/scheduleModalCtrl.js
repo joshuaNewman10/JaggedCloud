@@ -36,9 +36,5 @@
     $scope.showLoading = function(){
       $scope.loading = true;
     };
-
-    $scope.cancel = function () {
-      $modalInstance.dismiss('cancel');
-    };
   }
 })();
