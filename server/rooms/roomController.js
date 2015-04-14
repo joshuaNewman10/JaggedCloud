@@ -78,7 +78,6 @@ module.exports.fetchOne = function(req, res) {
         res.send(200, room);
       }
       else {
-        console.log(room);
         res.send(200, room); // change to candidateRoom once obj is complete
       }
     }
