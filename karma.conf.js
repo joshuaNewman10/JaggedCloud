@@ -24,8 +24,8 @@ module.exports = function(config){
 
       //These are the spec unit test files where our tests lives
       'Spec/unit/home.js',
-      'Spec/unit/room.js',
-      'Spec/unit/drawing.js'
+      'Spec/unit/room.js'
+      // 'Spec/unit/drawing.js'
     ],
 
     // files to exclude
