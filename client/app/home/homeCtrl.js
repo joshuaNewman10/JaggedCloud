@@ -71,6 +71,10 @@
       $state.go('room', {roomId: interview.roomId})
     } 
 
+    $scope.remove = function(roomId){
+      Room.deleteRoom(roomId, refreshInterviews);
+    }
+
     /**
      * Function: refreshInterviews()
      * This function will refresh all interviews for a user and add them to 

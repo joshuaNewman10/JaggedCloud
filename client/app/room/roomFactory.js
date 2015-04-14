@@ -60,5 +60,16 @@
         callback(response);
       });        
     }
+
+    function deleteRoom(roomId, callback){
+      console.log('Deleting Room: ', roomId);
+
+      return $http({
+        method: 'DELETE',
+        url: '/room/remove' + roomId
+      }).then(function(response){
+        callback(response);
+      });        
+    }
   }
 })();
