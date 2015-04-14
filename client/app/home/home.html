@@ -3,23 +3,14 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
         <ul class="nav nav-tabs navbar">
           <li class="divider-vertical title"><a href="#/">HackBox</a></li>
-          <li class="divider-vertical" ng-controller='signinCtrl' ng-show='!showLogout'><a ng-click='openModal()' href="#/signin">Sign In</a></li>
-          <li class="divider-vertical" ng-show='showLogout'><a ng-click='logout()' href="/auth/logout">Logout</a></li>
-          <li class="divider-vertical"><a ui-sref='room({roomId: "hackbox"})'>Go to Room</a></li>
+          <li class="divider-vertical" ng-controller='signinCtrl'><a ng-click='openSigninModal()' href="#/signin">Sign In</a></li>
+          <li class="divider-vertical"><a ng-click='logout()' href="/auth/logout">Logout</a></li>
+          <li class="divider-vertical" ng-controller='scheduleCtrl'><a ng-click="openScheduleModal()" href="#/schedule">New  Interview</a></li>
+          <li class="divider-vertical"><a ui-sref='room({roomId: "hackbox"})'>Quick Room</a></li>
         </ul>
         <div>
         <div class="homepage">
-        <div ng-if='showCreateInterview' class="form">
-          <div class="schedule">Schedule an Interview</div>
-          <form novalidate name='interviewForm'>
-            <input class="userinput" type="text" ng-model="newInterview.name" placeholder="Interviewee's Name" ng-class="{'error': interviewForm.$invalid && interviewForm.$dirty}"required/>
-            <input class="userinput" type="email" ng-model="newInterview.email" placeholder="Interviewee's Email" ng-class="{'error': interviewForm.$invalid && interviewForm.$dirty}"required/>
-            <input class="userinput" type="datetime-local" ng-model="newInterview.time" placeholder="Interview Start Time" required/>
-            <input class="userinput" type="submit" ng-click="createInterview(); interviewForm.$setUntouched();" value="Submit" ng-disabled='interviewForm.$invalid' />
-            <img id='createInterviewSpinner' class='loading_spinner' src="../assets/loading_spinner.gif" ng-show='showLoadingCreateInterview'></img>
-          </form>
-        </div>
-        </div>
+         <h2>Upcoming Interviews</h2>
         </div>
         <div class='interviews-container'>
           <div class='homeSearch'>

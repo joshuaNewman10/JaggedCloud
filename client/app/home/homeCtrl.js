@@ -42,20 +42,6 @@
     };
 
     /**
-     * Function: HomeCtrl.createInterview()
-     * This function will create a new interview. It calls refresh to update the DOM
-     * with the list of all interviews for the user. 
-     */
-    $scope.createInterview = function() {
-      $scope.showLoadingCreateInterview = true;
-      Room.createRoom($scope.newInterview, function(){
-        refreshInterviews();
-        // Reset create interview object
-        $scope.newInterview = {};
-      });
-    }
-
-    /**
      * Function: HomeCtrl.logout()
      * This function will log the user out.
      */
