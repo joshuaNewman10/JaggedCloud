@@ -1,9 +1,14 @@
 language: node_js
 node_js:
-  - '0.10'
+- '0.10'
 before_script:
-  - npm install -g grunt-cli
-  - npm install -g bower
-  - npm install phantomjs
-  - npm install -g karma
-  - bower install
+- npm install -g grunt-cli
+- npm install -g bower
+- npm install phantomjs
+- npm install -g karma
+- bower install
+deploy:
+  provider: heroku
+  api_key:
+    secure: nYiMjIzQPy2J/7RJz9lxEVfM8NowzHTfvhMZ+zoRHAOzIUs9k+11RD5PUJOjJ3A9FSgX693TJ/bJ8wJkgXpVIwyuROvn0oY9/QHwjfJ/vyJ8yM5bJ1bUDtZYrWJSRyUzPnHioKOEzI3oFYOowPK2By7wwV0O9gMij9MWz3ZGO5g=
+  app: Hackbox
