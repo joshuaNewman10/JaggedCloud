@@ -36,7 +36,7 @@
      */
     function getIcecommInstance(){
       if(!comm){
-        comm = new Icecomm('glkfL9sBKg/o6i2Ma3OS3kMqqbeEDT1ofUODOQjAlmwESS7LBu', {debug: true});
+        comm = new Icecomm('kzccY5Wj/SS4cOUFW1OCSgkv16LzcWBXnnp/yPjQ6kbllLafdW', {debug: true});
       }
       return comm;
     };
