@@ -12,7 +12,8 @@
       createRoom: createRoom,
       getRoom: getRoom,
       saveRoom: saveRoom,
-      getUpcomingInterviews: getUpcomingInterviews
+      getUpcomingInterviews: getUpcomingInterviews,
+      deleteRoom: deleteRoom
     };
 
     return instance;
