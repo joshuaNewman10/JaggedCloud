@@ -48,7 +48,6 @@
         isDrawingMode: true
       });
 
-      _fabricCanvas.freeDrawingBrush = new fabric['Circle'+ 'Brush'](_fabricCanvas);
       _fabricCanvas.setHeight(2000);
       _fabricCanvas.setWidth(2000);
 
