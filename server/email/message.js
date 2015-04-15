@@ -8,8 +8,8 @@ exports.sendMessage = function(data) {
       'name': data.fullname,
       'type': 'to'
     }],
-    'from_email': '',
-    'from_name': 'Jagged Cloud Team',
+    'from_email': 'HackboxTeam@gmail.com',
+    'from_name': 'The Hackbox Team',
     'subject': 'New Interview Scheduled!',
     'html': '<p>' + data.fullname + '</p>\
     <p>You have a new interview scheduled</p>'

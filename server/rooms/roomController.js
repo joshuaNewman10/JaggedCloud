@@ -1,5 +1,6 @@
 var Room = require('../db/models/roomModel');
 var User = require('../db/models/userModel');
+var mandrill = require('../email/message');
 
 var handleError = function(error) {
   console.log('the following error has occurred: ' + error);
@@ -14,6 +15,7 @@ module.exports.create = function(req, res) {
   var name = req.body.name;
   var isOpen = Date.now() >= Date.parse(startTime);
 
+
   Room.create({ created_by: githubId, start_time: startTime, is_open: isOpen, candidateName: name, candidateEmail: email }, function(err, room){
     if (err) { handleError(err); }
     else if (room) {
@@ -23,6 +25,7 @@ module.exports.create = function(req, res) {
         if (err) { handleError(err); }
         else if (user) {
           console.log('successfully added new room to user!' + user);
+          mandrill.sendMessage({email:email, fullname: name})
         }
       });
       res.send(201, room);
