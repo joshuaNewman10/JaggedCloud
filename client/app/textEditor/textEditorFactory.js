@@ -41,8 +41,11 @@
       IcecommWrapper.setDataListener(function(peer) {
         _okToSend = false;
         var editorIdx = indexOfEditorWithId(peer.data.editorId);
-        if(editorIdx !== -1)
+        if(editorIdx !== -1){
+          var cursorPos = _editors[editorIdx].editor.getCursorPosition();
           _editors[editorIdx].editor.getSession().setValue(peer.data.data,1);
+          _editors[editorIdx].editor.moveCursorToPosition(cursorPos);
+        }
         _okToSend = true;
       });
     };
