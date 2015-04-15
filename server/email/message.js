@@ -1,29 +1,36 @@
 var mandrillAPI = require('./config.js');
 
 exports.sendMessage = function(data) {
-  var email = ''; //for testing purposes
   var message = {
-    'to': [{
-      'email': data.email,
-      'name': data.fullname,
-      'type': 'to'
-    }],
-    'from_email': 'HackboxTeam@gmail.com',
-    'from_name': 'The Hackbox Team',
-    'subject': 'New Interview Scheduled!',
-    'html': '<p>' + data.fullname + '</p>\
-    <p>You have a new interview scheduled</p>'
+    'html': "<p>" + data.fullname + ",</p>\
+    <p>You have an interview coming up!</p>\
+    <p>All the best, \
+    <br>\
+    The Hackbox Team\
+    <br>\
+    <a href='http://hackbox.herokuapp.com'/>http://hackbox.herokuapp.com/</a></p>",
+    "subject": data.fullname + ", you have a new scheduled interview!",
+    "from_email": "HackboxTeam@gmail.com",
+    "from_name": "Hackbox Team",
+    "to": [{
+            "email": data.email, //data.email
+            "name": data.fullname,
+            "type": "to"
+        }],
+    "headers": {
+        "Reply-To": "HackboxTeam@gmail.com"
+    }
   };
 
-  var async = false;
 
-  mandrillAPI.mandrill_client.message.send({
+  var async = false;
+  mandrillAPI.mandrill_client.messages.send({
     'message':message,
-    'async': async,
-    function(result) {
-      console.log('email successfully sent: ', result);
-    }, function(error) {
-      console.log('Mandrill Email error occured: ', e.name);
-    }
+    'async': async
+  }, function(result) {
+    console.log('Email successfully sent!', result);
+  }, function(error) {
+    console.log('Mandrill email error occured!', error.name);
   });
 };
+
