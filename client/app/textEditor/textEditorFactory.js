@@ -10,12 +10,13 @@
     .module('hackbox')
     .factory('TextEditor', TextEditor);
 
-  TextEditor.$inject = ['IcecommWrapper'];
+  TextEditor.$inject = ['$rootScope', 'IcecommWrapper'];
 
-  function TextEditor(IcecommWrapper) {
+  function TextEditor($rootScope, IcecommWrapper) {
     var _editors = [];
     var _okToSend = true;
     var MAX_EDITORS = 5;
+    var observerCallbacks = [];
 
     var instance = {
       initializeDataListener: initializeDataListener,
@@ -39,13 +40,20 @@
     function initializeDataListener(){
       // Setup Icecomm listener for incoming data
       IcecommWrapper.setDataListener(function(peer) {
+        // Prevent user from sending data while receiving data
         _okToSend = false;
+
+        // Emit an event for use
+        $rootScope.$emit('receivingData');
+
         var editorIdx = indexOfEditorWithId(peer.data.editorId);
         if(editorIdx !== -1){
           var cursorPos = _editors[editorIdx].editor.getCursorPosition();
           _editors[editorIdx].editor.getSession().setValue(peer.data.data,1);
           _editors[editorIdx].editor.moveCursorToPosition(cursorPos);
         }
+
+        // Editor is now ok to send data again. 
         _okToSend = true;
       });
     };

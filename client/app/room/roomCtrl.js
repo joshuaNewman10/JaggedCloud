@@ -11,20 +11,33 @@
     .module('hackbox')
     .controller('roomCtrl', RoomCtrl);
 
-  RoomCtrl.$inject = ['$scope', '$http', '$stateParams', 'TextEditor', 'Room', 'Drawing'];
+  RoomCtrl.$inject = ['$rootScope', '$timeout', '$scope', '$http', '$stateParams', 'TextEditor', 'Room', 'Drawing'];
 
-  function RoomCtrl($scope, $http, $stateParams, TextEditor, Room, Drawing){
+  function RoomCtrl($rootScope, $timeout, $scope, $http, $stateParams, TextEditor, Room, Drawing){
     $scope.showCanvas = false;
     $scope.saving = false;
     $scope.roomID = $stateParams.roomId;
-    $scope.saving = false;
     $scope.saveInterval = null;
+    $scope.isPeerTyping = false;
+
+    var isTypingPromise = null;
     var AUTOSAVE_FREQUENCY_MS = 60000;
 
     // The $destroy event is called when we leave this view
     $scope.$on('$destroy', function(){
       $scope.uninit();
       clearInterval($scope.saveInterval);
+    });
+
+    $rootScope.$on('receivingData', function(){
+      $scope.$apply(function(){
+        $scope.isPeerTyping = true;
+
+        if(isTypingPromise !== null )
+          $timeout.cancel(isTypingPromise);
+
+        isTypingPromise = $timeout(function () { $scope.isPeerTyping = false; }, 1000);
+      });
     });
 
     /**  
@@ -40,13 +53,13 @@
         // If there is text saved, set the editors text to that. 
         if(response.data.text.length > 0){
           response.data.text.forEach(function(savedText, i){
-            TextEditor.addTextEditor($scope.saveData);
+            TextEditor.addTextEditor();
             TextEditor.setEditorText(savedText, i);
           });
           TextEditor.setActiveEditor(0);
         } 
         else{
-          TextEditor.addTextEditor($scope.saveData);
+          TextEditor.addTextEditor();
         }
 
         // Initialize the listener for incoming text
