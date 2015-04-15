@@ -34,11 +34,20 @@ var io = require('socket.io').listen(server);
 
 io.on('connection', function(socket) {
   console.log('a user connected');
+  socket.join('roomName');
   io.emit('greeting', 'HELLO WORLD heres some data from sockets!');
   socket.on('disconnect', function(){
       console.log('user disconnected');
   });
   socket.on('coords', function(data) {
-    socket.broadcast.emit('coordinates', data);
+    socket.to(data.roomName).broadcast.emit('coordinates', data.json);
   });
 });
+
+
+// io.on('connection', function(socket){
+//   socket.join('some room');
+// });
+// And then simply use to or in (they are the same) when broadcasting or emitting:
+
+// io.to('some room').emit('some event'):

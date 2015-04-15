@@ -56,7 +56,7 @@
 
     function initializeIO() {
       console.log('Initializing Sockets IO');
-      _socket = io();
+      _socket = io('roomName');
 
       Sockets.on('init', function (initialData) {
        console.log('Socket connection initialized!', initialData);
@@ -108,7 +108,8 @@
     function sendData(options) {
       _intervalID = setInterval(function() {
         var json = JSON.stringify( _fabricCanvas.toJSON() );
-        Sockets.emit('coords', json);
+        var data = {json: json, roomId: 'roomName'};
+        Sockets.emit('coords', data);
         console.log('emit!');
       }, 50);
     }
