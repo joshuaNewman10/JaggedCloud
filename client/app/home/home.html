@@ -5,7 +5,7 @@
           <li class="divider-vertical title"><a href="#/">HackBox</a></li>
           <li class="divider-vertical" ng-controller='signinCtrl'  ng-show='!showLogout'><a ng-click='openSigninModal()' href="#/signin">Sign In</a></li>
           <li class="divider-vertical" ng-show='showLogout'><a ng-click='logout()' href="/auth/logout">Logout</a></li>
-          <li class="divider-vertical" ng-controller='scheduleCtrl'><a ng-click="openScheduleModal()" href="#/schedule">New  Interview</a></li>
+          <li class="divider-vertical" ng-controller='scheduleCtrl' ng-show="showLogout"><a ng-click="openScheduleModal()" href="#/schedule">New  Interview</a></li>
           <li class="divider-vertical"><a ui-sref='room({roomId: "hackbox"})'>Quick Room</a></li>
         </ul>
         <div>

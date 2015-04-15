@@ -31,6 +31,7 @@
     function signIn(){
       return $http({
         method: 'GET',
+        withCredentials: true,
         url: '/auth/github'
       }).then(function(response){
         return response;        
