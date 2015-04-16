@@ -106,7 +106,7 @@ module.exports.fetchAll = function(req, res) {
     else if(user) {
       var rooms = user.rooms;
       // If the user's room list is empty, send back the empty array
-      if(!(rooms.length > 0)){
+      if(rooms.length === 0){
         res.send(202, roomsArray);
       }
       // If the user has rooms, send back data about each
