@@ -21,22 +21,13 @@
       TextEditor.removeAllEditors();
     });
 
-    /**  
-     * Function: TextEditorCtrl.init()
-     * This function will initialize a single editor and initialize the data listener on icecomm
-     */
-    $scope.init = function(){
-      // TextEditor.addTextEditor();
-      // TextEditor.initializeDataListener();
-    };
-
-
     /**
      * Function: TextEditorCtrl.addTextEditor()
      * This function will add a new text editor to the DOM. 
      */
-    $scope.addTextEditor = function(){
+    $scope.addTextEditor = function(saveFn){
       TextEditor.addTextEditor();
+      TextEditor.assignKBShortcuts(saveFn);
     };
 
     /**
@@ -68,8 +59,6 @@
     $scope.deactivateTabs = function(){
       TextEditor.deactivateTabsAndEditors();
     };
-
-    $scope.init();
   }
 
 })();

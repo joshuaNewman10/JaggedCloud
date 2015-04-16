@@ -30,14 +30,24 @@
       });
     }
 
-    function saveRoom(room){
-      console.log('Saving current room!',room);
+    function saveRoom(roomId, canvasData, textEditorData, callback){
+      console.log('Saving canvas and text editor data...');
       return $http({
         method: 'POST',
         url: '/room/save',
-        data: room
-      }).then(function(response){
-        return response;        
+        data: { 
+          roomId: roomId,
+          canvas: canvasData,
+          textEditor: textEditorData
+        }
+      }).success(function(response){
+        console.log('http response', response);
+      })
+      .error(function(error){
+        console.log('error', error);
+      })
+      .then(function(response){
+        callback();
       });
     }
     

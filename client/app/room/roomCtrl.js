@@ -11,24 +11,33 @@
     .module('hackbox')
     .controller('roomCtrl', RoomCtrl);
 
-  RoomCtrl.$inject = ['$rootScope', '$timeout', '$scope', '$http', '$stateParams', 'TextEditor', 'Room', 'Drawing'];
+  RoomCtrl.$inject = ['$rootScope', '$timeout', '$scope', '$stateParams', 'TextEditor', 'Room', 'Drawing'];
 
-  function RoomCtrl($rootScope, $timeout, $scope, $http, $stateParams, TextEditor, Room, Drawing){
+  function RoomCtrl($rootScope, $timeout, $scope, $stateParams, TextEditor, Room, Drawing){
     $scope.showCanvas = false;
     $scope.saving = false;
-    $scope.roomID = $stateParams.roomId;
+    $scope.roomId = $stateParams.roomId;
     $scope.saveInterval = null;
     $scope.isPeerTyping = false;
 
     var isTypingPromise = null;
     var AUTOSAVE_FREQUENCY_MS = 60000;
 
-    // The $destroy event is called when we leave this view
+    ////////////////// Event Listeners //////////////////
+    /**
+     * The $destroy event is called when we leave this view
+     */
     $scope.$on('$destroy', function(){
       $scope.uninit();
       clearInterval($scope.saveInterval);
     });
 
+    /**
+     * This event is heard when Icecomm is receiving data. 
+     * It starts a 1 second timer to display a message which will reset if
+     * data is continued to be heard before the timer expires. 
+     * When the timer expires, the message is removed. 
+     */
     $rootScope.$on('receivingData', function(){
       $scope.$apply(function(){
         $scope.isPeerTyping = true;
@@ -39,7 +48,9 @@
         isTypingPromise = $timeout(function () { $scope.isPeerTyping = false; }, 1000);
       });
     });
+    ////////////////// End Event Listeners //////////////////
 
+    //////////////////    Room Methods     //////////////////
     /**  
      * Function: RoomCtrl.init()
      * This function will initialize all entities upon switching the the room state.
@@ -48,25 +59,12 @@
       console.log('Initializing room controller');
 
       // Fetch the room from the database
-      Room.getRoom($scope.roomID, function(response){
+      Room.getRoom($scope.roomId, function(response){
 
-        // If there is text saved, set the editors text to that. 
-        if(response.data.text.length > 0){
-          response.data.text.forEach(function(savedText, i){
-            TextEditor.addTextEditor();
-            TextEditor.setEditorText(savedText, i);
-          });
-          TextEditor.setActiveEditor(0);
-        } 
-        else{
-          TextEditor.addTextEditor();
-        }
-
-        // Initialize the listener for incoming text
-        TextEditor.initializeDataListener();
-
+        // Initialize text editors 
         // Assign the save keyboard shortcut to each editor
-        assignKBShortcuts();
+        TextEditor.init(response.data.text);
+        TextEditor.assignKBShortcuts($scope.saveData);
 
         // Update the canvas with the saved data
         if(response.data.canvas){
@@ -90,15 +88,6 @@
     };
 
     /**
-     * Function: RoomCtrl.addEditor()
-     * This function is called when the user clicks the '+' button to add a new text editor.
-     */
-    $scope.addEditor = function(){
-      TextEditor.addTextEditor();
-      assignKBShortcuts();
-    };
-
-    /**
      * Function: RoomCtrl.saveData()
      * This function is called when the user clicks the saveCanvas button
      * It converts the canvas data into a png image string and then
@@ -109,30 +98,13 @@
       $scope.saving = true;
 
       // Get canvas data and text editor data
-      var drawingData = JSON.stringify(Drawing.getCanvas().toJSON());
+      var canvasData = JSON.stringify(Drawing.getCanvas().toJSON());
       var textEditorData = [];
       TextEditor.getEditors().forEach(function(editor){
         textEditorData.push(editor.editor.getSession().getValue());
       });
 
-      // Build AJAX request and send
-      var request = {
-        method: 'POST',
-        url: '/room/save',
-        data: { 
-          roomId: $scope.roomID,
-          canvas: drawingData,
-          textEditor: textEditorData
-        }
-      };
-
-      $http(request).success(function(response){
-        console.log('http response', response);
-      })
-      .error(function(error){
-        console.log('error', error);
-      })
-      .then(function(){
+      Room.saveRoom($scope.roomId, canvasData, textEditorData, function(){
         $scope.saving = false;
       });
     };
@@ -153,26 +125,7 @@
         TextEditor.resizeAllEditors();
       }
     };
-
-    /////////////// Helper Functions ///////////////
-    /**
-     * Function: assignKBShortcuts()
-     * This function will assign the KB shortcut for saving to the editor. 
-     */
-    function assignKBShortcuts(){
-      // Assign the save keyboard shortcut to each editor
-      TextEditor.getEditors().forEach(function(editor){
-          editor.editor.commands.addCommand({  name: 'saveFile',
-                                        bindKey: {
-                                        win: 'Ctrl-S',
-                                        mac: 'Command-S',
-                                        sender: 'editor|cli'
-                                     },
-                                      exec: $scope.saveData
-          });
-      });
-    }
-    /////////////// End Helper Functions ///////////////
+    //////////////////   End Room Methods   //////////////////
 
     // Call the initialize function
     console.log('Joining Interview with ID: ' + $stateParams.roomId);

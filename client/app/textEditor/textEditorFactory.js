@@ -18,20 +18,39 @@
     var MAX_EDITORS = 5;
 
     var instance = {
+      init: init,
       initializeDataListener: initializeDataListener,
       getEditors: getEditors,
-      setEditorText: setEditorText,
       addTextEditor: addTextEditor,
       setActiveEditor: setActiveEditor,
       resizeAllEditors: resizeAllEditors,
       removeTextEditor: removeTextEditor,
       removeAllEditors: removeAllEditors,
-      deactivateTabsAndEditors: deactivateTabsAndEditors
+      deactivateTabsAndEditors: deactivateTabsAndEditors,
+      assignKBShortcuts: assignKBShortcuts
     };
 
     return instance;
 
     //// IMPLEMENTATION /////
+
+    ////////////////// Text Editor Methods //////////////////
+    function init(savedEditors){
+      // If there is text saved, set the editors text to that. 
+      if(savedEditors && savedEditors.length > 0){
+        savedEditors.forEach(function(savedText, i){
+          addTextEditor();
+          setEditorText(savedText, i);
+        });
+        setActiveEditor(0);
+      } 
+      else{
+        addTextEditor();
+      }
+
+      // Initialize the listener for incoming text
+      initializeDataListener();
+    }
 
     /**  
      * Function: TextEditor.initializeDataListener()
@@ -171,19 +190,6 @@
     };
 
     /**
-     * Function: TextEditor.setEditorText(text, editorId)
-     * This function will be called when we leave a room.
-     * It will destroy all editors currently in use.
-     *
-     * @param text: The text to place in the editor
-     * @param editorId: The ID of the editor to change 
-     */
-    function setEditorText(text, editorId){
-      var editorIdx = indexOfEditorWithId(editorId);
-      _editors[editorIdx].editor.getSession().setValue(text,1);
-    };
-
-    /**
      * Function: TextEditor.resizeAllEditors()
      * This function will rerender all the editors. 
      * This helps the use experience when changing visibility
@@ -195,6 +201,26 @@
         editor.editor.renderer.updateFull()
       });
     };
+
+    /**
+     * Function: assignKBShortcuts()
+     * This function will assign the KB shortcut for saving to the editor. 
+     */
+    function assignKBShortcuts(saveFn){
+      // Assign the save keyboard shortcut to each editor
+      _editors.forEach(function(editor){
+          editor.editor.commands.addCommand({  name: 'saveFile',
+                                        bindKey: {
+                                        win: 'Ctrl-S',
+                                        mac: 'Command-S',
+                                        sender: 'editor|cli'
+                                     },
+                                      exec: saveFn
+          });
+      });
+    }
+    ///////////////////// End Text Editor Methods //////////////////////
+
     ///////////////////////// Helper Functions /////////////////////////
 
     /**  
@@ -222,6 +248,18 @@
 
       return editor;
     }
+
+    /**
+     * Function: TextEditor.setEditorText(text, editorId)
+     * This function will set the text in an editor with a given id to text
+     *
+     * @param text: The text to place in the editor
+     * @param editorId: The ID of the editor to change 
+     */
+    function setEditorText(text, editorId){
+      var editorIdx = indexOfEditorWithId(editorId);
+      _editors[editorIdx].editor.getSession().setValue(text,1);
+    };
 
     /**  
      * Function: setEditorActive(editorId)
