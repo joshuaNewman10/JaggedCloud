@@ -22,19 +22,15 @@
      * with the list of all interviews for the user. 
      */
     $scope.createInterview = function() {
-      $scope.showLoadingCreateInterview = true;
+      $scope.loading = true;
       Room.createRoom($scope.newInterview, function(){
-        $scope.showLoadingCreateInterview = false;
+        $scope.loading = false;
         $scope.newInterview.name = null;
         $scope.newInterview.email = null;
         $scope.newInterview.time = null;
         $modalInstance.dismiss('cancel');
         $scope.refreshInterviews();
       });
-    };
-
-    $scope.showLoading = function(){
-      $scope.loading = true;
     };
   }
 })();
