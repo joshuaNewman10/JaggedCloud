@@ -58,8 +58,7 @@
 
     function clearCanvas() {
       _fabricCanvas.clear();
-      var json = JSON.stringify( _fabricCanvas.toJSON() );
-      Sockets.emit('coords', json);
+      Sockets.emit('clearCanvas');
     }
 
     function initializeIO() {
@@ -72,6 +71,9 @@
       });
 
       Sockets.on('coordinates', updateCanvas);
+      Sockets.on('clearCanvas', function() {
+        _fabricCanvas.clear();
+      });
       _fabricCanvas.on('mouse:down', sendData); 
       _fabricCanvas.on('mouse:up', clearData);       
     }
