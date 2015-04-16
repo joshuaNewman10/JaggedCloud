@@ -21,6 +21,7 @@
     var instance = {
       makeCanvas: makeCanvas,
       initializeIO: initializeIO,
+      stopIO: stopIO,
       removeCanvas: removeCanvas,
       getCanvas: getCanvas,
       updateCanvas: updateCanvas
@@ -68,9 +69,10 @@
       _fabricCanvas.on('mouse:up', clearData);       
     }
 
-    function getCanvas(){
-      return _fabricCanvas;
+    function stopIO() {
+      Sockets.stopIO();
     }
+
     /**
      * Function: Drawing.getCanvas()
      * This function is a getter for the canvas. 
