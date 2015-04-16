@@ -44,7 +44,7 @@
     };
 
     $scope.stopIOListeners = function() {
-      
+      Drawing.stopIO();
     };
 
     /**
