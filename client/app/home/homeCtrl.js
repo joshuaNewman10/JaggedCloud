@@ -67,22 +67,33 @@
      * a list. 
      */
      $scope.refreshInterviews = function(){
+      $scope.incompleteInterviews = [];
+      $scope.showLoadingCreateInterview = true;
+
       Room.getUpcomingInterviews(function(response){
-        $scope.incompleteInterviews = [];
-        // Populate incompleteInterviews with snapshot
-        response.data.forEach(function(interview){
-          console.log(interview);
-          var interview = {
-            displayedStart_time: new Date(Date.parse(interview.start_time)).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', weekday: 'short', year: 'numeric', month: 'long', day: 'numeric', timeZoneName: 'long'}),
-            start_time: Date.parse(interview.start_time),
-            candidateName: interview.candidateName,
-            candidateEmail: interview.candidateEmail,
-            created_by: interview.created_by,
-            roomId: interview.id
-          };
-          $scope.incompleteInterviews.push(interview);
+        var allInterviews = response.data;
+
+        // If there are interviews that came back, populate our list with them
+        if(allInterviews.length > 0){
+          // Populate incompleteInterviews with snapshot
+          allInterviews.forEach(function(interview){
+            console.log(interview);
+            var interview = {
+              displayedStart_time: new Date(Date.parse(interview.start_time)).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', weekday: 'short', year: 'numeric', month: 'long', day: 'numeric', timeZoneName: 'long'}),
+              start_time: Date.parse(interview.start_time),
+              candidateName: interview.candidateName,
+              candidateEmail: interview.candidateEmail,
+              created_by: interview.created_by,
+              roomId: interview.id
+            };
+            $scope.incompleteInterviews.push(interview);
+            $scope.showLoadingCreateInterview = false;
+          });
+        }
+        // If there are no interviews that came back, then we display nothing
+        else {
           $scope.showLoadingCreateInterview = false;
-        });
+        }
       });
     }
 

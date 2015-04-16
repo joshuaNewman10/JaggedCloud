@@ -16,6 +16,10 @@
           <div class='homeSearch-container' ng-show="showLogout">
             <input class="homeSearch" ng-model="searchText" placeholder="Search">
           </div>
+          <div >
+            <img ng-show='showLoadingCreateInterview' class='homeLoadingSpinner' src="../assets/loading_spinner.gif"></img>
+            <div ng-show='incompleteInterviews.length === 0' style='text-align: center'>You don't have any upcoming interviews!</div>
+          </div>
           <div class='interview' ng-repeat='interview in incompleteInterviews | orderBy: "start_time" | filter:searchText' ng-click='joinRoom(interview)'>
               <div class="close" ng-click="$event.stopPropagation()"><a ng-click='remove(interview.roomId)'><i class="fa fa-times"></i></a></div>
               <h2 class='candidateName'> {{interview.candidateName}}</h2>
