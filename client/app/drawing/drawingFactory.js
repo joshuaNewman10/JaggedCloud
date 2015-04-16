@@ -76,8 +76,7 @@
       Sockets.on('clearCanvas', function() {
         _fabricCanvas.clear();
       });
-      // _fabricCanvas.on('mouse:down', sendData); 
-      _fabricCanvas.on('mouse:up', clearData);       
+      _fabricCanvas.on('mouse:up', sendData);       
     }
 
     function toggleEraser() {
@@ -135,17 +134,7 @@
       // _fabricCanvas.renderAll();
     }
 
-    function sendData(options) {
-      // _intervalID = setInterval(function() {
-        // var json = JSON.stringify( _fabricCanvas.toJSON() );
-        // Sockets.emit('coords', json);
-        // console.log('emit!');
-      // }, 50);
-    }
-
-    function clearData() {
-      console.log('interval cleared');
-      // clearInterval(_intervalID);
+    function sendData() {
       var json = JSON.stringify( _fabricCanvas.toJSON());
       Sockets.emit('coords', json);
     }
