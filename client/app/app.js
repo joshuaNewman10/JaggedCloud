@@ -37,8 +37,11 @@
           url: '/404',
           controller: '404Ctrl',
           templateUrl: 'app/404/404.html'
+        .state('demo', {
+            url: '/demo/:roomId',
+            controller: 'roomCtrl',
+            templateUrl: 'app/room/room.html'
         });
-
         // Attach token to all requests
         // $httpProvider.interceptors.push('AttachTokens');
   })
