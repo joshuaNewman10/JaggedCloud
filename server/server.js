@@ -43,7 +43,7 @@ io.sockets.on('connection', function(socket) {
   });
 
   socket.on('coords', function(data) {
-    console.log('ROOOOOOOOM', socket.room, socket);
+    console.log('ROOOOOOOOM', socket.ROOMPROP);
     socket.to(socket.ROOMPROP).broadcast.emit('coordinates', data);
   });
 });

@@ -22,9 +22,10 @@
       makeCanvas: makeCanvas,
       initializeIO: initializeIO,
       stopIO: stopIO,
-      removeCanvas: removeCanvas,
+      clearCanvas: clearCanvas,
       getCanvas: getCanvas,
-      updateCanvas: updateCanvas
+      updateCanvas: updateCanvas,
+      removeCanvas: removeCanvas
     };
 
     return instance;
@@ -53,6 +54,12 @@
       _fabricCanvas.setWidth(2000);
 
       return _fabricCanvas;
+    }
+
+    function clearCanvas() {
+      _fabricCanvas.clear();
+      var json = JSON.stringify( _fabricCanvas.toJSON() );
+      Sockets.emit('coords', json);
     }
 
     function initializeIO() {
@@ -106,6 +113,7 @@
     //This happens on every mousemove (really mouseup)
     function updateCanvas(data) {
       _fabricCanvas.loadFromJSON(data, _fabricCanvas.renderAll.bind(_fabricCanvas));
+      // _fabricCanvas.renderAll();
     }
 
     function sendData(options) {
@@ -119,7 +127,7 @@
     function clearData() {
       console.log('interval cleared');
       clearInterval(_intervalID);
-      var json = JSON.stringify( _fabricCanvas.toJSON() );
+      var json = JSON.stringify( _fabricCanvas.toJSON());
       Sockets.emit('coords', json);
     }
   }
