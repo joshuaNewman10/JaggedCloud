@@ -2,20 +2,24 @@
   <ul class="nav nav-tabs navbar">
     <li class="divider-vertical title"><a href="#/">HackBox</a></li>
     <li class="divider-vertical"><a ng-click='logout()' href="/auth/logout">Logout</a></li>
-    <li class="divider-vertical"><a ng-click='toggleCanvas()'>Toggle Canvas</a></li>
     <li class="divider-vertical"><a ng-click="saveData()">Save</a></li>
     <li class="divider-vertical" ng-show='saving'><img class='loading_spinner' src="../assets/loading_spinner.gif" ng-show='saving'>Saving...</img></li>
   </ul>
-    <div ng-controller='textEditorCtrl' ng-show='!showCanvas' class='textEditor-container'>
+    <div ng-controller='textEditorCtrl'>
         <div class="tab-box"> 
-            <div ng-class='{"tab-container": !editor.tab.active, "activeTab-container": editor.tab.active}' ng-click="setActiveEditor(editor.id)" ng-repeat='editor in editors'>
+            <div ng-class='{"tab-container": !editor.tab.active, "activeTab-container": editor.tab.active}' ng-click="toggleCanvas(true); setActiveEditor(editor.id)" ng-repeat='editor in editors'>
                 <div ng-class='{tab: !editor.tab.active, activeTab: editor.tab.active}'>{{editor.tab.name}}</div>
-                <a class='removeEditor-button' ng-click='removeTextEditor(editor.id); $event.stopPropagation();'></a>
+                <a class='removeEditor-button' ng-click='removeTextEditor(editor.id); saveData(); $event.stopPropagation();'></a>
             </div> 
         </div>
-        <button class="addtab-btn" ng-click='addEditor()'><i class="fa fa-plus"></i></button>
-        <div id='editors'>
+        <div ng-click='deactivateTabs(); toggleCanvas(false)' ng-class='{tab: !showCanvas, activeTab: showCanvas}'>Whiteboard</div>
+        <button class="addtab-btn" ng-click='addTextEditor(saveData); saveData()'><i class="fa fa-plus"></i></button>
+        <div class='peerTypingText' ng-show='isPeerTyping'> 
+            Another user is typing...
         </div>
+
+    </div>
+    <div class='textEditor-container' ng-show='!showCanvas' id='editors'>
     </div>
     <div ng-controller='drawingCtrl' ng-show="showCanvas" class='drawing-container'>
     </div>
