@@ -141,8 +141,14 @@
      * Function: RoomCtrl.toggleCanvas()
      * This function will toggle the canvas on/off.
      */
-    $scope.toggleCanvas = function(){
-      $scope.showCanvas = !$scope.showCanvas;
+    $scope.toggleCanvas = function(forceCanvasOff){
+      if(forceCanvasOff !== undefined && forceCanvasOff)
+        $scope.showCanvas = false;
+      else if(forceCanvasOff !== undefined && !forceCanvasOff)
+        $scope.showCanvas = true;
+      else
+        $scope.showCanvas = !$scope.showCanvas;
+
       if(!$scope.showCanvas){
         TextEditor.resizeAllEditors();
       }

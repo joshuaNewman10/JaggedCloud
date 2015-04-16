@@ -26,7 +26,8 @@
       setActiveEditor: setActiveEditor,
       resizeAllEditors: resizeAllEditors,
       removeTextEditor: removeTextEditor,
-      removeAllEditors: removeAllEditors
+      removeAllEditors: removeAllEditors,
+      deactivateTabsAndEditors: deactivateTabsAndEditors
     };
 
     return instance;

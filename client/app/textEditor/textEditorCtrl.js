@@ -59,6 +59,16 @@
       TextEditor.setActiveEditor(editorId);
     };
 
+    /**
+     * Function: TextEditorCtrl.removeTextEditor(editorId)
+     * This function will set the editor in the collection with the matching Id as the active editor 
+     *
+     * @param editorId: An integer representing the ID of an editor object. Range(0 - MAX_EDITORS)
+     */
+    $scope.deactivateTabs = function(){
+      TextEditor.deactivateTabsAndEditors();
+    };
+
     $scope.init();
   }
 

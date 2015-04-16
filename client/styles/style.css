@@ -281,3 +281,7 @@ a:visited:hover {
 .peerTypingText{
   display: inline-block;
 }
+
+.super{
+  display: inline-block;
+}
