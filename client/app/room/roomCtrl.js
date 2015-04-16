@@ -128,7 +128,9 @@
     $scope.clearCanvas = function() {
       Drawing.clearCanvas();
     };
-
+    $scope.toggleEraser = function() {
+      Drawing.toggleEraser();
+    };
     /////////////// Helper Functions ///////////////
     /**
      * Function: assignKBShortcuts()
