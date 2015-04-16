@@ -32,22 +32,30 @@ var server = http.createServer(app).listen(port, function() {
 //We can also send events to ALL sockets via io.emit
 var io = require('socket.io').listen(server);
 
-io.on('connection', function(socket) {
-  console.log('a user connected');
-  socket.join('roomName');
-  io.emit('greeting', 'HELLO WORLD heres some data from sockets!');
-  socket.on('disconnect', function(){
-      console.log('user disconnected');
+io.sockets.on('connection', function(socket) {
+  console.log(' a user connected');
+  //join to room and save room name
+  socket.emit('greeting', 'HELLO WORLD heres some data from sockets!');
+  socket.on('join room', function(room) {
+    console.log('joining particular room', room)
+    socket.join(room.roomName);
+    socket.ROOMPROP = room.roomName
   });
+
   socket.on('coords', function(data) {
-    socket.to(data.roomName).broadcast.emit('coordinates', data.json);
+    console.log('ROOOOOOOOM', socket.room, socket);
+    socket.to(socket.ROOMPROP).broadcast.emit('coordinates', data);
   });
 });
 
 
-// io.on('connection', function(socket){
-//   socket.join('some room');
+// io.on('connection', function(socket) {
+//   console.log('a user connected', arguments);
+//   //socket.on('disconnect', function(){
+//   //     console.log('user disconnected');
+//   // });
+//   socket.join('testRoom');
+//   socket.on('coords', function(data) {
+//     socket.to('testRoom').broadcast.emit('coordinates', data);
+//   });
 // });
-// And then simply use to or in (they are the same) when broadcasting or emitting:
-
-// io.to('some room').emit('some event'):
