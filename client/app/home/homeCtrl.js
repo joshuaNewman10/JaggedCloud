@@ -15,7 +15,7 @@
   function HomeCtrl($scope, $modal, $state, $log, Auth, Room){
     $scope.showCreateInterview = false;
     $scope.showLoadingCreateInterview = false;
-    $scope.showLogout = false;
+    $scope.isLoggedIn = false;
     $scope.incompleteInterviews = [];
     $scope.newInterview = {};
 
@@ -30,7 +30,7 @@
         if(response.data){
           console.log("User is logged in, getting all interviews.")
           $scope.showCreateInterview = true;
-          $scope.showLogout = true;
+          $scope.isLoggedIn = true;
 
           // Refresh all interviews and display
           $scope.refreshInterviews();
@@ -47,7 +47,7 @@
      */
     $scope.logout = function () {
       Auth.logout().then(function(){
-        $scope.showLogout = false;
+        $scope.isLoggedIn = false;
       });
       console.log('Logging out!');
     };
