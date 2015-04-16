@@ -10,7 +10,7 @@
     </div>
     <div class="form-group">
     <input class="userinput" type="submit" ng-click="createInterview(); interviewForm.$setUntouched();" value="Submit" ng-disabled='interviewForm.$invalid' />
-    <img id='createInterviewSpinner' class='loading_spinner' src="../assets/loading_spinner.gif" ng-show='showLoadingCreateInterview'></img>
+    <img id='createInterviewSpinner' class='loading_spinner' src="../assets/loading_spinner.gif" ng-show='loading'></img>
     </div>
   </form>
 </div>
