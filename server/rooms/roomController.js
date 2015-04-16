@@ -37,9 +37,14 @@ module.exports.create = function(req, res) {
   var githubId = req.user;
   var sendEmail = req.body.sendEmail;
   var email = req.body.email;
+<<<<<<< HEAD
   var name = req.body.name;
   var isOpen = Date.now() >= startTime;
 
+=======
+  var startTime = req.body.time;
+  var endTime = (startTime + 24); // WRONG!!!
+>>>>>>> remove is_Open boolean
 
   Room.create({ created_by: githubId, start_time: startTime, end_time: endTime, is_open: isOpen, candidateName: name, candidateEmail: email }, function(err, room){
     if (err) {
@@ -144,8 +149,12 @@ module.exports.access = function(req, res) {
 }
 
 // need to use req.PARAMS.id here because this is a get request
+<<<<<<< HEAD
 // maybe: complete candidateRoom object that contains only the data the the candidate should see
 // (right now they're the same, but may add box for interviewer to take notes)
+=======
+// TODO: once notes implemented, complete candidateRoom obj containing only data for candidate (no notes)
+>>>>>>> remove is_Open boolean
 module.exports.fetchOne = function(req, res) {
   var roomId = req.params.id;
   var githubId = req.user;
@@ -158,6 +167,7 @@ module.exports.fetchOne = function(req, res) {
     //   canvas: canvas,
     //   text: text
     // }
+<<<<<<< HEAD
     // console.log(candidateRoom);
     if(room) {
       var isOpen = (Date.now() > room.start_time) || githubId === room.created_by;
@@ -166,6 +176,20 @@ module.exports.fetchOne = function(req, res) {
         res.send(200, room)
         return;
       }
+=======
+
+// TODO: roomState will determine what to data to send back to the front end / who can access it
+  // roomState will be 'preInterview, live, or complete'
+    // var startTime = room.start_time;
+    // var endTime = room.end_time;
+    // var roomState = roomState(startTime, endTime);
+
+    var isOpen = (Date.now() > Date.parse(room.start_time)) || githubId === room.created_by;
+
+    if (err) { 
+      handleError(err); 
+      res.send(404, 'no room data');
+>>>>>>> remove is_Open boolean
     }
     if(err) { 
       handleError(err);
