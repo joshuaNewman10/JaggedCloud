@@ -46,5 +46,9 @@ io.sockets.on('connection', function(socket) {
     console.log('ROOOOOOOOM', socket.ROOMPROP);
     socket.to(socket.ROOMPROP).broadcast.emit('coordinates', data);
   });
+
+  socket.on('clearCanvas', function() {
+    socket.to(socket.ROOMPROP).broadcast.emit('clearCanvas');
+  });
 });
 
