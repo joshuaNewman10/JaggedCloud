@@ -61,6 +61,20 @@
       Room.deleteRoom(roomId, $scope.refreshInterviews);
     }
 
+    $scope.quickRoom = function(){
+      var room = {
+        time: Date.now(),
+        user: 'testUser',
+        email: 'testUser@email.com',
+        name: 'Test User'
+      };
+
+      Room.createRoom(room,function(response){
+        console.log(response);
+        $state.go('demo', {roomId: response.data._id})
+      });
+    };
+
     /**
      * Function: refreshInterviews()
      * This function will refresh all interviews for a user and add them to 
