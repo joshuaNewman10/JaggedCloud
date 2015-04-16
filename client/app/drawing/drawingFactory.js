@@ -17,6 +17,7 @@
     var _fabricCanvas = null;
     var _socket = null;
     var _intervalID = null;
+    var _currentlyErasing = false;
 
     var instance = {
       makeCanvas: makeCanvas,
@@ -24,6 +25,7 @@
       stopIO: stopIO,
       clearCanvas: clearCanvas,
       getCanvas: getCanvas,
+      toggleEraser: toggleEraser,
       updateCanvas: updateCanvas,
       removeCanvas: removeCanvas
     };
@@ -74,8 +76,23 @@
       Sockets.on('clearCanvas', function() {
         _fabricCanvas.clear();
       });
-      _fabricCanvas.on('mouse:down', sendData); 
+      // _fabricCanvas.on('mouse:down', sendData); 
       _fabricCanvas.on('mouse:up', clearData);       
+    }
+
+    function toggleEraser() {
+     if (_currentlyErasing ) {
+      _fabricCanvas.freeDrawingBrush = new fabric['Pencil' + 'Brush'](_fabricCanvas);
+      _fabricCanvas.freeDrawingBrush.width = 1;
+      _fabricCanvas.freeDrawingBrush.color = '#000000';
+      _currentlyErasing = !_currentlyErasing;
+
+     } else {
+      _fabricCanvas.freeDrawingBrush = new fabric['Circle' + 'Brush'](_fabricCanvas);
+      _fabricCanvas.freeDrawingBrush.width = 20;
+      _fabricCanvas.freeDrawingBrush.color = '#FFFFFF';      
+      _currentlyErasing = !_currentlyErasing;
+     }
     }
 
     function stopIO() {
@@ -119,16 +136,16 @@
     }
 
     function sendData(options) {
-      _intervalID = setInterval(function() {
-        var json = JSON.stringify( _fabricCanvas.toJSON() );
-        Sockets.emit('coords', json);
-        console.log('emit!');
-      }, 50);
+      // _intervalID = setInterval(function() {
+        // var json = JSON.stringify( _fabricCanvas.toJSON() );
+        // Sockets.emit('coords', json);
+        // console.log('emit!');
+      // }, 50);
     }
 
     function clearData() {
       console.log('interval cleared');
-      clearInterval(_intervalID);
+      // clearInterval(_intervalID);
       var json = JSON.stringify( _fabricCanvas.toJSON());
       Sockets.emit('coords', json);
     }
