@@ -158,8 +158,8 @@ module.exports.remove = function(req, res) {
       handleError(err); 
       res.send(404, 'room not found');
     }
+    // If a room could be found, find the user and remove that room from their list
     else if (room) {
-
       User.findOne({github_id: githubId}, function(err, user){
         if (err) { 
           handleError(err); 
@@ -167,16 +167,21 @@ module.exports.remove = function(req, res) {
         }
         else if (user) {
           var rooms = user.rooms;
+
+          // Find the room to remove and remove it
           for (var i = 0; i < rooms.length; i++) {
             if (rooms[i] === roomId) {
               rooms.splice(i, 1);
               user.rooms = rooms;
             }
           }
-          user.save();
+
+          // Save the new list and send response
+          user.save().then(function(){
+            res.send(200, room);
+          });
         }
       });
-      res.send(200, room);
     }
   });
 }
