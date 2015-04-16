@@ -122,7 +122,7 @@ a:visited:hover {
 
 .textEditor-container{
     position:relative;
-    margin: 10px auto 0 auto;
+    margin: 0px auto 0 auto;
     width: 100%;
     height: 80%;
     /*border:3px solid green;*/
@@ -224,6 +224,7 @@ a:visited:hover {
   padding: 5px 15px;
   text-decoration:none;
   background-color: #222;
+  border-radius: 5px;
   margin: 1px;
 }
 
