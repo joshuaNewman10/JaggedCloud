@@ -16,7 +16,6 @@
     var _editors = [];
     var _okToSend = true;
     var MAX_EDITORS = 5;
-    var observerCallbacks = [];
 
     var instance = {
       initializeDataListener: initializeDataListener,
