@@ -21,11 +21,6 @@ var roomSchema = new mongoose.Schema({
     default: false,
   },
 
-  is_completed: {
-    type: Boolean,
-    default: false
-  },
-
   date_created: {
     type: Date,
     default: Date.now
