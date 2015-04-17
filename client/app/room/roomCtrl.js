@@ -11,15 +11,9 @@
     .module('hackbox')
     .controller('roomCtrl', RoomCtrl);
 
-<<<<<<< HEAD
-  RoomCtrl.$inject = ['$rootScope', '$timeout', '$scope', '$stateParams', 'TextEditor', 'Room', 'Drawing'];
+  RoomCtrl.$inject = ['$rootScope', '$timeout', '$scope', '$stateParams', 'TextEditor', 'Room', 'Drawing', '$state'];
 
-  function RoomCtrl($rootScope, $timeout, $scope, $stateParams, TextEditor, Room, Drawing){
-=======
-  RoomCtrl.$inject = ['$scope', '$http', '$stateParams', 'TextEditor', 'Room', 'Drawing', '$state'];
-
-  function RoomCtrl($scope, $http, $stateParams, TextEditor, Room, Drawing, $state){
->>>>>>> add 404 route
+  function RoomCtrl($rootScope, $timeout, $scope, $stateParams, TextEditor, Room, Drawing, $state){
     $scope.showCanvas = false;
     $scope.saving = false;
     $scope.roomId = $stateParams.roomId;
@@ -65,7 +59,8 @@
       console.log('Initializing room controller');
 
       // Fetch the room from the database
-      Room.getRoom($scope.roomID, function(response){
+      console.log($scope.roomId);
+      Room.getRoom($scope.roomId, function(response){
         if(response.data.data === '404') {
           $state.go('404');
           return;

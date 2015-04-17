@@ -63,6 +63,7 @@ module.exports.save = function(req, res) {
 module.exports.fetchOne = function(req, res) {
   var roomId = req.params.id;
   var githubId = req.user;
+  console.log(roomId);
 
   Room.findById(roomId, function(err, room){
     // var canvas = room.canvas;
@@ -73,20 +74,22 @@ module.exports.fetchOne = function(req, res) {
     // }
     // console.log(candidateRoom);
     if(room) {
-      var isOpen = (Date.now() > Date.parse(room.start_time)) || (githubId === room.created_by);
-      console.log(isOpen);
+      var isOpen = (Date.now() > Date.parse(room.start_time)) || githubId === room.created_by;
+      console.log('is the room open', isOpen)
+      if(isOpen && githubId === room.created_by) {
+        res.send(200, room)
+        return;
+      }
     }
     if(err) { 
       // handleError(err);
+      console.log('i hit an error', err)
       res.send(200, {data: '404'});
+      return;
     }
     // if current user is room creator send back all room data, else send candidateRoom
-    else if (room && isOpen) {
-      if(githubId === room.created_by) {
-        res.send(200, room);
-      }
-    }
     else {
+      console.log('i hit an else');
       res.status(200).send({data: '404'}); // change to candidateRoom once obj is complete
     }
   });
