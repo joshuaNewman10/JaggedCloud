@@ -12,6 +12,11 @@ var roomSchema = new mongoose.Schema({
 
   start_time: Number, // number of milliseconds
   end_time: Number, // number of milliseconds
+  is_completed: {
+    type: Boolean,
+    default: false
+  },
+  
   created_by: String, // githubId
   canvas: String,
   text: [String],

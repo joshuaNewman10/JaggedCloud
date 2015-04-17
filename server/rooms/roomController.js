@@ -6,9 +6,32 @@ var handleError = function(error) {
   console.error('the following error has occurred: ' + error);
 };
 
+<<<<<<< HEAD
 var roomState = function(startTime, endTime) {
   // set the currentTime equal to the current time in ms
   var currentTime = Date.now();
+=======
+// TODO: increase startTime by 24hr -- this is wrong
+// var startTime = req.body.time;
+// var endTime = (startTime + 24);
+// var roomState = roomState(startTime, endTime);
+ 
+
+var roomState = function(startTime, endTime) {
+  if (Date.now() < Date.parse(startTime)){
+    return 'preInterview';
+  }
+  else if (Date.now() >= Date.parse(startTime) && Date.now() < Date.parse(endTime)){
+    return 'live';
+  }
+  else if (Date.now() >= Date.parse(endTime)){
+    return 'complete';
+  }
+  else {
+    console.log('error processing room state');
+  }
+}
+>>>>>>> resolve merge conflicts
 
   // if the startTime is greater than the currentTime, the interview has not begun
   if (currentTime < startTime){
@@ -31,7 +54,12 @@ var roomState = function(startTime, endTime) {
   }
 };
 
+/**
+ * RoomController.create:
+ * This function creates a new interview room
+ */
 module.exports.create = function(req, res) {
+<<<<<<< HEAD
   var startTime = Date.parse(req.body.time);
   var endTime = startTime + 86400000; // create the default end time of 24hrs (86400000ms) later than the start time
   var githubId = req.user;
@@ -42,15 +70,60 @@ module.exports.create = function(req, res) {
   var isOpen = Date.now() >= startTime;
 
 =======
+=======
+  var githubId = req.user;
+  var name = req.body.name;
+  var email = req.body.email;
+>>>>>>> resolve merge conflicts
   var startTime = req.body.time;
-  var endTime = (startTime + 24); // WRONG!!!
->>>>>>> remove is_Open boolean
+  var endTime = (startTime + 24);
 
+<<<<<<< HEAD
   Room.create({ created_by: githubId, start_time: startTime, end_time: endTime, is_open: isOpen, candidateName: name, candidateEmail: email }, function(err, room){
+=======
+  // create new interview room
+  Room.create({ created_by: githubId, candidateName: name, candidateEmail: email, start_time: startTime, end_time: endTime }, function(err, room){
+    // error creating room
+>>>>>>> resolve merge conflicts
     if (err) {
       handleError(err);
-      res.send(404, 'room not found');
+      res.status(404).send('error occurred; no room created');
     }
+    // no error creating room
+    else{
+      // no room created, send error
+      if (!room) {
+        handleError(err);
+        res.status(404).send('error occurred; no room created');
+      }
+      // room created successfully
+      else {
+        console.log('room successfully created!');
+
+        // find user and push room to user's rooms array
+        User.findOneAndUpdate({github_id: githubId}, {$push: {rooms: room._id}}, {upsert: true}, function(err, user){
+          // error finding user
+          if (err) {
+            handleError(err);
+            res.status(404).send('error finding user');
+          }
+          else {
+            // user doesn't exist
+            if (!user) {
+              handleError(err);
+              res.status(404).send('error finding user');
+            }
+            // user exists; send email to candidate
+            else {
+              console.log('successfully added new room to user!' + user);
+              mandrill.sendMessage({email:email, fullname: name});
+            }
+          }
+        });
+        res.status(201).send(room);
+      }      
+    }
+<<<<<<< HEAD
     else if (room) {
       console.log('room successfully created!');
 
@@ -68,27 +141,47 @@ module.exports.create = function(req, res) {
       });
       res.send(201, room);
     }      
+=======
+>>>>>>> resolve merge conflicts
   });
 };
 
-
+/**
+ * RoomController.save:
+ * This function saves the data in the interview room
+ */
 module.exports.save = function(req, res) {
   var notes = req.body.notes;
   var roomId = req.body.roomId;
   var canvas = req.body.canvas;
   var text = req.body.textEditor;
 
+  // find the room and update data
   Room.findOneAndUpdate({_id: roomId}, {canvas: canvas, text: text, notes: notes}, {upsert: true},
     function(err, room){
-      if (err) { handleError(err); }
-      else if (room) {
-        console.log('room successfully updated');
-        res.send(201, room);      
+      // error finding room
+      if (err) {
+        handleError(err);
+        res.status(404).send('error finding room');
+      }
+      // no error finding room
+      else {
+        // no room found
+        if (!room){
+          handleError(err);
+          res.status(404).send('room not found');
+        }
+        else {
+          // room found and data saved
+          handleError(err);
+          res.status(201).send(room);      
+        }
       }
     }
   );
 };
 
+<<<<<<< HEAD
 module.exports.exists = function(req, res) {
   var roomId = req.params.id;
   
@@ -155,20 +248,20 @@ module.exports.access = function(req, res) {
 =======
 // TODO: once notes implemented, complete candidateRoom obj containing only data for candidate (no notes)
 >>>>>>> remove is_Open boolean
+=======
+/**
+ * RoomController.fetchOne:
+ * This function retrieves the data from one specific room
+ */
+>>>>>>> resolve merge conflicts
 module.exports.fetchOne = function(req, res) {
+  // to retrieve roomdId, use req.PARAMS.id because this is a get request
   var roomId = req.params.id;
   var githubId = req.user;
   console.log(roomId);
 
+  // find room by githubId
   Room.findById(roomId, function(err, room){
-    // var canvas = room.canvas;
-    // var text = room.text;
-    // var candidateRoom = {
-    //   canvas: canvas,
-    //   text: text
-    // }
-<<<<<<< HEAD
-    // console.log(candidateRoom);
     if(room) {
       var isOpen = (Date.now() > room.start_time) || githubId === room.created_by;
       console.log('is the room open', isOpen)
@@ -176,33 +269,27 @@ module.exports.fetchOne = function(req, res) {
         res.send(200, room)
         return;
       }
-=======
-
-// TODO: roomState will determine what to data to send back to the front end / who can access it
-  // roomState will be 'preInterview, live, or complete'
-    // var startTime = room.start_time;
-    // var endTime = room.end_time;
-    // var roomState = roomState(startTime, endTime);
-
-    var isOpen = (Date.now() > Date.parse(room.start_time)) || githubId === room.created_by;
-
-    if (err) { 
-      handleError(err); 
-      res.send(404, 'no room data');
->>>>>>> remove is_Open boolean
     }
     if(err) { 
       handleError(err);
     }
     // if current user is room creator send back all room data, else send candidateRoom
     else {
+<<<<<<< HEAD
       res.status(404).send(); // change to candidateRoom once obj is complete
+=======
+      console.log('i hit an else');
+      res.status(200).send({data: '404'});
+>>>>>>> resolve merge conflicts
     }
   });
 };
 
 
-// find user by id and retrieve rooms -- note: error handling is jank; pushes null to array if err
+/**
+ * RoomController.fetchAll:
+ * This function retrieves all of the user's rooms
+ */
 module.exports.fetchAll = function(req, res) {
   var githubId = req.user;
   var roomsArray = [];
@@ -229,7 +316,6 @@ module.exports.fetchAll = function(req, res) {
               var roomData = {
                 created_by: room.created_by,
                 start_time: room.start_time,
-                is_open: room.is_open,
                 candidateName: room.candidateName,
                 candidateEmail: room.candidateEmail,
                 id: room._id,
@@ -239,9 +325,6 @@ module.exports.fetchAll = function(req, res) {
               roomsArray.push(roomData);
             }
             else {
-  // TODO: we were pushing null into array -- caused error
-    // on the front end need to check first if array !null
-    // Also, I think the room isn't getting deleted from the user's rooms array
               roomsArray.push({});
             }
             if (roomsArray.length === rooms.length) {
@@ -257,9 +340,12 @@ module.exports.fetchAll = function(req, res) {
   });
 }
 
-
-// this one is req.BODY.id because we are using a delete request (so not sending a body)
+/**
+ * RoomController.remove:
+ * This function deletes a room and also removes it from the user's rooms array
+ */
 module.exports.remove = function(req, res) {
+// this one is req.BODY.id because we are using a delete request (so not sending a body)
   var roomId = req.params.id;
   var githubId = req.user;
   Room.findOneAndRemove({_id: roomId}, function(err, room) {
@@ -293,4 +379,9 @@ module.exports.remove = function(req, res) {
       });
     }
   });
+<<<<<<< HEAD
 };
+=======
+};
+
+>>>>>>> resolve merge conflicts
