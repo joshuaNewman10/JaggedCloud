@@ -24,13 +24,20 @@
     $scope.createInterview = function() {
       $scope.loading = true;
       Room.createRoom($scope.newInterview, function(){
-        $scope.loading = false;
+        $scope.newInterview.sendEmail = false;
         $scope.newInterview.name = null;
         $scope.newInterview.email = null;
         $scope.newInterview.time = null;
+        $scope.exitModal();
+      });
+    };
+
+    $scope.exitModal = function() {
+      setTimeout(function() {
+        $scope.loading = false;
         $modalInstance.dismiss('cancel');
         $scope.refreshInterviews();
-      });
+      }, 2000);
     };
   }
 })();

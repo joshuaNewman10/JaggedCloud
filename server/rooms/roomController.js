@@ -11,6 +11,7 @@ var handleError = function(error) {
 module.exports.create = function(req, res) {
   var startTime = req.body.time;
   var githubId = req.user;
+  var sendEmail = req.body.sendEmail;
   var email = req.body.email;
   var name = req.body.name;
   var isOpen = Date.now() >= Date.parse(startTime);
@@ -31,7 +32,9 @@ module.exports.create = function(req, res) {
         }
         else if (user) {
           console.log('successfully added new room to user!' + user);
-          mandrill.sendMessage({email:email, fullname: name})
+          if ( sendEmail ) {
+            mandrill.sendMessage({email:email, fullname: name});
+          }
         }
       });
       res.send(201, room);

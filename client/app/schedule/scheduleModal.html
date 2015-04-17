@@ -1,6 +1,6 @@
 <div class="schedule-container">
 <div class="schedule">Schedule an Interview</div>
-  <form class="form" novalidate name='interviewForm'>
+  <form class="form" novalidate name='interviewForm' ng-if="loading===false">
     <div class="form-group">
     <input class="userinput" type="text" ng-model="newInterview.name" placeholder="Interviewee's Name" ng-class="{'error': interviewForm.$invalid && interviewForm.$dirty}"required/>
     <input class="userinput" type="email" ng-model="newInterview.email" placeholder="Interviewee's Email" ng-class="{'error': interviewForm.$invalid && interviewForm.$dirty}"required/>
@@ -9,9 +9,16 @@
     <input class="userinput" type="datetime-local" ng-model="newInterview.time" placeholder="Interview Start Time" required/>
     </div>
     <div class="form-group">
+    <input type="checkbox" ng-model="newInterview.sendEmail" ng-true-value="true" ng-false-value="false" />
+    Send Email to Candidate
+    </div>
+    <div class="form-group">
     <input class="userinput" type="submit" ng-click="createInterview(); interviewForm.$setUntouched();" value="Submit" ng-disabled='interviewForm.$invalid' />
     <img id='createInterviewSpinner' class='loading_spinner' src="../assets/loading_spinner.gif" ng-show='loading'></img>
     </div>
   </form>
+  <div class="confirmation" ng-if="loading===true">
+      <h3>Interview successfully created!</h3>
+  </div>
 </div>
 </div>
