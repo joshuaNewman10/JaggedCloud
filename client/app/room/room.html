@@ -27,11 +27,11 @@
         <div class="flipper">
             <div class="back">
                 <img class='videoPlaceholder' ng-show='!userVideoConnected' src="../../assets/noVideoIconUser.png"></img>
-                <video class='userVideo' muted='true' ng-src='{{userVideoSource}}' autoplay></video>
+                <video class='userVideo' muted='true' ng-show='userVideoConnected' ng-src='{{userVideoSource}}' autoplay></video>
             </div>
             <div class="front">
                 <img class='videoPlaceholder' ng-show='!peerVideoConnected' src="../../assets/noVideoIconPeer.png"></img>
-                <video class='peerVideo' ng-src='{{peerVideoSource}}' autoplay></video>
+                <video class='peerVideo' ng-show='peerVideoConnected' ng-src='{{peerVideoSource}}' autoplay></video>
             </div>
         </div>
     </div>
