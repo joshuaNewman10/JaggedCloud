@@ -1,13 +1,13 @@
 body { 
-  color: #9078AD;
+  color: #fff;
   font-family: 'Helvetica Nueue', Helvetica, sans-serif;
   font-weight: 300;
-  background-color: #321456;
+  background-color: #2F8FEE; /*rrggbb  0123456789abcdef   08, 50 + 15, 150 + 6*/
 }
 
 .navbar {
-  border-bottom: 1px solid #9078AD;
-  border-left: 1px solid #9078AD;
+  border-bottom: 1px solid #fff;
+  border-left: 1px solid #fff;
   width: 40%;
   min-height: 10px;
   margin: 5px 0 0 0;
@@ -15,23 +15,41 @@ body {
 }
 
 a {
-  color: #9078AD;
+  color: #fff;
   text-decoration: none;
 }
 
 a:hover {
   text-decoration: none;
-  color: #9078AD;
+  color: #fff;
 }
 
 a:visited {
-    color: #9078AD;
+    color: #fff;
     text-decoration: none;
 }
 
 a:visited:hover {
-    color: #9078AD;
+    color: #fff;
     text-decoration: none;
+}
+
+.interview{
+  width:65%;
+  height:10%;
+  border:3px solid #fff;
+  /*border-radius: 5px;*/
+  box-shadow: 8px 8px 5px #888888;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+  padding:5px;
+  /*background: #0066EA;*/
+  background: #085EE6;
+}
+
+.interview:hover{
+    background: #4387F3;
 }
 
 .signin {
@@ -49,30 +67,6 @@ a:visited:hover {
   color: #000;
 }
 
-.interview{
-  width:75%;
-  height:10%;
-  border:3px solid #fff;
-  border-radius: 5px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 5px;
-  padding:5px;
-}
-
-.interview:hover{
-    background: #B2B2CC;
-}
-
-.startTime{
-}
-
-.candidateName{
-}
-
-.candidateEmail{
-}
-
 .homepage {
   margin: 10px 0 0 0;
   height: 100%;
@@ -82,7 +76,7 @@ a:visited:hover {
 
 .schedule {
   background-color: #321456;
-  color: #fff;
+  color: #085EE6;
   border: 1px solid #fff;
   font-weight: 100;
   font-size: 36px;
@@ -264,7 +258,8 @@ a:visited:hover {
 
 .homeSearch {
   font-size: 22px;
-  width: 50%;
+  width: 30%;
+  margin-bottom: 30px;
 }
 
 .fzf-container {
@@ -294,6 +289,7 @@ a:visited:hover {
 .peerTypingText{
   display: inline-block;
 }
+
 .homeLoadingSpinner{
   position: relative;
   left: 50%;
