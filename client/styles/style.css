@@ -330,7 +330,8 @@ a:visited:hover {
 .rotateVideoIcon{
   position:absolute; 
   z-index: 100;
-  bottom: 35px;
+  bottom: 10px;
+  left: 10px;
   height: 25px;
   width: 25px;
 }

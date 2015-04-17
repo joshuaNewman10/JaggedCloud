@@ -38,21 +38,25 @@
 
       // Register user video connected event
       comm.on('local', function(peer) {
-        $scope.userVideoSource = $sce.trustAsResourceUrl(peer.stream);
-        $scope.userVideoConnected = true;
-        $scope.$digest();
+        $scope.$apply(function(){
+          $scope.userVideoSource = $sce.trustAsResourceUrl(peer.stream);
+          $scope.userVideoConnected = true;
+        });
       });
 
       // Register peer connect/disconnect event
       comm.on('connected', function(peer) {
+        $scope.$apply(function(){
           $scope.peerVideoSource = $sce.trustAsResourceUrl(peer.stream);
           $scope.peerVideoConnected = true;
-          $scope.$digest();
+        });
       });
 
       comm.on('disconnect', function(peer) {
+        $scope.$apply(function(){
           $scope.peerVideoSource = '';
           $scope.peerVideoConnected = false;
+        });
       });
     };
 
