@@ -1,0 +1,14 @@
+<div id="home-container">
+    <div class="container-fluid">
+      <!-- Collect the nav links, forms, and other content for toggling -->
+        <ul class="nav nav-tabs navbar">
+          <li class="divider-vertical title"><a href="#/">HackBox</a></li>
+          <li class="divider-vertical" ng-controller='signinCtrl'  ng-show='!showLogout'><a ng-click='openSigninModal()' href="#/signin">Sign In</a></li>
+          <li class="divider-vertical"><a ui-sref='room({roomId: "hackbox"})'>Quick Room</a></li>
+        </ul>
+        <div class="fzf-container">
+          <div class="fzf">404:</div>
+          <div class="fzf-message">Your request was invalid or your room may be closed. Try again when the room is open.</div>
+        </div>
+    </div>
+</div>

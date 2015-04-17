@@ -63,6 +63,7 @@ module.exports.save = function(req, res) {
 module.exports.fetchOne = function(req, res) {
   var roomId = req.params.id;
   var githubId = req.user;
+  console.log(roomId);
 
   Room.findById(roomId, function(err, room){
     // var canvas = room.canvas;
@@ -72,23 +73,24 @@ module.exports.fetchOne = function(req, res) {
     //   text: text
     // }
     // console.log(candidateRoom);
-    var isOpen = (Date.now() > Date.parse(room.start_time)) || githubId === room.created_by;
-
-    if (err) { 
-      handleError(err); 
-      res.send(404, 'no room data');
+    if(room) {
+      var isOpen = (Date.now() > Date.parse(room.start_time)) || githubId === room.created_by;
+      console.log('is the room open', isOpen)
+      if(isOpen) {
+        res.send(200, room)
+        return;
+      }
     }
-    else if (room && !isOpen) {
-      res.send(404, 'room not available');
+    if(err) { 
+      // handleError(err);
+      console.log('i hit an error', err)
+      res.send(200, {data: '404'});
+      return;
     }
     // if current user is room creator send back all room data, else send candidateRoom
-    else if (room && isOpen) {
-      if(githubId === room.created_by) {
-        res.send(200, room);
-      }
-      else {
-        res.send(200, room); // change to candidateRoom once obj is complete
-      }
+    else {
+      console.log('i hit an else');
+      res.status(200).send({data: '404'}); // change to candidateRoom once obj is complete
     }
   });
 };
@@ -101,10 +103,11 @@ module.exports.fetchAll = function(req, res) {
   User.findOne({github_id: githubId}, 'rooms', function(err, user){
     if (err) { 
       handleError(err); 
-      res.send(404, 'cannot find user by ID');
+      res.send(200, 'cannot find user by ID');
     }
     else if(user) {
       var rooms = user.rooms;
+
       // If the user's room list is empty, send back the empty array
       if(rooms.length === 0){
         res.send(202, roomsArray);
@@ -184,8 +187,60 @@ module.exports.remove = function(req, res) {
       });
     }
   });
-}
+};
 
+module.exports.fetchCompleted = function(req, res) {
+  var githubId = req.user;
+  var roomsArray = [];
+  User.findOne({github_id: githubId, }, 'rooms', function(err, user){
+    if (err) { 
+      handleError(err); 
+      res.send(200, 'cannot find user by ID');
+    }
+    else if(user) {
+      var rooms = user.rooms;
+
+      // If the user's room list is empty, send back the empty array
+      if(rooms.length === 0){
+        res.send(202, roomsArray);
+      }
+      // If the user has rooms, send back data about each
+      else {
+        for (var i = 0; i < rooms.length; i++) {
+          Room.findById(rooms[i], function(err, room){
+            if (err) { 
+              handleError(err); 
+            }
+            else if (room) {
+              var roomData = {
+                created_by: room.created_by,
+                start_time: room.start_time,
+                is_open: room.is_open,
+                candidateName: room.candidateName,
+                candidateEmail: room.candidateEmail,
+                id: room._id,
+                text: room.text[0],
+                canvas: room.canvas
+              }
+              roomsArray.push(roomData);
+            }
+            else {
+  // TODO: we were pushing null into array -- caused error
+    // on the front end need to check first if array !null
+    // Also, I think the room isn't getting deleted from the user's rooms array
+              roomsArray.push({});
+            }
+            if (roomsArray.length === rooms.length) {
+              res.send(202, roomsArray);
+            }
+          });
+        }
+      }
+    } 
+    else {
+      res.send(304, 'User not found!');
+    }
+  });
 
 
 
