@@ -33,11 +33,12 @@ var server = http.createServer(app).listen(port, function() {
 var io = require('socket.io').listen(server);
 
 io.sockets.on('connection', function(socket) {
+
   //join to room and save room name
   socket.emit('greeting', 'HELLO WORLD heres some data from sockets!');
   socket.on('join room', function(room) {
     socket.join(room.roomName);
-    socket.ROOMPROP = room.roomName
+    socket.ROOMPROP = room.roomName;
   });
 
   socket.on('coords', function(data) {
