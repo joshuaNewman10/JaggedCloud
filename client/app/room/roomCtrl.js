@@ -125,8 +125,12 @@
         TextEditor.resizeAllEditors();
       }
     };
-    //////////////////   End Room Methods   //////////////////
-
+    $scope.clearCanvas = function() {
+      Drawing.clearCanvas();
+    };
+    $scope.toggleEraser = function() {
+      Drawing.toggleEraser();
+    };
     // Call the initialize function
     console.log('Joining Interview with ID: ' + $stateParams.roomId);
     $scope.init();
