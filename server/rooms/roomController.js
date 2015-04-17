@@ -76,7 +76,7 @@ module.exports.fetchOne = function(req, res) {
     if(room) {
       var isOpen = (Date.now() > Date.parse(room.start_time)) || githubId === room.created_by;
       console.log('is the room open', isOpen)
-      if(isOpen && githubId === room.created_by) {
+      if(isOpen) {
         res.send(200, room)
         return;
       }
@@ -187,8 +187,60 @@ module.exports.remove = function(req, res) {
       });
     }
   });
-}
+};
 
+module.exports.fetchCompleted = function(req, res) {
+  var githubId = req.user;
+  var roomsArray = [];
+  User.findOne({github_id: githubId, }, 'rooms', function(err, user){
+    if (err) { 
+      handleError(err); 
+      res.send(200, 'cannot find user by ID');
+    }
+    else if(user) {
+      var rooms = user.rooms;
+
+      // If the user's room list is empty, send back the empty array
+      if(rooms.length === 0){
+        res.send(202, roomsArray);
+      }
+      // If the user has rooms, send back data about each
+      else {
+        for (var i = 0; i < rooms.length; i++) {
+          Room.findById(rooms[i], function(err, room){
+            if (err) { 
+              handleError(err); 
+            }
+            else if (room) {
+              var roomData = {
+                created_by: room.created_by,
+                start_time: room.start_time,
+                is_open: room.is_open,
+                candidateName: room.candidateName,
+                candidateEmail: room.candidateEmail,
+                id: room._id,
+                text: room.text[0],
+                canvas: room.canvas
+              }
+              roomsArray.push(roomData);
+            }
+            else {
+  // TODO: we were pushing null into array -- caused error
+    // on the front end need to check first if array !null
+    // Also, I think the room isn't getting deleted from the user's rooms array
+              roomsArray.push({});
+            }
+            if (roomsArray.length === rooms.length) {
+              res.send(202, roomsArray);
+            }
+          });
+        }
+      }
+    } 
+    else {
+      res.send(304, 'User not found!');
+    }
+  });
 
 
 
