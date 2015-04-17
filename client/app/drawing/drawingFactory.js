@@ -142,7 +142,6 @@
     //This happens on every mousemove (really mouseup)
     function updateCanvas(data) {
       _pendingData = true;
-      pollCanvasStatus();
       var pollCanvasStatus = function() {
         if ( _currentlyDrawing ) {
           setTimeout(function() {
@@ -155,6 +154,7 @@
         }
 
       };
+      pollCanvasStatus();
       // _fabricCanvas.renderAll();
     }
 
