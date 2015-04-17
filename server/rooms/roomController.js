@@ -241,6 +241,6 @@ module.exports.fetchCompleted = function(req, res) {
       res.send(304, 'User not found!');
     }
   });
-
+}
 
 

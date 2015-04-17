@@ -19,6 +19,7 @@
     $scope.roomId = $stateParams.roomId;
     $scope.saveInterval = null;
     $scope.isPeerTyping = false;
+    $scope.videoToggle = false;
 
     var isTypingPromise = null;
     var AUTOSAVE_FREQUENCY_MS = 60000;
@@ -62,23 +63,9 @@
       console.log($scope.roomId);
       Room.getRoom($scope.roomId, function(response){
         if(response.data.data === '404') {
-          $state.go('404');
+          $state.go('404',  {}, { reload: true });
           return;
         }
-        // If there is text saved, set the editors text to that. 
-        if(response.data.text.length > 0){
-          response.data.text.forEach(function(savedText, i){
-            TextEditor.addTextEditor($scope.saveData);
-            TextEditor.setEditorText(savedText, i);
-          });
-          TextEditor.setActiveEditor(0);
-        } 
-        else{
-          TextEditor.addTextEditor($scope.saveData);
-        }
-
-        // Initialize the listener for incoming text
-        TextEditor.initializeDataListener();
 
         // Initialize text editors 
         // Assign the save keyboard shortcut to each editor
@@ -144,12 +131,23 @@
         TextEditor.resizeAllEditors();
       }
     };
+    
     $scope.clearCanvas = function() {
       Drawing.clearCanvas();
     };
     $scope.toggleEraser = function() {
       Drawing.toggleEraser();
     };
+
+    /**
+     * Function: RoomCtrl.toggleVideo()
+     * This function will toggle the video between the user and peer.
+     */
+    $scope.toggleVideo = function(){
+      $scope.videoToggle = !$scope.videoToggle;
+    };
+    //////////////////   End Room Methods   //////////////////
+
     // Call the initialize function
     console.log('Joining Interview with ID: ' + $stateParams.roomId);
     $scope.init();
