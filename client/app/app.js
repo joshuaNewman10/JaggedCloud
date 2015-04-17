@@ -37,11 +37,6 @@
           url: '/404',
           controller: '404Ctrl',
           templateUrl: 'app/404/404.html'
-        })
-        .state('past', {
-          url: '/past',
-          controller: 'pastCtrl',
-          templateUrl: 'app/past/past.html'
         });
 
         // Attach token to all requests
