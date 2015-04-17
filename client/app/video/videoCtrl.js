@@ -15,6 +15,8 @@
   function VideoCtrl($scope, $sce, $stateParams, IcecommWrapper){
     $scope.userVideoSource = null;
     $scope.peerVideoSource = null;
+    $scope.userVideoConnected = false;
+    $scope.peerVideoConnected = false;
 
     // The $destroy event is called when we leave this view
     $scope.$on('$destroy', function(){
@@ -37,17 +39,20 @@
       // Register user video connected event
       comm.on('local', function(peer) {
         $scope.userVideoSource = $sce.trustAsResourceUrl(peer.stream);
+        $scope.userVideoConnected = true;
         $scope.$digest();
       });
 
       // Register peer connect/disconnect event
       comm.on('connected', function(peer) {
           $scope.peerVideoSource = $sce.trustAsResourceUrl(peer.stream);
+          $scope.peerVideoConnected = true;
           $scope.$digest();
       });
 
       comm.on('disconnect', function(peer) {
           $scope.peerVideoSource = '';
+          $scope.peerVideoConnected = false;
       });
     };
 
