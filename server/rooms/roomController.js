@@ -12,8 +12,6 @@ var roomState = function(startTime, endTime) {
   var currentTime = Date.now();
 =======
 // TODO: increase startTime by 24hr -- this is wrong
-// var startTime = req.body.time;
-// var endTime = (startTime + 24);
 // var roomState = roomState(startTime, endTime);
  
 
@@ -151,13 +149,12 @@ module.exports.create = function(req, res) {
  * This function saves the data in the interview room
  */
 module.exports.save = function(req, res) {
-  var notes = req.body.notes;
   var roomId = req.body.roomId;
   var canvas = req.body.canvas;
   var text = req.body.textEditor;
 
   // find the room and update data
-  Room.findOneAndUpdate({_id: roomId}, {canvas: canvas, text: text, notes: notes}, {upsert: true},
+  Room.findOneAndUpdate({_id: roomId}, {canvas: canvas, text: text}, {upsert: true},
     function(err, room){
       // error finding room
       if (err) {
@@ -351,7 +348,7 @@ module.exports.remove = function(req, res) {
   Room.findOneAndRemove({_id: roomId}, function(err, room) {
     if (err) { 
       handleError(err); 
-      res.send(404, 'room not found');
+      res.status(404).send('room not found');
     }
     // If a room could be found, find the user and remove that room from their list
     else if (room) {

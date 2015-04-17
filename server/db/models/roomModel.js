@@ -20,7 +20,6 @@ var roomSchema = new mongoose.Schema({
   created_by: String, // githubId
   canvas: String,
   text: [String],
-  notes: String,
   candidateName: String,
   candidateEmail: String
 });
