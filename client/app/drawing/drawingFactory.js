@@ -18,6 +18,8 @@
     var _socket = null;
     var _intervalID = null;
     var _currentlyErasing = false;
+    var _currentlyDrawing = false;
+    var _pendingData = false;
 
     var instance = {
       makeCanvas: makeCanvas,
@@ -76,7 +78,16 @@
       Sockets.on('clearCanvas', function() {
         _fabricCanvas.clear();
       });
-      _fabricCanvas.on('mouse:up', sendData);       
+
+      _fabricCanvas.on('mouse:down', function() {
+        _currentlyDrawing = true;
+      });
+
+
+      _fabricCanvas.on('mouse:up', function() {
+        _currentlyDrawing = false;
+        sendData();
+      });       
     }
 
     function toggleEraser() {
@@ -130,13 +141,30 @@
     //It then updates the canvas with the data
     //This happens on every mousemove (really mouseup)
     function updateCanvas(data) {
-      _fabricCanvas.loadFromJSON(data, _fabricCanvas.renderAll.bind(_fabricCanvas));
+      _pendingData = true;
+      pollCanvasStatus();
+      var pollCanvasStatus = function() {
+        if ( _currentlyDrawing ) {
+          setTimeout(function() {
+            pollCanvasStatus();
+          }, 1000);
+        } else {
+          _pendingData = false;
+          _fabricCanvas.loadFromJSON(data, _fabricCanvas.renderAll.bind(_fabricCanvas));
+          sendData();
+        }
+
+      };
       // _fabricCanvas.renderAll();
     }
 
     function sendData() {
-      var json = JSON.stringify( _fabricCanvas.toJSON());
-      Sockets.emit('coords', json);
+      if ( _pendingData ) {
+        console.log('Data Pending!');
+      } else {
+        var json = JSON.stringify( _fabricCanvas.toJSON());
+        Sockets.emit('coords', json);        
+      }
     }
   }
 })();
