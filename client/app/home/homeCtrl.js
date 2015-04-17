@@ -52,21 +52,33 @@
       console.log('Logging out!');
     };
 
+    /**
+     * Function: HomeCtrl.joinRoom()
+     * This function will join a room with a particular roomId
+     */
     $scope.joinRoom = function(interview){
       console.log('Joining: ' + interview.roomId);
       $state.go('room', {roomId: interview.roomId})
     } 
 
+    /**
+     * Function: HomeCtrl.remove()
+     * This function will remove a room from the user's list and resync with database
+     */
     $scope.remove = function(roomId){
       Room.deleteRoom(roomId, $scope.refreshInterviews);
     }
 
+    /**
+     * Function: HomeCtrl.quickRoom()
+     * This function will create a random room for a user. 
+     */
     $scope.quickRoom = function(){
       var room = {
         time: Date.now(),
-        user: 'testUser',
-        email: 'testUser@email.com',
-        name: 'Test User'
+        user: 'Demo User',
+        email: 'demoUser@email.com',
+        name: 'Demo Room'
       };
 
       Room.createRoom(room,function(response){
