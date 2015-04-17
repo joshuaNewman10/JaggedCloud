@@ -11,9 +11,15 @@
     .module('hackbox')
     .controller('roomCtrl', RoomCtrl);
 
+<<<<<<< HEAD
   RoomCtrl.$inject = ['$rootScope', '$timeout', '$scope', '$stateParams', 'TextEditor', 'Room', 'Drawing'];
 
   function RoomCtrl($rootScope, $timeout, $scope, $stateParams, TextEditor, Room, Drawing){
+=======
+  RoomCtrl.$inject = ['$scope', '$http', '$stateParams', 'TextEditor', 'Room', 'Drawing', '$state'];
+
+  function RoomCtrl($scope, $http, $stateParams, TextEditor, Room, Drawing, $state){
+>>>>>>> add 404 route
     $scope.showCanvas = false;
     $scope.saving = false;
     $scope.roomId = $stateParams.roomId;
@@ -59,7 +65,25 @@
       console.log('Initializing room controller');
 
       // Fetch the room from the database
-      Room.getRoom($scope.roomId, function(response){
+      Room.getRoom($scope.roomID, function(response){
+        if(response.data.data === '404') {
+          $state.go('404');
+          return;
+        }
+        // If there is text saved, set the editors text to that. 
+        if(response.data.text.length > 0){
+          response.data.text.forEach(function(savedText, i){
+            TextEditor.addTextEditor($scope.saveData);
+            TextEditor.setEditorText(savedText, i);
+          });
+          TextEditor.setActiveEditor(0);
+        } 
+        else{
+          TextEditor.addTextEditor($scope.saveData);
+        }
+
+        // Initialize the listener for incoming text
+        TextEditor.initializeDataListener();
 
         // Initialize text editors 
         // Assign the save keyboard shortcut to each editor
