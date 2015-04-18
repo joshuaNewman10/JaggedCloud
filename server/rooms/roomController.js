@@ -6,30 +6,14 @@ var handleError = function(error) {
   console.error('the following error has occurred: ' + error);
 };
 
-<<<<<<< HEAD
+
+/**
+ * roomState:
+ * This function takes in start and end times; returns current room state
+ */
 var roomState = function(startTime, endTime) {
   // set the currentTime equal to the current time in ms
   var currentTime = Date.now();
-=======
-// TODO: increase startTime by 24hr -- this is wrong
-// var roomState = roomState(startTime, endTime);
- 
-
-var roomState = function(startTime, endTime) {
-  if (Date.now() < Date.parse(startTime)){
-    return 'preInterview';
-  }
-  else if (Date.now() >= Date.parse(startTime) && Date.now() < Date.parse(endTime)){
-    return 'live';
-  }
-  else if (Date.now() >= Date.parse(endTime)){
-    return 'complete';
-  }
-  else {
-    console.log('error processing room state');
-  }
-}
->>>>>>> resolve merge conflicts
 
   // if the startTime is greater than the currentTime, the interview has not begun
   if (currentTime < startTime){
@@ -50,56 +34,41 @@ var roomState = function(startTime, endTime) {
   else {
    console.error('error processing room state');
   }
-};
+}
+
 
 /**
  * RoomController.create:
  * This function creates a new interview room
  */
 module.exports.create = function(req, res) {
-<<<<<<< HEAD
   var startTime = Date.parse(req.body.time);
   var endTime = startTime + 86400000; // create the default end time of 24hrs (86400000ms) later than the start time
   var githubId = req.user;
   var sendEmail = req.body.sendEmail;
   var email = req.body.email;
-<<<<<<< HEAD
   var name = req.body.name;
   var isOpen = Date.now() >= startTime;
 
-=======
-=======
-  var githubId = req.user;
-  var name = req.body.name;
-  var email = req.body.email;
->>>>>>> resolve merge conflicts
-  var startTime = req.body.time;
-  var endTime = (startTime + 24);
-
-<<<<<<< HEAD
-  Room.create({ created_by: githubId, start_time: startTime, end_time: endTime, is_open: isOpen, candidateName: name, candidateEmail: email }, function(err, room){
-=======
   // create new interview room
   Room.create({ created_by: githubId, candidateName: name, candidateEmail: email, start_time: startTime, end_time: endTime }, function(err, room){
     // error creating room
->>>>>>> resolve merge conflicts
     if (err) {
       handleError(err);
-      res.status(404).send('error occurred; no room created');
+      res.status(404).send('error creating room');
     }
-    // no error creating room
     else{
-      // no room created, send error
+      // no room created
       if (!room) {
         handleError(err);
-        res.status(404).send('error occurred; no room created');
+        res.status(404).send('error creating room');
       }
       // room created successfully
       else {
         console.log('room successfully created!');
 
         // find user and push room to user's rooms array
-        User.findOneAndUpdate({github_id: githubId}, {$push: {rooms: room._id}}, {upsert: true}, function(err, user){
+        User.findOneAndUpdate({github_id: githubId}, {$push: {rooms: room._id}}, function(err, user){
           // error finding user
           if (err) {
             handleError(err);
@@ -109,38 +78,20 @@ module.exports.create = function(req, res) {
             // user doesn't exist
             if (!user) {
               handleError(err);
-              res.status(404).send('error finding user');
+              res.status(201).send(room);
             }
-            // user exists; send email to candidate
+            // user exists; send email to candidate and send room object back
             else {
               console.log('successfully added new room to user!' + user);
-              mandrill.sendMessage({email:email, fullname: name});
+              if (sendEmail) {
+                mandrill.sendMessage({email:email, fullname: name});
+              }
+              res.status(201).send(room);
             }
           }
         });
-        res.status(201).send(room);
       }      
     }
-<<<<<<< HEAD
-    else if (room) {
-      console.log('room successfully created!');
-
-      User.findOneAndUpdate({github_id: githubId}, {$push: {rooms: room._id}}, {upsert: true}, function(err, user){
-        if (err) {
-          handleError(err);
-          res.send(404, 'user not found');
-        }
-        else if (user) {
-          console.log('successfully added new room to user!' + user);
-          if ( sendEmail ) {
-            mandrill.sendMessage({email:email, fullname: name});
-          }
-        }
-      });
-      res.send(201, room);
-    }      
-=======
->>>>>>> resolve merge conflicts
   });
 };
 
@@ -153,7 +104,7 @@ module.exports.save = function(req, res) {
   var canvas = req.body.canvas;
   var text = req.body.textEditor;
 
-  // find the room and update data
+  // find room and update data
   Room.findOneAndUpdate({_id: roomId}, {canvas: canvas, text: text}, {upsert: true},
     function(err, room){
       // error finding room
@@ -161,15 +112,14 @@ module.exports.save = function(req, res) {
         handleError(err);
         res.status(404).send('error finding room');
       }
-      // no error finding room
       else {
         // no room found
         if (!room){
           handleError(err);
-          res.status(404).send('room not found');
+          res.status(404).send('no room found');
         }
         else {
-          // room found and data saved
+          // room found, data saved, room object sent back
           handleError(err);
           res.status(201).send(room);      
         }
@@ -178,7 +128,6 @@ module.exports.save = function(req, res) {
   );
 };
 
-<<<<<<< HEAD
 module.exports.exists = function(req, res) {
   var roomId = req.params.id;
   
@@ -238,50 +187,51 @@ module.exports.access = function(req, res) {
   }
 }
 
-// need to use req.PARAMS.id here because this is a get request
-<<<<<<< HEAD
-// maybe: complete candidateRoom object that contains only the data the the candidate should see
-// (right now they're the same, but may add box for interviewer to take notes)
-=======
-// TODO: once notes implemented, complete candidateRoom obj containing only data for candidate (no notes)
->>>>>>> remove is_Open boolean
-=======
+// TODO: DETERMINE ROOM STATE
 /**
  * RoomController.fetchOne:
  * This function retrieves the data from one specific room
  */
->>>>>>> resolve merge conflicts
 module.exports.fetchOne = function(req, res) {
-  // to retrieve roomdId, use req.PARAMS.id because this is a get request
+  // retrieve roomdId using req.PARAMS.id because this is a get request (so a body is not sent)
   var roomId = req.params.id;
   var githubId = req.user;
-  console.log(roomId);
 
   // find room by githubId
   Room.findById(roomId, function(err, room){
-    if(room) {
-      var isOpen = (Date.now() > room.start_time) || githubId === room.created_by;
-      console.log('is the room open', isOpen)
-      if(isOpen) {
-        res.send(200, room)
-        return;
-      }
-    }
+    // error finding room
     if(err) { 
       handleError(err);
+      res.status(404).send('error finding room');
     }
-    // if current user is room creator send back all room data, else send candidateRoom
     else {
-<<<<<<< HEAD
-      res.status(404).send(); // change to candidateRoom once obj is complete
-=======
-      console.log('i hit an else');
-      res.status(200).send({data: '404'});
->>>>>>> resolve merge conflicts
+      // no room found
+      if(!room) {
+        handleError(err);
+        res.status(404).send('no room found');
+      }
+      else {
+        // room found; determine roomState
+        var startTime = room.start_time;
+        var endTime = room.end_time;
+        var roomState = roomState(startTime, endTime);
+        if (roomState === 'preInterview') {}
+        else if (roomState === 'live') {}
+        else if (roomState === 'complete') {}
+        else {
+          res.status(404).send('room state not determined');
+        }
+        res.status(200).send(room);
+        // var isOpen = (Date.now() > Date.parse(room.start_time)) || githubId === room.created_by;
+        // console.log('is the room open', isOpen)
+        // if(isOpen) {
+        // }
+      }
     }
   });
 };
 
+// TODO: pushing null into array; use async library
 
 /**
  * RoomController.fetchAll:
@@ -289,96 +239,130 @@ module.exports.fetchOne = function(req, res) {
  */
 module.exports.fetchAll = function(req, res) {
   var githubId = req.user;
-  var roomsArray = [];
-  User.findOne({github_id: githubId}, function(err, user){
+  // find user by their githubId
+  User.findOne({github_id: githubId}, 'rooms', function(err, user){
+    // error fetching user
     if (err) { 
       handleError(err); 
-      res.send(200, 'cannot find user by ID');
-    }
-    else if(user) {
-      var rooms = user.rooms;
-
-      // If the user's room list is empty, send back the empty array
-      if(rooms.length === 0){
-        res.send(202, roomsArray);
+      res.status(400).send('cannot find user by ID');
+    // no retrieval error
+    else {
+      // no user
+      if (!user) {
+        handleError(err);
+        res.status(404).send('no user found');
       }
-      // If the user has rooms, send back data about each
+      // user found
       else {
-        for (var i = 0; i < rooms.length; i++) {
-          Room.findById(rooms[i], function(err, room){
-            if (err) { 
-              handleError(err); 
-            }
-            else if (room) {
-              var roomData = {
-                created_by: room.created_by,
-                start_time: room.start_time,
-                candidateName: room.candidateName,
-                candidateEmail: room.candidateEmail,
-                id: room._id,
-                text: room.text[0],
-                canvas: room.canvas
+        // user's array of rooms; empty array to be populated and sent back
+        var rooms = user.rooms;
+        var roomsArray = [];
+
+        // if the user's room array is empty or undefined, send back the empty array
+        if (rooms.length === 0 || rooms.length === undefined){
+          res.status(202).send(roomsArray);
+        }
+        // if the user has rooms in their rooms array, iterate through each one
+        else {
+          for (var i = 0; i < rooms.length; i++) {
+            // retrieve each room in the array by id
+            Room.findById(rooms[i], function(err, room){
+              // error fetching room
+              if (err) { 
+                handleError(err); 
+                res.status(404).send('error fetching room');
               }
-              roomsArray.push(roomData);
-            }
-            else {
-              roomsArray.push({});
-            }
-            if (roomsArray.length === rooms.length) {
-              res.send(202, roomsArray);
-            }
-          });
+              // no error fetching room
+              else {
+                // room not found; push empty object into array
+                if (!room) {
+                  console.log('room not found');
+                  roomsArray.push(null);
+                }
+                // room found; add requested info to roomData object
+                else {
+                  var roomData = {
+                    created_by: room.created_by,
+                    start_time: room.start_time,
+                    candidateName: room.candidateName,
+                    candidateEmail: room.candidateEmail,
+                    id: room._id,
+                    text: room.text[0],
+                    canvas: room.canvas
+                  }
+                  // push roomData back into roomsArray
+                  roomsArray.push(roomData);
+                }
+              }
+              // once the roomsArray is equal in length to the user's array of rooms, send back data
+              if (roomsArray.length === rooms.length) {
+                res.status(202).send(roomsArray);
+              }
+            });
+          }
         }
       }
-    } 
-    else {
-      res.send(304, 'User not found!');
     }
   });
-}
+};
 
 /**
  * RoomController.remove:
  * This function deletes a room and also removes it from the user's rooms array
  */
 module.exports.remove = function(req, res) {
-// this one is req.BODY.id because we are using a delete request (so not sending a body)
+  // req.PARAMS.id required because we are using a delete request (so not sending a body)
   var roomId = req.params.id;
   var githubId = req.user;
+  // find room by id
   Room.findOneAndRemove({_id: roomId}, function(err, room) {
+    // error fetching room
     if (err) { 
       handleError(err); 
-      res.status(404).send('room not found');
+      res.status(404).send('error fetching room');
     }
-    // If a room could be found, find the user and remove that room from their list
-    else if (room) {
-      User.findOne({github_id: githubId}, function(err, user){
-        if (err) { 
-          handleError(err); 
-          res.send(404, 'user not found');
-        }
-        else if (user) {
-          var rooms = user.rooms;
-
-          // Find the room to remove and remove it
-          for (var i = 0; i < rooms.length; i++) {
-            if (rooms[i] === roomId) {
-              rooms.splice(i, 1);
-              user.rooms = rooms;
+    // no error finding room
+    else {
+      // room not found
+      if (!room) {
+        handleError(err); 
+        res.status(404).send('room not found');
+      }
+      // room was found
+      else {
+        // find user by their githubId
+        User.findOne({github_id: githubId}, function(err, user){
+          // error finding user
+          if (err) { 
+            handleError(err); 
+            res.send(404, 'error finding user');
+          }
+          // no error finding user
+          else {
+            // user not found
+            if (!user) {
+              handleError(err); 
+              res.send(404, 'user not found');
+            }
+            // user found
+            else{
+              var rooms = user.rooms;
+              // iterate through the user's rooms array, find room and remove it
+              for (var i = 0; i < rooms.length; i++) {
+                if (rooms[i] === roomId) {
+                  rooms.splice(i, 1);
+                  user.rooms = rooms;
+                }
+              }
+              // save user with new array and send back room
+              user.save().then(function(){
+                res.send(200, room);
+              });
             }
           }
-
-          // Save the new list and send response
-          user.save().then(function(){
-            res.send(200, room);
-          });
-        }
-      });
+        });
+      }
     }
   });
-<<<<<<< HEAD
-};
-=======
 };
 
->>>>>>> resolve merge conflicts
