@@ -7,6 +7,9 @@ var handleError = function(error) {
 };
 
 
+// TODO: FetchAll pushes null into array; refactor with async library
+
+
 /**
  * roomState:
  * This function takes in start and end times; returns current room state
@@ -35,7 +38,6 @@ var roomState = function(startTime, endTime) {
    console.error('error processing room state');
   }
 }
-
 
 /**
  * RoomController.create:
@@ -128,6 +130,10 @@ module.exports.save = function(req, res) {
   );
 };
 
+/**
+ * RoomController.exists:
+ * This function determines if the room exists
+ */
 module.exports.exists = function(req, res) {
   var roomId = req.params.id;
   
@@ -154,6 +160,10 @@ module.exports.exists = function(req, res) {
   }
 };
 
+/**
+ * RoomController.access:
+ * This function determines whether a user can access a room or not and returns a boolean
+ */
 module.exports.access = function(req, res) {
   var roomId = req.params.id;
 
@@ -221,17 +231,15 @@ module.exports.fetchOne = function(req, res) {
         else {
           res.status(404).send('room state not determined');
         }
-        res.status(200).send(room);
         // var isOpen = (Date.now() > Date.parse(room.start_time)) || githubId === room.created_by;
         // console.log('is the room open', isOpen)
         // if(isOpen) {
+        //    res.status(200).send(room);
         // }
       }
     }
   });
 };
-
-// TODO: pushing null into array; use async library
 
 /**
  * RoomController.fetchAll:
@@ -366,4 +374,3 @@ module.exports.remove = function(req, res) {
     }
   });
 };
-
