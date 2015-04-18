@@ -38,7 +38,7 @@ var roomState = function(startTime, endTime) {
   else {
    console.error('error processing room state');
   }
-}
+};
 
 /**
  * RoomController.create:
@@ -254,7 +254,7 @@ module.exports.fetchOne = function(req, res) {
           }
         }
         else {
-          res.status(404).send('room state not determined');
+          res.status(404).send('room is not in an expected state');
         }
         // var isOpen = (Date.now() > Date.parse(room.start_time)) || githubId === room.created_by;
         // console.log('is the room open', isOpen)
