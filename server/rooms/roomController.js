@@ -256,11 +256,6 @@ module.exports.fetchOne = function(req, res) {
         else {
           res.status(404).send('room is not in an expected state');
         }
-        // var isOpen = (Date.now() > Date.parse(room.start_time)) || githubId === room.created_by;
-        // console.log('is the room open', isOpen)
-        //  res.status(200).send(room);
-        // if(isOpen) {
-        // }
       }
     }
   });
