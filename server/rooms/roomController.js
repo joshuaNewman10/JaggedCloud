@@ -7,8 +7,8 @@ var handleError = function(error) {
 };
 
 
-// TODO: fetchAll pushes null into array; refactor with async library
-// TODO: double check room state logic in fetchOne
+// MAYBE: refactor fetchAll with async library
+// MAYBE: refactor all queries to use helper functions
 
 
 /**
@@ -273,7 +273,7 @@ module.exports.fetchOne = function(req, res) {
 module.exports.fetchAll = function(req, res) {
   var githubId = req.user;
   // find user by their githubId
-  User.findOne({github_id: githubId}, 'rooms', function(err, user){
+  User.findOne({github_id: githubId}, function(err, user){
     // error fetching user
     if (err) { 
       handleError(err); 
@@ -293,7 +293,7 @@ module.exports.fetchAll = function(req, res) {
         var roomsArray = [];
 
         // if the user's room array is empty or undefined, send back the empty array
-        if (rooms.length === 0 || rooms.length === undefined){
+        if (rooms.length === 0){
           res.status(202).send(roomsArray);
         }
         // if the user has rooms in their rooms array, iterate through each one
@@ -311,7 +311,7 @@ module.exports.fetchAll = function(req, res) {
                 // room not found; push empty object into array
                 if (!room) {
                   console.log('room not found');
-                  roomsArray.push(null);
+                  roomsArray.push({});
                 }
                 // room found; add requested info to roomData object
                 else {
@@ -380,13 +380,10 @@ module.exports.remove = function(req, res) {
             }
             // user found
             else{
-              var rooms = user.rooms;
-              // iterate through the user's rooms array, find room and remove it
-              for (var i = 0; i < rooms.length; i++) {
-                if (rooms[i] === roomId) {
-                  rooms.splice(i, 1);
-                  user.rooms = rooms;
-                }
+              // find index of roomId in the rooms array and remove it
+              var idx = user.rooms.indexOf(roomId);
+              if (idx) {
+                user.rooms.splice(idx, 1);
               }
               // save user with new array and send back room
               user.save().then(function(){

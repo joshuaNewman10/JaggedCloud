@@ -106,7 +106,8 @@
           // Populate incompleteInterviews with snapshot
           allInterviews.forEach(function(interview){
             console.log(interview);
-            if (interview != null) {
+            var emptyObj = (Object.keys(interview).length === 0);
+            if(!emptyObj) {
               var interview = {
                 displayedStart_time: new Date(interview.start_time).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', weekday: 'short', year: 'numeric', month: 'long', day: 'numeric', timeZoneName: 'long'}),
                 start_time: interview.start_time,
