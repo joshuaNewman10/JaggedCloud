@@ -16,6 +16,8 @@
     $scope.showCreateInterview = false;
     $scope.showLoadingCreateInterview = false;
     $scope.isLoggedIn = false;
+    $scope.timeframe = 'present';
+    $scope.interviewOrder = '+start_time';
     $scope.incompleteInterviews = [];
     $scope.newInterview = {};
 
@@ -122,6 +124,17 @@
         }
       });
     }
+
+    $scope.setInterviewFilter = function(timeframe){
+      $scope.timeframe = timeframe;
+
+      if(timeframe === 'past')
+        $scope.interviewOrder = '-start_time';
+      else if(timeframe === 'present')
+        $scope.interviewOrder = '+start_time';
+      else
+        $scope.interviewOrder = '+start_time';
+    };
 
     $scope.init();
   }
