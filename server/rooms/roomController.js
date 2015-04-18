@@ -182,7 +182,7 @@ module.exports.fetchOne = function(req, res) {
 module.exports.fetchAll = function(req, res) {
   var githubId = req.user;
   var roomsArray = [];
-  User.findOne({github_id: githubId}, 'rooms', function(err, user){
+  User.findOne({github_id: githubId}, function(err, user){
     if (err) { 
       handleError(err); 
       res.send(200, 'cannot find user by ID');
