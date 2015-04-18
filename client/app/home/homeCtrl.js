@@ -77,7 +77,7 @@
      */
     $scope.quickRoom = function(){
       var room = {
-        time: Date.now(),
+        time: new Date(),
         user: 'Demo User',
         email: 'demoUser@email.com',
         name: 'Demo Room'

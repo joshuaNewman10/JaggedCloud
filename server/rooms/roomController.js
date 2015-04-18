@@ -86,49 +86,61 @@ module.exports.save = function(req, res) {
 
 module.exports.exists = function(req, res) {
   var roomId = req.params.id;
-  console.log(req.params);
-  Room.findById(roomId, function(err, room) {
-    // if an error occurs console the error
-    if(err) {
-      console.error('Error: ', err);
-    }
-    // if a room exists, return true;
-    if(room) {
-      console.log('Found room: ', room._id);
-      res.status(200).send({exists: true});
-    // if  a room does not exist, return false;
-    } else {
-      console.log('No room, instead found: ', room);
-      res.status(200).send({exists: false});
-    }
-  });
+  
+  if (roomId.match(/^[0-9a-fA-F]{24}$/)) {
+    // Yes, it's a valid ObjectId, proceed with `findById` call.
+    Room.findById(roomId, function(err, room) {
+      // if an error occurs console the error
+      if(err) {
+        console.error('Error: ', err);
+      }
+      // if a room exists, return true;
+      if(room) {
+        console.log('Found room: ', room._id);
+        res.status(200).send({exists: true});
+      // if  a room does not exist, return false;
+      } else {
+        console.log('No room, instead found: ', room);
+        res.status(200).send({exists: false});
+      }
+    });
+  }
+  else {
+    res.status(200).send({exists: false});
+  }
 };
 
 module.exports.access = function(req, res) {
   var roomId = req.params.id;
-  Room.findById(roomId, function(err, room) {
-    // if an error occurs console the error
-    if(err) {
-      console.error('Error:', err);
-    }
-    // if a room is found;
-    if(room) {
-      console.log('Found room', room._id);
-      // if the user requesting the room is the room's creator or the room is live, access is true
-      if(room.created_by = req.user || roomState(room.startTime, room.endTime) === 'live') {
-        console.log('Room', room._id, 'is accessible');
-        res.status(200).send({access: true});
-      // if the user requesting the room is not the room's creator and the room is not live, access is false  
+
+  if (roomId.match(/^[0-9a-fA-F]{24}$/)) {
+    Room.findById(roomId, function(err, room) {
+      // if an error occurs console the error
+      if(err) {
+        console.error('Error:', err);
+      }
+      // if a room is found;
+      if(room) {
+        console.log('Found room', room._id);
+        // if the user requesting the room is the room's creator or the room is live, access is true
+        if(room.created_by = req.user || roomState(room.startTime, room.endTime) === 'live') {
+          console.log('Room', room._id, 'is accessible');
+          res.status(200).send({access: true});
+        // if the user requesting the room is not the room's creator and the room is not live, access is false  
+        } else {
+          console.log('Room', room._id, 'is not accessible')
+          res.status(200).send({access: false});
+        }
+      // if  a room does not exist, return false;
       } else {
-        console.log('Room', room._id, 'is not accessible')
+        console.log('Room', room_id, 'was not found');
         res.status(200).send({access: false});
       }
-    // if  a room does not exist, return false;
-    } else {
-      console.log('Room', room_id, 'was not found');
-      res.status(200).send({access: false});
-    }
-  });
+    });
+  }
+  else {
+    res.status(200).send({access: false});
+  }
 }
 
 // need to use req.PARAMS.id here because this is a get request
@@ -148,7 +160,7 @@ module.exports.fetchOne = function(req, res) {
     // }
     // console.log(candidateRoom);
     if(room) {
-      var isOpen = (Date.now() > Date.parse(room.start_time)) || githubId === room.created_by;
+      var isOpen = (Date.now() > room.start_time) || githubId === room.created_by;
       console.log('is the room open', isOpen)
       if(isOpen) {
         res.send(200, room)
