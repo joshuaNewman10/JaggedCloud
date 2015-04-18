@@ -18,6 +18,41 @@
               return deferred.promise;
             }];
 
+      var exists = ['$state', '$stateParams', '$q', 'Room', function($state, $stateParams, $q, Room){
+        var deferred = $q.defer();
+        console.log($stateParams);
+        Room.exists($stateParams.roomId, function(response) {
+            // if the room exists, resolve the promise and continue access to the room
+            if(response.data.exists) {
+              console.log('Room exists');
+              deferred.resolve()
+            // if the room does not exists, reject the promise and change the state to 404
+            } else {
+              console.log('Room does not exist');
+              deferred.reject('Room does not exist');
+              $state.go('404');
+            }
+          });
+          return deferred.promise;
+      }];
+
+      var access = ['$state', '$stateParams', '$q', 'Room', function($state, $stateParams, $q, Room){
+        var deferred = $q.defer();
+        Room.access($stateParams.roomId, function(response) {
+            // if the room is accessible, resolve the promise and continue access to the room
+            if(response.data.access) {
+              console.log('Room is accessible');
+              deferred.resolve()
+            // if the room is not accessible, reject the promise and change the state to 404
+            } else {
+              console.log('Room is not accessible');
+              deferred.reject('Room is not accessible');
+              $state.go('404');
+            }
+          });
+          return deferred.promise;
+      }];
+
       // Register all states for the application
       $stateProvider
         .state('home', {
@@ -30,7 +65,8 @@
             controller: 'roomCtrl',
             templateUrl: 'app/room/room.html',
             resolve: {
-              authenticated: authenticated
+              exists: exists,
+              access: access
             }
         })
         .state('404', {
@@ -41,7 +77,10 @@
         .state('demo', {
             url: '/demo/:roomId',
             controller: 'roomCtrl',
-            templateUrl: 'app/room/room.html'
+            templateUrl: 'app/room/room.html',
+            resolve: {
+              exists: exists
+            }
         });
         // Attach token to all requests
         // $httpProvider.interceptors.push('AttachTokens');

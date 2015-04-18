@@ -13,7 +13,9 @@
       getRoom: getRoom,
       saveRoom: saveRoom,
       getUpcomingInterviews: getUpcomingInterviews,
-      deleteRoom: deleteRoom
+      deleteRoom: deleteRoom,
+      exists: exists,
+      access: access
     };
 
     return instance;
@@ -81,6 +83,26 @@
       }).then(function(response){
         callback(response);
       });        
+    }
+
+    function exists(roomId, callback){
+      console.log('Determining if ', roomId, ' exists');
+      return $http({
+        method: 'GET',
+        url: '/room/exists' + roomId
+      }).then(function(response){
+        callback(response);
+      });
+    }
+
+    function access(roomId, callback){
+      console.log('Determining access to room', roomId);
+      return $http({
+        method: 'GET',
+        url: '/room/access' + roomId
+      }).then(function(response){
+        callback(response);
+      });
     }
   }
 })();

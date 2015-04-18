@@ -105,8 +105,8 @@
           allInterviews.forEach(function(interview){
             console.log(interview);
             var interview = {
-              displayedStart_time: new Date(Date.parse(interview.start_time)).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', weekday: 'short', year: 'numeric', month: 'long', day: 'numeric', timeZoneName: 'long'}),
-              start_time: Date.parse(interview.start_time),
+              displayedStart_time: new Date(interview.start_time).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', weekday: 'short', year: 'numeric', month: 'long', day: 'numeric', timeZoneName: 'long'}),
+              start_time: interview.start_time,
               candidateName: interview.candidateName,
               candidateEmail: interview.candidateEmail,
               created_by: interview.created_by,

@@ -20,7 +20,8 @@ var roomSchema = new mongoose.Schema({
     default: Date.now
   },
 
-  start_time: Date,
+  start_time: Number, // number of milliseconds
+  end_time: Number, // number of milliseconds
   created_by: String, // githubId
   canvas: String,
   text: [String],

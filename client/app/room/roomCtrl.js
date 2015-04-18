@@ -62,10 +62,6 @@
       // Fetch the room from the database
       console.log($scope.roomId);
       Room.getRoom($scope.roomId, function(response){
-        if(response.data.data === '404') {
-          $state.go('404',  {}, { reload: true });
-          return;
-        }
 
         // Initialize text editors 
         // Assign the save keyboard shortcut to each editor
