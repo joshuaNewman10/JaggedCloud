@@ -51,7 +51,6 @@ module.exports.fetchOne = function(req, res){
 
 
 
-
 // below function can replace current auth query
 module.exports.findOrCreateUser = function(req, res) {
   User.findOne({'githubId': githubID}, function(err, user){

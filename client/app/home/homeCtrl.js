@@ -106,16 +106,19 @@
           // Populate incompleteInterviews with snapshot
           allInterviews.forEach(function(interview){
             console.log(interview);
-            var interview = {
-              displayedStart_time: new Date(interview.start_time).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', weekday: 'short', year: 'numeric', month: 'long', day: 'numeric', timeZoneName: 'long'}),
-              start_time: interview.start_time,
-              candidateName: interview.candidateName,
-              candidateEmail: interview.candidateEmail,
-              created_by: interview.created_by,
-              roomId: interview.id
-            };
-            $scope.incompleteInterviews.push(interview);
-            $scope.showLoadingCreateInterview = false;
+            var emptyObj = (Object.keys(interview).length === 0);
+            if(!emptyObj) {
+              var interview = {
+                displayedStart_time: new Date(interview.start_time).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', weekday: 'short', year: 'numeric', month: 'long', day: 'numeric', timeZoneName: 'long'}),
+                start_time: interview.start_time,
+                candidateName: interview.candidateName,
+                candidateEmail: interview.candidateEmail,
+                created_by: interview.created_by,
+                roomId: interview.id
+              };
+              $scope.incompleteInterviews.push(interview);
+              $scope.showLoadingCreateInterview = false;
+            }
           });
         }
         // If there are no interviews that came back, then we display nothing
