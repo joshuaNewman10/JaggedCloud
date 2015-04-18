@@ -7,7 +7,8 @@ var handleError = function(error) {
 };
 
 
-// TODO: FetchAll pushes null into array; refactor with async library
+// TODO: fetchAll pushes null into array; refactor with async library
+// TODO: double check room state logic in fetchOne
 
 
 /**
@@ -197,7 +198,6 @@ module.exports.access = function(req, res) {
   }
 }
 
-// TODO: DETERMINE ROOM STATE
 /**
  * RoomController.fetchOne:
  * This function retrieves the data from one specific room
@@ -224,17 +224,42 @@ module.exports.fetchOne = function(req, res) {
         // room found; determine roomState
         var startTime = room.start_time;
         var endTime = room.end_time;
-        var roomState = roomState(startTime, endTime);
-        if (roomState === 'preInterview') {}
-        else if (roomState === 'live') {}
-        else if (roomState === 'complete') {}
+        var currentState = roomState(startTime, endTime);
+        // if room is preInterview and creator is trying to access it, send room
+        if (currentState === 'preInterview') {
+          if (githubId === room.created_by) {
+            console.log('creator accessing room early');
+            res.status(200).send(room);
+          }
+          // if room is preInterview and non-creator is trying to access it, send error
+          else {
+            console.log('user trying to access room early');
+            res.status(404).send('room not yet available');
+          }
+        }
+        // if room is live, send room (doesn't matter if creator or candidate)
+        else if (currentState === 'live') {
+          res.status(200).send(room);
+        }
+        // if room is complete and creator is trying to access it, send room
+        else if (currentState === 'complete') {
+          if (githubId === room.created_by) {
+            console.log('creator accessing room after completion');
+            res.status(200).send(room);
+          }
+          // if room is complete and non-creator is trying to access it, send error
+          else {
+            console.log('user trying to access room after completion');
+            res.status(404).send('room no longer available');
+          }
+        }
         else {
           res.status(404).send('room state not determined');
         }
         // var isOpen = (Date.now() > Date.parse(room.start_time)) || githubId === room.created_by;
         // console.log('is the room open', isOpen)
+        //  res.status(200).send(room);
         // if(isOpen) {
-        //    res.status(200).send(room);
         // }
       }
     }
