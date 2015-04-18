@@ -76,6 +76,8 @@
        Sockets.emit('join room', {roomName: $stateParams.roomId});
       });
 
+      Sockets.on('toggleDrawingMessage', toggleDrawingMessage);
+
       Sockets.on('coordinates', updateCanvas);
 
       Sockets.on('clearCanvas', function() {
@@ -110,6 +112,10 @@
       _fabricCanvas.freeDrawingBrush.color = '#FFFFFF';      
       _currentlyErasing = !_currentlyErasing;
      }
+    }
+
+    function toggleDrawingMessage() {
+      console.log("STOP DRAWING YOU FOOL!"); 
     }
 
     function stopIO() {
