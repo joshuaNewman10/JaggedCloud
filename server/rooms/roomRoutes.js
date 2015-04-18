@@ -10,6 +10,10 @@ module.exports = function(router){
 
   router.get('/home', roomController.fetchAll);
 
+  router.get('/exists:id', roomController.exists);
+
+  router.get('/access:id', roomController.access);
+
   router.delete('/remove:id', roomController.remove);
 
 };
