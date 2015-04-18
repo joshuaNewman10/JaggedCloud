@@ -245,6 +245,7 @@ module.exports.fetchAll = function(req, res) {
     if (err) { 
       handleError(err); 
       res.status(400).send('cannot find user by ID');
+    }
     // no retrieval error
     else {
       // no user
