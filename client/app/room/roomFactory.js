@@ -14,7 +14,6 @@
       saveRoom: saveRoom,
       getUpcomingInterviews: getUpcomingInterviews,
       deleteRoom: deleteRoom,
-      exists: exists,
       access: access
     };
 
@@ -85,16 +84,6 @@
       }).then(function(response){
         callback(response);
       });        
-    }
-
-    function exists(roomId, callback){
-      console.log('Determining if ', roomId, ' exists');
-      return $http({
-        method: 'GET',
-        url: '/room/exists' + roomId
-      }).then(function(response){
-        callback(response);
-      });
     }
 
     function access(roomId, callback){

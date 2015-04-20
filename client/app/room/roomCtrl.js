@@ -20,6 +20,7 @@
     $scope.saveInterval = null;
     $scope.isPeerTyping = false;
     $scope.videoToggle = false;
+    $scope.open = false;
 
     var isTypingPromise = null;
     var AUTOSAVE_FREQUENCY_MS = 60000;
@@ -74,6 +75,7 @@
         }
 
         // render the start and end times
+        $scope.open = response.data.start_time < new Date() && response.data.end_time > new Date();
         $scope.startTime = new Date(response.data.start_time).toLocaleString();
         $scope.endTime = new Date(response.data.end_time).toLocaleString();
 
@@ -112,6 +114,10 @@
 
       var startTime = Date.parse($scope.startTime);
       var endTime = Date.parse($scope.endTime);
+
+      if(new Date() > endTime) {
+        $scope.open = false;
+      }
 
       console.log('start time', startTime, 'end time', endTime);
 

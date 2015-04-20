@@ -7,8 +7,8 @@
     <li class="divider-vertical"><a ng-click="toggleEraser()">Toggle Eraser</a></li>
   </ul>
     <div>
-      <button ng-click="openRoom()">Open Room</button>
-      <button ng-click="closeRoom()">Close Room</button>
+      <button ng-show="!open" ng-click="openRoom()">Open Room</button>
+      <button ng-show="open" ng-click="closeRoom()">Close Room</button>
       <p>start time: {{startTime}}</p><p>end time: {{endTime}}</p>
     </div>
     <div class="tab-box" ng-controller='textEditorCtrl'>
