@@ -14,7 +14,6 @@
       saveRoom: saveRoom,
       getUpcomingInterviews: getUpcomingInterviews,
       deleteRoom: deleteRoom,
-      exists: exists,
       access: access
     };
 
@@ -32,7 +31,7 @@
       });
     }
 
-    function saveRoom(roomId, canvasData, textEditorData, callback){
+    function saveRoom(roomId, canvasData, textEditorData, startTime, endTime, callback){
       console.log('Saving canvas and text editor data...');
       return $http({
         method: 'POST',
@@ -40,15 +39,17 @@
         data: { 
           roomId: roomId,
           canvas: canvasData,
-          textEditor: textEditorData
+          textEditor: textEditorData,
+          startTime: startTime,
+          endTime: endTime
         }
-      }).success(function(response){
-        console.log('http response', response);
       })
       .error(function(error){
         console.log('error', error);
+        callback();
       })
       .then(function(response){
+        console.log('http response', response);
         callback();
       });
     }
@@ -83,16 +84,6 @@
       }).then(function(response){
         callback(response);
       });        
-    }
-
-    function exists(roomId, callback){
-      console.log('Determining if ', roomId, ' exists');
-      return $http({
-        method: 'GET',
-        url: '/room/exists' + roomId
-      }).then(function(response){
-        callback(response);
-      });
     }
 
     function access(roomId, callback){

@@ -20,6 +20,9 @@
     $scope.saveInterval = null;
     $scope.isPeerTyping = false;
     $scope.videoToggle = false;
+    $scope.open = false;
+    $scope.startTime;
+    $scopen.endTime;
 
     var isTypingPromise = null;
     var AUTOSAVE_FREQUENCY_MS = 60000;
@@ -62,7 +65,7 @@
       // Fetch the room from the database
       console.log($scope.roomId);
       Room.getRoom($scope.roomId, function(response){
-
+         console.log(response.data);
         // Initialize text editors 
         // Assign the save keyboard shortcut to each editor
         TextEditor.init(response.data.text);
@@ -72,6 +75,11 @@
         if(response.data.canvas){
           Drawing.updateCanvas(response.data.canvas);
         }
+
+        // render the start and end times
+        $scope.open = response.data.start_time < new Date() && response.data.end_time > new Date();
+        $scope.startTime = new Date(response.data.start_time).toLocaleString();
+        $scope.endTime = new Date(response.data.end_time).toLocaleString();
 
         // Start interval for saving
         $scope.saveInterval = setInterval(function(){
@@ -95,7 +103,7 @@
      * It converts the canvas data into a png image string and then
      * makes a request to our server to store the image in the database
      */
-    $scope.saveData = function() {
+    $scope.saveData = function(startTime, endTime) {
       console.log('Saving canvas and text editor data...');
       $scope.saving = true;
 
@@ -106,7 +114,16 @@
         textEditorData.push(editor.editor.getSession().getValue());
       });
 
-      Room.saveRoom($scope.roomId, canvasData, textEditorData, function(){
+      var startTime = Date.parse($scope.startTime);
+      var endTime = Date.parse($scope.endTime);
+
+      if(new Date() > endTime) {
+        $scope.open = false;
+      }
+
+      console.log('start time', startTime, 'end time', endTime);
+
+      Room.saveRoom($scope.roomId, canvasData, textEditorData, startTime, endTime, function(){
         $scope.saving = false;
       });
     };
@@ -141,6 +158,17 @@
      */
     $scope.toggleVideo = function(){
       $scope.videoToggle = !$scope.videoToggle;
+    };
+
+    $scope.openRoom = function(){
+      $scope.startTime = new Date().toLocaleString();
+      $scope.saveData();
+    };
+
+    $scope.closeRoom= function(){
+      $scope.endTime = new Date().toLocaleString();
+      $scope.saveData();
+
     };
     //////////////////   End Room Methods   //////////////////
 

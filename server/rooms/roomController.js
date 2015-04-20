@@ -122,9 +122,16 @@ module.exports.save = function(req, res) {
   var roomId = req.body.roomId;
   var canvas = req.body.canvas;
   var text = req.body.textEditor;
+  var startTime = req.body.startTime;
+  var endTime = req.body.endTime;
 
+  // if the time is invalid, simply end the function and return
+  // if(roomState(startTime, endTime) === 'complete') {
+  //   res.status(501).send('The room state is invalid for saving');
+  //   return;
+  // }
   // find room and update data
-  Room.findOneAndUpdate({_id: roomId}, {canvas: canvas, text: text}, {upsert: true},
+  Room.findOneAndUpdate({_id: roomId}, {canvas: canvas, text: text, start_time: startTime, end_time: endTime}, {upsert: true},
     function(err, room){
       // error finding room
       if (err) {
@@ -147,35 +154,6 @@ module.exports.save = function(req, res) {
   );
 };
 
-/**
- * RoomController.exists:
- * This function determines if the room exists
- */
-module.exports.exists = function(req, res) {
-  var roomId = req.params.id;
-  
-  if (roomId.match(/^[0-9a-fA-F]{24}$/)) {
-    // Yes, it's a valid ObjectId, proceed with `findById` call.
-    Room.findById(roomId, function(err, room) {
-      // if an error occurs console the error
-      if(err) {
-        console.error('Error: ', err);
-      }
-      // if a room exists, return true;
-      if(room) {
-        console.log('Found room: ', room._id);
-        res.status(200).send({exists: true});
-      // if  a room does not exist, return false;
-      } else {
-        console.log('No room, instead found: ', room);
-        res.status(200).send({exists: false});
-      }
-    });
-  }
-  else {
-    res.status(200).send({exists: false});
-  }
-};
 
 /**
  * RoomController.access:
@@ -183,33 +161,28 @@ module.exports.exists = function(req, res) {
  */
 module.exports.access = function(req, res) {
   var roomId = req.params.id;
+  var githubId = req.user;
 
   if (roomId.match(/^[0-9a-fA-F]{24}$/)) {
     Room.findById(roomId, function(err, room) {
-      // if an error occurs console the error
       if(err) {
+      // if an error occurs console the error
         console.error('Error:', err);
       }
-      // if a room is found;
       if(room) {
+      // if a room is found;
         console.log('Found room', room._id);
-        // if the user requesting the room is the room's creator or the room is live, access is true
-        if(room.created_by = req.user || roomState(room.startTime, room.endTime) === 'live') {
-          console.log('Room', room._id, 'is accessible');
-          res.status(200).send({access: true});
-        // if the user requesting the room is not the room's creator and the room is not live, access is false  
-        } else {
-          console.log('Room', room._id, 'is not accessible')
-          res.status(200).send({access: false});
-        }
-      // if  a room does not exist, return false;
+        var access = userHasAccess(room, githubId);
+        res.status(200).send({access: access});
       } else {
+      // if there is no room, a room does not exist, return false;
         console.log('Room', room_id, 'was not found');
         res.status(200).send({access: false});
       }
     });
   }
   else {
+  // the room's id is not a valid ObjectID
     res.status(200).send({access: false});
   }
 }

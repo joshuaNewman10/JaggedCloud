@@ -18,24 +18,6 @@
               return deferred.promise;
             }];
 
-      var exists = ['$state', '$stateParams', '$q', 'Room', function($state, $stateParams, $q, Room){
-        var deferred = $q.defer();
-        console.log($stateParams);
-        Room.exists($stateParams.roomId, function(response) {
-            // if the room exists, resolve the promise and continue access to the room
-            if(response.data.exists) {
-              console.log('Room exists');
-              deferred.resolve()
-            // if the room does not exists, reject the promise and change the state to 404
-            } else {
-              console.log('Room does not exist');
-              deferred.reject('Room does not exist');
-              $state.go('404');
-            }
-          });
-          return deferred.promise;
-      }];
-
       var access = ['$state', '$stateParams', '$q', 'Room', function($state, $stateParams, $q, Room){
         var deferred = $q.defer();
         Room.access($stateParams.roomId, function(response) {
@@ -65,7 +47,6 @@
             controller: 'roomCtrl',
             templateUrl: 'app/room/room.html',
             resolve: {
-              exists: exists,
               access: access
             }
         })
@@ -79,7 +60,7 @@
             controller: 'roomCtrl',
             templateUrl: 'app/room/room.html',
             resolve: {
-              exists: exists
+              access: access
             }
         });
         // Attach token to all requests
