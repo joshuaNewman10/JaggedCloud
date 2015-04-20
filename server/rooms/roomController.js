@@ -37,7 +37,6 @@ var userIsCreator = function(room, githubId) {
  * This function creates a new interview room
  */
 module.exports.create = function(req, res) {
-// every room that gets created will have a boolean is_demo -- use to update room upon creation
   var startTime = Date.parse(req.body.time);
   var endTime = startTime + 86400000; // create the default end time of 24hrs (86400000ms) later than the start time
   var githubId = req.user;
