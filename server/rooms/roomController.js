@@ -161,6 +161,7 @@ module.exports.save = function(req, res) {
  */
 module.exports.access = function(req, res) {
   var roomId = req.params.id;
+  var githubId = req.user;
 
   if (roomId.match(/^[0-9a-fA-F]{24}$/)) {
     Room.findById(roomId, function(err, room) {
@@ -171,15 +172,8 @@ module.exports.access = function(req, res) {
       if(room) {
       // if a room is found;
         console.log('Found room', room._id);
-        if(room.created_by = req.user || roomState(room.start_time, room.end_time) === 'live') {
-        // if the user requesting the room is the room's creator or the room is live, access is true
-          console.log('Room', room._id, 'is accessible');
-          res.status(200).send({access: true});
-        } else {
-        // otherweise the user requesting the room is not the room's creator and the room is not live, access is false  
-          console.log('Room', room._id, 'is not accessible')
-          res.status(200).send({access: false});
-        }
+        var access = userHasAccess(room, githubId);
+        res.status(200).send({access: access});
       } else {
       // if there is no room, a room does not exist, return false;
         console.log('Room', room_id, 'was not found');
