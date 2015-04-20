@@ -8,8 +8,24 @@ var handleError = function(error) {
 
 
 // MAYBE: refactor fetchAll with async library
-// MAYBE: refactor all queries to use helper functions
 
+
+/**
+ * userHasAccess:
+ * This function takes in room and githubId; determinues if user has access
+ */
+var userHasAccess = function(room, githubId) {
+  var currentTime = Date.now();
+
+  if (room.created_by === githubId) {
+    return true;
+  }
+  if (currentTime >= room.start_time && currentTime < room.end_time) {
+    return true;
+  }
+
+  return false;
+}
 
 /**
  * roomState:
@@ -220,41 +236,13 @@ module.exports.fetchOne = function(req, res) {
         handleError(err);
         res.status(404).send('no room found');
       }
+      // room found; determine if user has access
       else {
-        // room found; determine roomState
-        var startTime = room.start_time;
-        var endTime = room.end_time;
-        var currentState = roomState(startTime, endTime);
-        // if room is preInterview and creator is trying to access it, send room
-        if (currentState === 'preInterview') {
-          if (githubId === room.created_by) {
-            console.log('creator accessing room early');
-            res.status(200).send(room);
-          }
-          // if room is preInterview and non-creator is trying to access it, send error
-          else {
-            console.log('user trying to access room early');
-            res.status(404).send('room not yet available');
-          }
-        }
-        // if room is live, send room (doesn't matter if creator or candidate)
-        else if (currentState === 'live') {
+        if (userHasAccess(room, githubId)) {
           res.status(200).send(room);
         }
-        // if room is complete and creator is trying to access it, send room
-        else if (currentState === 'complete') {
-          if (githubId === room.created_by) {
-            console.log('creator accessing room after completion');
-            res.status(200).send(room);
-          }
-          // if room is complete and non-creator is trying to access it, send error
-          else {
-            console.log('user trying to access room after completion');
-            res.status(404).send('room no longer available');
-          }
-        }
         else {
-          res.status(404).send('room is not in an expected state');
+          res.status(404).send('user currently does not have room access');
         }
       }
     }
@@ -377,7 +365,7 @@ module.exports.remove = function(req, res) {
             else{
               // find index of roomId in the rooms array and remove it
               var idx = user.rooms.indexOf(roomId);
-              if (idx) {
+              if (idx !== -1) {
                 user.rooms.splice(idx, 1);
               }
               // save user with new array and send back room
