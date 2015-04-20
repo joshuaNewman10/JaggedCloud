@@ -22,7 +22,7 @@
     $scope.videoToggle = false;
     $scope.open = false;
     $scope.startTime;
-    $scopen.endTime;
+    $scope.endTime;
 
     var isTypingPromise = null;
     var AUTOSAVE_FREQUENCY_MS = 60000;

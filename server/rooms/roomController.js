@@ -3,7 +3,7 @@ var User = require('../db/models/userModel');
 var mandrill = require('../email/message');
 
 var handleError = function(error) {
-  console.error('the following error has occurred: ' + error);
+  console.error('The following error has occurred: ' + error);
 };
 
 
@@ -27,34 +27,6 @@ var userHasAccess = function(room, githubId) {
   return false;
 }
 
-/**
- * roomState:
- * This function takes in start and end times; returns current room state
- */
-var roomState = function(startTime, endTime) {
-  // set the currentTime equal to the current time in ms
-  var currentTime = Date.now();
-
-  // if the startTime is greater than the currentTime, the interview has not begun
-  if (currentTime < startTime){
-   return 'preInterview';
-  }
-
-  // if the currentTime is between the endTime and the startTime, the interview is live
-  else if (currentTime >= startTime && currentTime < endTime){
-   return 'live';
-  }
-
-  // if the currentTime is greater than the endTime, the interview is over
-  else if (currentTime >= endTime){
-   return 'complete';
-  }
-
-  // if none of the states apply, we've hit an error
-  else {
-   console.error('error processing room state');
-  }
-};
 
 /**
  * RoomController.create:
@@ -79,7 +51,6 @@ module.exports.create = function(req, res) {
     else{
       // no room created
       if (!room) {
-        handleError(err);
         res.status(404).send('error creating room');
       }
       // room created successfully
@@ -96,7 +67,6 @@ module.exports.create = function(req, res) {
           else {
             // user doesn't exist
             if (!user) {
-              handleError(err);
               res.status(201).send(room);
             }
             // user exists; send email to candidate and send room object back
@@ -125,11 +95,6 @@ module.exports.save = function(req, res) {
   var startTime = req.body.startTime;
   var endTime = req.body.endTime;
 
-  // if the time is invalid, simply end the function and return
-  // if(roomState(startTime, endTime) === 'complete') {
-  //   res.status(501).send('The room state is invalid for saving');
-  //   return;
-  // }
   // find room and update data
   Room.findOneAndUpdate({_id: roomId}, {canvas: canvas, text: text, start_time: startTime, end_time: endTime}, {upsert: true},
     function(err, room){
@@ -141,12 +106,10 @@ module.exports.save = function(req, res) {
       else {
         // no room found
         if (!room){
-          handleError(err);
           res.status(404).send('no room found');
         }
         else {
           // room found, data saved, room object sent back
-          handleError(err);
           res.status(201).send(room);      
         }
       }
@@ -167,7 +130,7 @@ module.exports.access = function(req, res) {
     Room.findById(roomId, function(err, room) {
       if(err) {
       // if an error occurs console the error
-        console.error('Error:', err);
+        handleError(err);
       }
       if(room) {
       // if a room is found;
@@ -206,7 +169,6 @@ module.exports.fetchOne = function(req, res) {
     else {
       // no room found
       if(!room) {
-        handleError(err);
         res.status(404).send('no room found');
       }
       // room found; determine if user has access
@@ -239,7 +201,6 @@ module.exports.fetchAll = function(req, res) {
     else {
       // no user
       if (!user) {
-        handleError(err);
         res.status(404).send('no user found');
       }
       // user found
@@ -315,7 +276,6 @@ module.exports.remove = function(req, res) {
     else {
       // room not found
       if (!room) {
-        handleError(err); 
         res.status(404).send('room not found');
       }
       // room was found
@@ -331,7 +291,6 @@ module.exports.remove = function(req, res) {
           else {
             // user not found
             if (!user) {
-              handleError(err); 
               res.send(404, 'user not found');
             }
             // user found
