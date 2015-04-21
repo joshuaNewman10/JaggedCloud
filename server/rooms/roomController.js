@@ -155,15 +155,16 @@ module.exports.exists = function(req, res) {
  */
 module.exports.access = function(req, res) {
   var roomId = req.params.id;
+  var githubId = req.user;
 
   if (roomId.match(/^[0-9a-fA-F]{24}$/)) {
     Room.findById(roomId, function(err, room) {
-      // if an error occurs console the error
       if(err) {
-        console.error('Error:', err);
+      // if an error occurs console the error
+        handleError(err);
       }
-      // if a room is found;
       if(room) {
+      // if a room is found;
         console.log('Found room', room._id);
         var access = userIsCreator(room, githubId) || roomIsOpen(room, githubId);
         res.status(200).send({access: access});
@@ -175,6 +176,7 @@ module.exports.access = function(req, res) {
     });
   }
   else {
+  // the room's id is not a valid ObjectID
     res.status(200).send({access: false});
   }
 }

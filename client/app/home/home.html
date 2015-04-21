@@ -1,5 +1,5 @@
 <div id="home-container">
-    <div class="container-fluid">
+    <div class="homeDiv">
       <!-- Collect the nav links, forms, and other content for toggling -->
         <ul class="nav nav-tabs navbar">
           <li class="divider-vertical title"><a href="#/">HackBox</a></li>
@@ -22,6 +22,7 @@
             <img ng-show='showLoadingCreateInterview' class='homeLoadingSpinner' src="../assets/loading_spinner.gif"></img>
             <div ng-show='isLoggedIn && (incompleteInterviews.length === 0)' style='text-align: center'>You don't have any upcoming interviews!</div>
           </div>
+<<<<<<< HEAD
           <div ng-show='timeframe === "Upcoming"'>
             Today
             <div class='interview' ng-repeat='interview in incompleteInterviews | orderBy: interviewOrder | interviewFilter:"Today" | filter:searchText' ng-click='joinRoom(interview)'>
@@ -33,6 +34,15 @@
             <div class='interview' ng-repeat='interview in incompleteInterviews | orderBy: interviewOrder | interviewFilter:timeframe | filter:searchText' ng-click='joinRoom(interview)'>
               <interview-box interview='interview' remove-fn='remove(interview.roomId)'></interview-box>
             </div>
+=======
+          <div class='interview' ng-repeat='interview in incompleteInterviews | orderBy: interviewOrder | interviewFilter:timeframe | filter:searchText' ng-click='joinRoom(interview)'>
+              <div class="close" ng-click="$event.stopPropagation()"><a ng-click='remove(interview.roomId)'><i class="fa fa-times"></i></a></div>
+              <div class='innerInterview'>
+                <h2 class='candidateName'> {{interview.candidateName}}</h2>
+                <div class='candidateEmail'> {{interview.candidateEmail}}</div>
+                <div class='startTime'> {{interview.displayedStart_time}}</div>
+              </div>
+>>>>>>> restyle home page
           </div>
         </div>
     </div>
