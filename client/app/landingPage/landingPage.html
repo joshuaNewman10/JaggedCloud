@@ -1,0 +1,9 @@
+<ul ng-controller='homeCtrl' class="nav nav-tabs navbar">
+  <li class="divider-vertical title"><a href="#/">HackBox</a></li>
+  <li class="divider-vertical" ng-controller='signinCtrl'  ng-show='!isLoggedIn'><a ng-click='openSigninModal()' href="#/signin">Sign In</a></li>
+  <li class="divider-vertical" ng-show='isLoggedIn'><a ng-click='logout()' href="/auth/logout">Logout</a></li>
+  <li class="divider-vertical" ng-controller='scheduleCtrl' ng-show="isLoggedIn"><a ng-click="openScheduleModal()" href="#/schedule">New  Interview</a></li>
+  <li class="divider-vertical"><a ng-click='quickRoom()'>Demo Room</a></li>
+</ul>
+
+<h1 style="text-align: center">Landing Page</h1>

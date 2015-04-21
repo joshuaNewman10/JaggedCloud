@@ -10,23 +10,29 @@
         </ul>
         <div>
         <div class="homepage" ng-show="isLoggedIn">
-         <h2>Upcoming Interviews</h2>
+         <h2>{{timeframe}} Interviews</h2>
         </div>
         <div class='interviews-container'>
           <div class='homeSearch-container' ng-show="isLoggedIn">
             <input class="homeSearch" ng-model="searchText" placeholder="Search">
-            <button class='btn-sm' ng-click='setInterviewFilter("present")'>Incomplete</button>
-            <button class='btn-sm' ng-click='setInterviewFilter("past")'>Completed</button>
+            <button class="btn btn-default"ng-click='setInterviewFilter("Upcoming")'>Incomplete</button>
+            <button class="btn btn-default" ng-click='setInterviewFilter("Completed")'>Completed</button>
           </div>
           <div>
             <img ng-show='showLoadingCreateInterview' class='homeLoadingSpinner' src="../assets/loading_spinner.gif"></img>
             <div ng-show='isLoggedIn && (incompleteInterviews.length === 0)' style='text-align: center'>You don't have any upcoming interviews!</div>
           </div>
-          <div class='interview' ng-repeat='interview in incompleteInterviews | orderBy: interviewOrder | interviewFilter:timeframe | filter:searchText' ng-click='joinRoom(interview)'>
-              <div class="close" ng-click="$event.stopPropagation()"><a ng-click='remove(interview.roomId)'><i class="fa fa-times"></i></a></div>
-              <h2 class='candidateName'> {{interview.candidateName}}</h2>
-              <div class='candidateEmail'> {{interview.candidateEmail}}</div>
-              <div class='startTime'> {{interview.displayedStart_time}}</div>
+          <div ng-show='timeframe === "Upcoming"'>
+            Today
+            <div class='interview' ng-repeat='interview in incompleteInterviews | orderBy: interviewOrder | interviewFilter:"Today"' ng-click='joinRoom(interview)'>
+                <interview-box interview='interview' remove-fn='remove(interview.roomId)'></interview-box>
+            </div>
+          </div>
+          <div>
+            {{timeframe}}
+            <div class='interview' ng-repeat='interview in incompleteInterviews | orderBy: interviewOrder | interviewFilter:timeframe | filter:searchText' ng-click='joinRoom(interview)'>
+              <interview-box interview='interview' remove-fn='remove(interview.roomId)'></interview-box>
+            </div>
           </div>
         </div>
     </div>

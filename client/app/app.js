@@ -5,7 +5,7 @@
   app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
       $urlRouterProvider.otherwise('/');
 
-      var authenticated = ['$q', 'Auth', function ($q, Auth) {
+      var authenticated = ['$q', '$state','Auth', function ($q, $state, Auth) {
               var deferred = $q.defer();
               Auth.isAuthenticated()
                 .then(function (response) {
@@ -13,6 +13,7 @@
                     deferred.resolve();
                   } else {
                     deferred.reject('Not logged in');
+                    $state.go('landingPage');
                   }
                 });
               return deferred.promise;
@@ -41,6 +42,14 @@
             url: '/',
             controller: 'homeCtrl',
             templateUrl: 'app/home/home.html',
+            resolve: {
+              authenticated: authenticated
+            }
+        })
+        .state('landingPage', {
+            url: '/',
+            controller: '',
+            templateUrl: 'app/landingPage/landingPage.html'
         })
         .state('room', {
             url: '/room/:roomId',
