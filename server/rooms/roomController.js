@@ -14,12 +14,9 @@ var handleError = function(error) {
  * userHasAccess:
  * This function takes in room and githubId; determinues if user has access
  */
-var userHasAccess = function(room, githubId) {
+var roomIsOpen = function(room, githubId) {
   var currentTime = Date.now();
 
-  if (userIsCreator(room, githubId)) {
-    return true;
-  }
   if (currentTime >= room.start_time && currentTime < room.end_time) {
     return true;
   }
@@ -34,7 +31,6 @@ var userHasAccess = function(room, githubId) {
 var userIsCreator = function(room, githubId) {
   return room.created_by === githubId;
 };
-
 
 /**
  * RoomController.create:
@@ -97,33 +93,28 @@ module.exports.create = function(req, res) {
  * This function saves the data in the interview room
  */
 module.exports.save = function(req, res) {
-  var roomId = req.body.roomId;
-  var canvas = req.body.canvas;
-  var text = req.body.textEditor;
-  var startTime = req.body.startTime;
-  var endTime = req.body.endTime;
+var roomId = req.body.roomId;
+console.log('this is the req.body', req.body);
 
-  // find room and update data
-  Room.findOneAndUpdate({_id: roomId}, {canvas: canvas, text: text, start_time: startTime, end_time: endTime}, {upsert: true},
-    function(err, room){
-      // error finding room
-      if (err) {
-        handleError(err);
-        res.status(404).send('error finding room');
+// find room and update data
+Room.findOneAndUpdate({_id: roomId}, req.body, {new: true}, function(err, room){
+    // error finding room
+    if (err) {
+      handleError(err);
+      res.status(404).send('error finding room');
+    }
+    else {
+      // no room found
+      if (!room){
+        res.status(404).send('no room found');
       }
       else {
-        // no room found
-        // should this logic be reversed? only send back the 200 if a room is found
-        if (!room){
-          res.status(404).send('no room found');
-        }
-        else {
-          // room found, data saved, room object sent back
-          res.status(201).send(room);      
-        }
+        // room found, data saved, room object sent back
+        res.status(201).send(room);      
       }
     }
-  );
+  }
+);
 };
 
 
@@ -144,7 +135,7 @@ module.exports.access = function(req, res) {
       if(room) {
       // if a room is found;
         console.log('Found room', room._id);
-        var access = userHasAccess(room, githubId);
+        var access = userIsCreator(room, githubId) || roomIsOpen(room, githubId);
         res.status(200).send({access: access});
       } else {
       // if there is no room, a room does not exist, return false;
@@ -176,16 +167,40 @@ module.exports.fetchOne = function(req, res) {
       res.status(404).send('error finding room');
     }
     if(room) {
-      // room found; determine if user has access
-      if(userHasAccess(room, githubId)) {
-        if(userIsCreator(room, githubId)) {
-          // user is creator; add creator: true property to room
-          room.creator = true;
-          console.log(room);
-        }
-        res.status(200).send(room);
+      // room found; determining user access
+        var roomData = {
+          canvas: room.canvas,
+          text: room.text,
+          created_by: room.created_by,
+          start_time: room.start_time,
+          end_time: room.end_time,
+          candidateName: room.candidateName,
+          candidateEmail: room.candidateEmail,
+          id: room._id
+        };
+      if(userIsCreator(room, githubId)) {
+        // user is creator;  creator property is true
+        roomData.creator = true;
+        
+        // add creator properties to the room
+        roomData.displayOpen = !roomIsOpen(room, githubId) && new Date() < roomData.end_time;
+        roomData.displayClose = roomIsOpen(room, githubId);
+
+        console.log(roomData);
+
+        // return the roomData to the client
+        res.status(200).send(roomData);
+
+        // exit the function
+        // return;
+      } else if(roomIsOpen(room, githubId)) { 
+        // otherwise if the room is open, make the creator property false, but still send the room
+          roomData.creator = false;
+          console.log(roomData);
+          res.status(200).send(roomData);
       } else {
-          res.status(404).send('user currently does not have room access');
+        // a room was found, but the user is neither the creator nor is the room open
+          res.status(404).send('user currently is neither the creator nor is the room open');
         }
     } else {
       // no room found
@@ -247,9 +262,7 @@ module.exports.fetchAll = function(req, res) {
                     start_time: room.start_time,
                     candidateName: room.candidateName,
                     candidateEmail: room.candidateEmail,
-                    id: room._id,
-                    text: room.text[0],
-                    canvas: room.canvas
+                    id: room._id
                   }
                   // push roomData back into roomsArray
                   roomsArray.push(roomData);

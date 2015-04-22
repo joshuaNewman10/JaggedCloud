@@ -1,15 +1,15 @@
 <div id="room-container">
   <ul class="nav nav-tabs navbar">
     <li class="divider-vertical title"><a href="#/">HackBox</a></li>
-    <li class="divider-vertical"><a ng-click="saveData()">Save</a></li>
+    <li class="divider-vertical"><a ng-click="saveTextAndCanvasData()">Save</a></li>
     <li class="divider-vertical" ng-show='saving'><img class='loading_spinner' src="../assets/loading_spinner.gif" ng-show='saving'>Saving...</img></li>
     <li class="divider-vertical"><a ng-click="clearCanvas()">Clear Canvas</a></li>
     <li class="divider-vertical"><a ng-click="toggleEraser()">Toggle Eraser</a></li>
   </ul>
     <div>
-      <button ng-show="creator && open" ng-click="openRoom()">Open Room</button>
-      <button ng-show="creator && close" ng-click="closeRoom()">Close Room</button>
-      <p ng-show="creator">start time: {{startTime}}</p><p ng-show="creator">end time: {{endTime}}</p>
+      <button ng-show="creator && displayOpen" ng-click="openRoom()">Open Room</button>
+      <button ng-show="creator && displayClose" ng-click="closeRoom()">Close Room</button>
+      <!-- <p ng-show="creator">start time: {{startTime}}</p><p ng-show="creator">end time: {{endTime}}</p> -->
     </div>
     <div class="tab-box" ng-controller='textEditorCtrl'>
             <div ng-class='{"tab-container": !editor.tab.active, "activeTab-container": editor.tab.active}' ng-click="toggleCanvas(true); setActiveEditor(editor.id)" ng-repeat='editor in editors'>
