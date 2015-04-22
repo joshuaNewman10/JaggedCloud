@@ -126,7 +126,8 @@
       var canvas = JSON.stringify(Drawing.getCanvas().toJSON());
       var text = [];
       TextEditor.getEditors().forEach(function(editor){
-        text.push(editor.editor.getSession().getValue());
+        var editorObj = {editorId: editor.id, data: editor.editor.getSession().getValue()}
+        text.push(editorObj);
       });
 
       var roomData = {
