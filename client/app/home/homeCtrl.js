@@ -16,7 +16,7 @@
     $scope.showCreateInterview = false;
     $scope.showLoadingCreateInterview = false;
     $scope.isLoggedIn = false;
-    $scope.timeframe = 'present';
+    $scope.timeframe = 'Upcoming';
     $scope.interviewOrder = '+start_time';
     $scope.incompleteInterviews = [];
     $scope.newInterview = {};
@@ -97,7 +97,7 @@
      $scope.refreshInterviews = function(){
       $scope.incompleteInterviews = [];
       $scope.showLoadingCreateInterview = true;
-
+      
       Room.getUpcomingInterviews(function(response){
         var allInterviews = response.data;
 
@@ -131,9 +131,9 @@
     $scope.setInterviewFilter = function(timeframe){
       $scope.timeframe = timeframe;
 
-      if(timeframe === 'past')
+      if(timeframe === 'Completed')
         $scope.interviewOrder = '-start_time';
-      else if(timeframe === 'present')
+      else if(timeframe === 'Upcoming')
         $scope.interviewOrder = '+start_time';
       else
         $scope.interviewOrder = '+start_time';

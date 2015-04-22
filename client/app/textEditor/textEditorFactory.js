@@ -57,14 +57,26 @@
      * This function will initialize all entities upon switching the the room state.
      */
     function initializeDataListener(){
-      // Setup Icecomm listener for incoming data
+      var comm = IcecommWrapper.getIcecommInstance();
+
+      // Sync with peer if first into room
+        comm.on('connected', function(peer) {
+          if(comm.isHost()){
+            console.log('Sending Peer my data')
+            _editors.forEach(function(editor){
+              if(_okToSend)
+                comm.send({data: editor.editor.getSession().getValue(), editorId: editor.id});
+            });
+          }
+        });
+
       IcecommWrapper.setDataListener(function(peer) {
         // Prevent user from sending data while receiving data
         _okToSend = false;
 
         // Emit an event for use
         $rootScope.$emit('receivingData');
-
+        
         var editorIdx = indexOfEditorWithId(peer.data.editorId);
         if(editorIdx !== -1){
           var cursorPos = _editors[editorIdx].editor.getCursorPosition();

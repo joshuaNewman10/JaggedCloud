@@ -6,19 +6,36 @@
     return function (items, time) {
       var filtered = [];
       var now = Date.now();
+      var today = new Date();
+
       for (var i = 0; i < items.length; i++) {
         var item = items[i];
+        var startDay = new Date(item.start_time);
+        // Convert MS to just day
+        // Add 24 hrs to it, this will be the MS for the next day
+        // Past is now anything that is not today, but also before us by 24 hrs. 
+        // Upcoming is anything that is not today, but also after us by 24 hrs. 
 
-        // Filter interviews that have already finished
-        if ( (time === 'past') && (now > item.start_time)) {
-          filtered.push(item);
+        switch(time){
+          case 'Today':
+            if (startDay.setHours(0,0,0,0) === today.setHours(0,0,0,0)) {
+              filtered.push(item);
+            }
+            break;
+          case 'Upcoming':
+            if (startDay.setHours(0,0,0,0) > today.setHours(0,0,0,0)) {
+              filtered.push(item);
+            }
+            break;
+          case 'Completed':
+            if (startDay.setHours(0,0,0,0) < today.setHours(0,0,0,0)) {
+              filtered.push(item);
+            }
+            break;
+          default:
+            break;
         }
-
-        // Filter interviews that have not yet began
-        else if ( (time === 'present') && (now <= item.start_time)) {
-          filtered.push(item);
-        }
-      }
+      };
       return filtered;
     };
   });
