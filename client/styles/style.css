@@ -1,12 +1,14 @@
 body { 
   font-family: 'Signika', sans-serif;
   color: #000;
-<<<<<<< HEAD
-=======
-  font-family: 'Quicksand', 'Helvetica Nueue', Helvetica, sans-serif;
->>>>>>> restyle home page
   font-weight: 300;
-  background-color: #F1EDEB;
+  background-color: #363636;
+  /*background: url('https://snap-photos.s3.amazonaws.com/img-thumbs/960w/MSJTURMZ7Y.jpg') no-repeat center center fixed;*/
+  background: url('https://snap-photos.s3.amazonaws.com/img-thumbs/960w/PUQOVWZYKP.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 .navbar {
@@ -44,23 +46,44 @@ a:visited:hover {
   text-decoration: none;
 }
 
+li{
+  list-style: none;
+}
+
+.filterButtons {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
 .interview{
-  width:50%;
-  height:10%;
+  width: 45%;
   box-shadow: 0px 8px 10px 0px #A0A0A0;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 20px;
-  background: #4965EE;
+  margin-bottom: 35px;
+  background: rgba(102,153,255,0.7);
+  height: 120px;
+  text-align:center;
+}
+
+.interviewLeft {
+  float: left;
+  width: 50%;
+  /*margin-top: 4%;*/
+}
+
+.interviewRight {
+  float: right;
+  width: 50%;
 }
 
 .innerInterview {
-  padding: 12px;
+  padding: 10px;
 }
 
 .interview:hover{
   background: #6495ED;
-  cursor: pointer;
+  /*cursor: pointer;*/
 }
 
 .signin {
@@ -232,7 +255,7 @@ a:visited:hover {
   border-radius: 50%;
   color:#f5f5f5;
   background: #464646;
-  box-shadow: 0 0 3px gray;
+  box-shadow: 0 0 3px rgba(200, 200, 200, 0.8);
 }
 
 .removeEditor-button:hover{
@@ -258,9 +281,9 @@ a:visited:hover {
 }
 
 .homeSearch {
-  font-size: 22px;
-  width: 30%;
-  margin-bottom: 30px;
+  font-size: 18px;
+  width: 20%;
+  margin-bottom: 5px;
 }
 
 .fzf-container {

@@ -109,8 +109,9 @@
             var emptyObj = (Object.keys(interview).length === 0);
             if(!emptyObj) {
               var interview = {
-                displayedStart_time: new Date(interview.start_time).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', weekday: 'short', year: 'numeric', month: 'long', day: 'numeric', timeZoneName: 'long'}),
                 start_time: interview.start_time,
+                displayed_date: new Date(interview.start_time).toLocaleString('en-US', { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' }),
+                displayed_time: new Date(interview.start_time).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', timeZoneName: 'short' }),
                 candidateName: interview.candidateName,
                 candidateEmail: interview.candidateEmail,
                 created_by: interview.created_by,
