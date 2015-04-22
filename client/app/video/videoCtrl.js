@@ -53,10 +53,8 @@
       });
 
       comm.on('disconnect', function(peer) {
-        $scope.$apply(function(){
           $scope.peerVideoSource = '';
           $scope.peerVideoConnected = false;
-        });
       });
     };
 
@@ -67,7 +65,7 @@
      */
     $scope.uninit = function(){
       console.log('Shutting down video and removing listeners.');
-      IcecommWrapper.getIcecommInstance().leave(true);
+      IcecommWrapper.uninitialize();
     };
     
     $scope.init($stateParams.roomId);

@@ -139,7 +139,7 @@ module.exports.access = function(req, res) {
         res.status(200).send({access: access});
       } else {
       // if there is no room, a room does not exist, return false;
-        console.log('Room', room_id, 'was not found');
+        console.log('Room', room._id, 'was not found');
         res.status(200).send({access: false});
       }
     });
