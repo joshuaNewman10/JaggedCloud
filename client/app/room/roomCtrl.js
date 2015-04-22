@@ -20,7 +20,9 @@
     $scope.saveInterval = null;
     $scope.isPeerTyping = false;
     $scope.videoToggle = false;
-    $scope.open = false;
+    $scope.displayOpen = false;
+    $scope.displayClose = false;
+    $scope.creator = false;
     $scope.startTime;
     $scope.endTime;
 
@@ -76,14 +78,22 @@
           Drawing.updateCanvas(response.data.canvas);
         }
 
+        // determine is user is the creator
+        $scope.creator = response.data.creator;
+        
+        // hide or show the open and close buttons
+        // show the open button if the room is closed and the current time is less than the end time
+        $scope.displayOpen = response.data.displayOpen;
+        // show the close button if the room is open
+        $scope.displayClose = response.data.displayClose;
+
         // render the start and end times
-        $scope.open = response.data.start_time < new Date() && response.data.end_time > new Date();
         $scope.startTime = new Date(response.data.start_time).toLocaleString();
         $scope.endTime = new Date(response.data.end_time).toLocaleString();
 
         // Start interval for saving
         $scope.saveInterval = setInterval(function(){
-          $scope.saveData();
+          $scope.saveTextAndCanvasData();
         }, AUTOSAVE_FREQUENCY_MS);
       });
     };
@@ -103,31 +113,44 @@
      * It converts the canvas data into a png image string and then
      * makes a request to our server to store the image in the database
      */
-    $scope.saveData = function(startTime, endTime) {
-      console.log('Saving canvas and text editor data...');
-      $scope.saving = true;
-
-      // Get canvas data and text editor data
-      var canvasData = JSON.stringify(Drawing.getCanvas().toJSON());
-      var textEditorData = [];
-      TextEditor.getEditors().forEach(function(editor){
-        textEditorData.push(editor.editor.getSession().getValue());
-      });
-
-      var startTime = Date.parse($scope.startTime);
-      var endTime = Date.parse($scope.endTime);
-
-      if(new Date() > endTime) {
-        $scope.open = false;
-      }
-
-      console.log('start time', startTime, 'end time', endTime);
-
-      Room.saveRoom($scope.roomId, canvasData, textEditorData, startTime, endTime, function(){
+    $scope.saveData = function(dataObj) {
+      Room.saveRoom(dataObj, function(){
         $scope.saving = false;
       });
     };
 
+    $scope.saveTextAndCanvasData = function() {
+      console.log('Saving canvas and text editor data...');
+      $scope.saving = true;
+      // Get canvas data and text editor data
+      var canvas = JSON.stringify(Drawing.getCanvas().toJSON());
+      var text = [];
+      TextEditor.getEditors().forEach(function(editor){
+        text.push(editor.editor.getSession().getValue());
+      });
+
+      var roomData = {
+        roomId: $scope.roomId,
+        canvas: canvas,
+        text: text
+      };
+      console.log('this is the data i will save', roomData)
+      $scope.saveData(roomData);
+    };
+
+    $scope.saveTimeData = function(start_time, end_time) {
+      console.log('Saving time data...');
+      $scope.saving = true;
+
+      var timeData = {
+        roomId: $scope.roomId,
+        start_time: Date.parse(start_time),
+        end_time: Date.parse(end_time)
+      };
+
+      console.log('this is the data i will save', timeData);
+      $scope.saveData(timeData);
+    }
     /**
      * Function: RoomCtrl.toggleCanvas()
      * This function will toggle the canvas on/off.
@@ -162,13 +185,15 @@
 
     $scope.openRoom = function(){
       $scope.startTime = new Date().toLocaleString();
-      $scope.saveData();
+      $scope.saveTimeData($scope.startTime, $scope.endTime);
+      $scope.displayOpen = false;
+      $scope.displayClose = true;
     };
 
     $scope.closeRoom= function(){
-      $scope.endTime = new Date().toLocaleString();
-      $scope.saveData();
-
+      $scope.endTime = (new Date() + 60000).toLocaleString();
+      $scope.saveTimeData($scope.startTime, $scope.endTime);
+      $scope.displayClose = false;
     };
     //////////////////   End Room Methods   //////////////////
 
