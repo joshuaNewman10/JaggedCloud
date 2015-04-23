@@ -22,7 +22,7 @@
           </div>
           <div>
             <img ng-show='showLoadingCreateInterview' class='homeLoadingSpinner' src="../assets/loading_spinner.gif"></img>
-            <div ng-show='isLoggedIn && (incompleteInterviews.length === 0)' style='text-align: center'>You don't have any upcoming interviews!</div>
+            <div ng-show='isLoggedIn && (incompleteInterviews.length === 0) && timeframe === "Upcoming"' style='text-align: center'>You don't have any upcoming interviews!</div>
           </div>
           <div ng-show='timeframe === "Upcoming"'>
             <div class='dateLabelDiv'>
