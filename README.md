@@ -8,6 +8,10 @@ HackBox is a simple to use, all-in-one technical interview platform empowering i
   - __Scrum Master__: Joshua Newman
   - __Development Team Members__: Garron Sanchez, Lauren McDonnell
 
+## Deployed Link
+
+http://hackbox.herokuapp.com/
+
 
 ##Status
 
@@ -24,39 +28,32 @@ HackBox is a simple to use, all-in-one technical interview platform empowering i
 1. [Team](#team)
 1. [Contributing](#contributing)
 
-## Usage
+## Development 
 
-1) Fork the repository
-2) Clone a copy of the repository locally
-3) Run npm install
-4) Run bower install
-5) Run sudo grunt devmode and enter your computer's adminstrator password. This grunt command will do the following:
-    A) Set environmental variables and API Keys
-    B) Start up your local Mongo Database and make it begin listening for connections
-    C) Spawn a grunt process to start up the server via nodemon
-    D) Open up an instance of Google Chrome and start listening on localhost at port 3000
-    E) Start Karma's continuous testing capabilities by having it run in the background
-    F) Set up a watch task to rerun the Karma unit test suite whenever an application file is changed
+### Setup
+
+1. Fork the repository
+2. Clone a copy of the repository locally
+3. Run npm install
+4. Run bower install
+5. Run sudo grunt devmode and enter your computer's adminstrator password. This grunt command will do the following:
+    1. Set environmental variables and API Keys
+    2. Start up your local Mongo Database and make it begin listening for connections
+    3. Spawn a grunt process to start up the server via nodemon
+    4. Open up an instance of Google Chrome and start listening on localhost at port 3000
+    5. Start Karma's continuous testing capabilities by having it run in the background
+    6. Set up a watch task to rerun the Karma unit test suite whenever an application file is changed
   
-## Requirements
+### Requirements
 
 - Node 0.10.x
-- Redis 2.6.x
+- MongoDB 3.0.2
 - Postgresql 9.1.x
-- etc
-- etc
 
-## Development
+### API Key Requirements
 
-### Installing Dependencies
-
-From within the root directory:
-
-```sh
-sudo npm install -g bower
-npm install
-bower install
-```
+-GitHub Authorization
+-Mandrill email service
 
 ### Roadmap
 
