@@ -27,7 +27,7 @@
           <div ng-show='timeframe === "Upcoming"'>
             <div class='dateLabelDiv'>
               <div class='dateLabel'>TODAY</div>
-            <div>
+            </div>
             <div class='interview' ng-repeat='interview in incompleteInterviews | orderBy: interviewOrder | interviewFilter:"Today" | filter:searchText' ng-click='joinRoom(interview)'>
                 <interview-box interview='interview' remove-fn='remove(interview.roomId)'></interview-box>
             </div>
