@@ -14,14 +14,18 @@
 
   function TextEditor($rootScope, IcecommWrapper) {
     var _editors = [];
+    var _notes = {};
     var _okToSend = true;
     var MAX_EDITORS = 5;
 
     var instance = {
       init: init,
+      initNotes: initNotes,
       getEditors: getEditors,
+      getNotes: getNotes,
       addTextEditor: addTextEditor,
       setActiveEditor: setActiveEditor,
+      setActiveNotes: setActiveNotes,
       resizeAllEditors: resizeAllEditors,
       removeTextEditor: removeTextEditor,
       removeAllEditors: removeAllEditors,
@@ -44,6 +48,10 @@
       initializeDataListener();
     }
 
+    function initNotes(notes, saveFn){
+      // If there is text saved, set the editors text to that. 
+      loadSavedNotes(notes, saveFn);
+    }
     /**  
      * Function: TextEditor.getEditors()
      * This function will return the list of editors currently in use
@@ -54,6 +62,9 @@
       return _editors;
     }
 
+    function getNotes(){
+      return _notes;
+    }
     /**
      * Function: TextEditor.addTextEditor()
      * This function will add a new text editor to the DOM. 
@@ -89,6 +100,18 @@
       }
     };
 
+    function addNotesEditor(saveFn){
+      // Add new editor, starts as active.
+      var tab = {name: 'Notes',
+                 active: false}; 
+
+      _notes.id = MAX_EDITORS + 1;
+      _notes.tab =  tab;
+      _notes.editor = createEditor('#editors', MAX_EDITORS+1);
+
+      assignKBShortcutsNotes(saveFn)
+    };
+
     /**
      * Function: TextEditorCtrl.removeTextEditor(editorId)
      * This function will set the editor in the collection with the matching Id as the active editor 
@@ -107,6 +130,19 @@
       // Focus on the editor and set cursor to end.
       _editors[editorToFocusOn].editor.focus();
       _editors[editorToFocusOn].editor.navigateLineEnd();
+    };
+
+    function setActiveNotes(editorId){
+      // Hide all tabs and editors.
+      deactivateTabsAndEditors();
+
+      // Add 'activeEditor' class to the editor with the correct id. Also set the tab as active.
+      setEditorActive(editorId);
+      _notes.tab.active = true;
+
+      // Focus on the editor and set cursor to end.
+      _notes.editor.focus();
+      _notes.editor.navigateLineEnd();
     };
 
     /**
@@ -153,6 +189,9 @@
         editor.editor.destroy();
       });
 
+      _notes.editor.destroy();
+
+      _notes = {};
       _editors = [];
     };
 
@@ -184,6 +223,18 @@
                                      },
                                       exec: saveFn
           });
+      });
+    }
+
+    function assignKBShortcutsNotes(saveFn){
+      // Assign the save keyboard shortcut to the notes object
+      _notes.editor.commands.addCommand({  name: 'saveFile',
+                                    bindKey: {
+                                    win: 'Ctrl-S',
+                                    mac: 'Command-S',
+                                    sender: 'editor|cli'
+                                 },
+                                  exec: saveFn
       });
     }
 
@@ -277,7 +328,12 @@
         _editors[editorIdx].editor.getSession().setValue(text,1);
         _editors[editorIdx].editor.moveCursorToPosition(cursorPos);
       }
+    };
 
+    function setNotesText(text){
+      var cursorPos = _notes.editor.getCursorPosition();
+      _notes.editor.getSession().setValue(text,1);
+      _notes.editor.moveCursorToPosition(cursorPos);
     };
 
     /**  
@@ -312,6 +368,9 @@
       _editors.forEach(function(editor){
         editor.tab.active = false;
       });
+
+      if(_notes.tab)
+        _notes.tab.active = false;
     };
 
     function loadSavedEditors(savedEditors){
@@ -326,6 +385,12 @@
       else{
         addTextEditor();
       }
+    }
+
+    function loadSavedNotes(notes, saveFn){
+      addNotesEditor();
+      assignKBShortcutsNotes(saveFn);
+      setNotesText(notes);
     }
 
     function onPeerData(peer){
@@ -394,6 +459,7 @@
                           }).indexOf(editorId);
       return idx;
     }
+
     ///////////////////////// End Helper Functions /////////////////////////
   }
 })();
