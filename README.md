@@ -57,7 +57,7 @@ http://hackbox.herokuapp.com/
 
 ### Roadmap
 
-View the project roadmap [here](LINK_TO_PROJECT_ISSUES)
+View the project roadmap [here](https://github.com/JaggedCloud/JaggedCloud/issues)
 
 
 ## Contributing
