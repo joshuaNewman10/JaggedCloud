@@ -30,7 +30,6 @@ body {
   text-align: center;
 }
 
-
 a {
   color: #F1EDEB;
   text-decoration: none;
@@ -54,6 +53,11 @@ a:visited:hover {
 
 li{
   list-style: none;
+}
+
+.container-fluid {
+  padding-right: 0px;
+  padding-left: 0px;
 }
 
 .button {
