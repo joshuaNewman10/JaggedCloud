@@ -413,8 +413,9 @@ li{
 }
 
 .room-logo {
-  height: 100px;
+  height: 72px;
   display: inline-block;
+  margin-bottom: 17px;
 }
 
 .gear-container {
