@@ -1,19 +1,19 @@
 
 <div class='innerInterview'>
   <div class="close" ng-click="$event.stopPropagation()"><a ng-click='removeFn(interview.roomId)'><i class="fa fa-times"></i></a></div>
-  <div class='interviewLeft'>
+  <h3><div class='interviewLeft'>
     <ul>
       <li> <i class="fa fa-calendar"></i> {{interview.displayed_date}} </li>
       <br>
       <li> <i class="fa fa-clock-o"></i> {{interview.displayed_time}} </li>
     </ul>
-  </div>
+  </div></h3>
 
-  <div class='interviewRight'>
+  <h3><div class='interviewRight'>
     <ul>
       <li class='name'> {{interview.candidateName}} </li>
       <br>
       <li class='email'> {{interview.candidateEmail}} </li>
     </ul>
-  </div>
+  </div></h3>
 </div>

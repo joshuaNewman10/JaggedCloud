@@ -2,7 +2,7 @@
     <div class="container-fluid">
       <!-- Collect the nav links, forms, and other content for toggling -->
         <ul class="nav nav-tabs navbar">
-          <li class="divider-vertical title"><a href="#/">HackBox</a></li>
+          <!-- <li class="divider-vertical title"><a href="#/">HackBox</a></li> -->
           <li class="divider-vertical" ng-controller='signinCtrl'  ng-show='!isLoggedIn'><a ng-click='openSigninModal()' href="#/signin">Sign In</a></li>
           <li class="divider-vertical" ng-show='isLoggedIn'><a ng-click='logout()' href="/auth/logout">Logout</a></li>
           <li class="divider-vertical" ng-controller='scheduleCtrl' ng-show="isLoggedIn"><a ng-click="openScheduleModal()" href="#/schedule">New  Interview</a></li>
@@ -15,6 +15,8 @@
         <div class='interviews-container'>
           <div class='homeSearch-container' ng-show="isLoggedIn">
             <input class="homeSearch" ng-model="searchText" placeholder="Search">
+          </div>
+          <div class='button'>
             <button class="btn btn-default"ng-click='setInterviewFilter("Upcoming")'>Incomplete</button>
             <button class="btn btn-default" ng-click='setInterviewFilter("Completed")'>Completed</button>
           </div>
@@ -23,13 +25,17 @@
             <div ng-show='isLoggedIn && (incompleteInterviews.length === 0)' style='text-align: center'>You don't have any upcoming interviews!</div>
           </div>
           <div ng-show='timeframe === "Upcoming"'>
-            Today
-            <div class='interview' ng-repeat='interview in incompleteInterviews | orderBy: interviewOrder | interviewFilter:"Today" | filter:searchText' ng-click='joinRoom(interview)'>
+            <div class='dateLabelDiv'>
+              <div class='dateLabel'>TODAY</div>
+            <div>
+            <div class='interview' ng-repeat='interview in incompleteInterviews | orderBy: interviewOrder | interviewFilter:"Today"' ng-click='joinRoom(interview)'>
                 <interview-box interview='interview' remove-fn='remove(interview.roomId)'></interview-box>
             </div>
           </div>
           <div>
-            {{timeframe}}
+            <div class='dateLabelDiv'>
+              <div class='dateLabel'>{{timeframe | uppercase}}</div>
+            </div>
             <div class='interview' ng-repeat='interview in incompleteInterviews | orderBy: interviewOrder | interviewFilter:timeframe | filter:searchText' ng-click='joinRoom(interview)'>
               <interview-box interview='interview' remove-fn='remove(interview.roomId)'></interview-box>
             </div>

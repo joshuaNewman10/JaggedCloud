@@ -2,14 +2,26 @@ body {
   font-family: 'Signika', sans-serif;
   color: #000;
   font-weight: 300;
-  background-color: #363636;
-  /*background: url('https://snap-photos.s3.amazonaws.com/img-thumbs/960w/MSJTURMZ7Y.jpg') no-repeat center center fixed;*/
-  background: url('https://snap-photos.s3.amazonaws.com/img-thumbs/960w/PUQOVWZYKP.jpg') no-repeat center center fixed;
+  background-color: #F1EDEB;
+/*CLOUDS*/
+  /*background: url('https://snap-photos.s3.amazonaws.com/img-thumbs/960w/6MOWG59HJ1.jpg') no-repeat center center fixed;*/
+/*OCEAN*/
+  /*background: url('https://snap-photos.s3.amazonaws.com/img-thumbs/960w/8CDAB8C197.jpg') no-repeat center center fixed;*/
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
 }
+
+.dateLabel{
+  font-size: 30px;
+  text-shadow: 4px 4px 4px #aaa;
+}
+
+/*.name {
+  font-size: 35px;
+  font-weight: bold;
+}*/
 
 .navbar {
   background-color: #363636;
@@ -24,6 +36,11 @@ body {
 .homeDiv {
   width: 100%;
 }
+
+.dateLabel{
+  text-align: center;
+}
+
 
 a {
   color: #F1EDEB;
@@ -50,19 +67,26 @@ li{
   list-style: none;
 }
 
+.button {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
 .filterButtons {
   text-align: center;
   margin-bottom: 40px;
 }
 
 .interview{
-  width: 45%;
+  width: 55%;
   box-shadow: 0px 8px 10px 0px #A0A0A0;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 35px;
-  background: rgba(102,153,255,0.7);
-  height: 120px;
+  margin-bottom: 50px;
+  /*color: white;*/
+  background-color: #326B8B;
+  /*background: rgba(102,153,255,0.7);*/
+  height: 130px;
   text-align:center;
 }
 
@@ -106,6 +130,7 @@ li{
   height: 100%;
   width: 100%;
   text-align: center;
+  text-shadow: 4px 4px 4px #aaa;
 }
 
 .schedule {
@@ -276,8 +301,8 @@ li{
 }
 
 .homeSearch-container{
-  margin: 10px;
   text-align: center;
+  padding: 10px;
 }
 
 .homeSearch {
