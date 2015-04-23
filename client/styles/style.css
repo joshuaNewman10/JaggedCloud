@@ -239,6 +239,7 @@ li{
 
 .addtab-btn {
   background-color: #222;
+  color: #fff;
   border: none;
   border-radius: 20%;
 }
@@ -282,7 +283,6 @@ li{
 
 
 .loading_spinner{
-  margin: 5px 5px 5px 15px;
   width:25px;
   height:25px;
 }
@@ -392,6 +392,26 @@ li{
   width: 25px;
 }
 
+.room-title {
+  font-family: Quicksand;
+  font-weight: bold;
+  font-size: 72px;
+  color: #222;
+}
+
+.room-title a {
+  color: #444;
+}
+
+.room-title a:hover {
+  color: #666;
+}
+
+.room-logo {
+  height: 100px;
+  display: inline-block;
+}
+
 .gear-container {
   margin: 0 0 0 2px;
 }
@@ -404,4 +424,9 @@ li{
 
 .gear-options {
   background-color: #f1edeb;
+}
+
+.gear-rotate {
+  -webkit-transform: rotate(360deg);
+  -webkit-transition: 3s;
 }
