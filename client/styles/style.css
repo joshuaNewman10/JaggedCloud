@@ -3,10 +3,6 @@ body {
   color: #000;
   font-weight: 300;
   background-color: #F1EDEB;
-/*CLOUDS*/
-  /*background: url('https://snap-photos.s3.amazonaws.com/img-thumbs/960w/6MOWG59HJ1.jpg') no-repeat center center fixed;*/
-/*OCEAN*/
-  /*background: url('https://snap-photos.s3.amazonaws.com/img-thumbs/960w/8CDAB8C197.jpg') no-repeat center center fixed;*/
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -18,19 +14,12 @@ body {
   text-shadow: 4px 4px 4px #aaa;
 }
 
-/*.name {
-  font-size: 35px;
-  font-weight: bold;
-}*/
-
 .navbar {
   background-color: #363636;
   width: 100%;
   margin-top: 0;
   height: 30px;
   border-radius: 0;
-  /*z-index: 10;*/
-  /*position: fixed;*/
 }
 
 .homeDiv {
@@ -49,7 +38,7 @@ a {
 
 a:hover {
   text-decoration: none;
-  color: #F1EDEB;
+  color: #326B8B;
   cursor: pointer;
 }
 
@@ -59,7 +48,7 @@ a:visited {
 }
 
 a:visited:hover {
-  color: #F1EDEB;
+  color: #326B8B;
   text-decoration: none;
 }
 
@@ -83,9 +72,7 @@ li{
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 50px;
-  /*color: white;*/
   background-color: #326B8B;
-  /*background: rgba(102,153,255,0.7);*/
   height: 130px;
   text-align:center;
 }
@@ -93,7 +80,6 @@ li{
 .interviewLeft {
   float: left;
   width: 50%;
-  /*margin-top: 4%;*/
 }
 
 .interviewRight {
@@ -106,8 +92,8 @@ li{
 }
 
 .interview:hover{
-  background: #6495ED;
-  /*cursor: pointer;*/
+  background: #6895AD;
+  cursor: pointer;
 }
 
 .signin {
@@ -134,7 +120,7 @@ li{
 }
 
 .schedule {
-  background-color: #4965EE;
+  background-color: #326B8B;
   color: #000;
   border: 1px solid #fff;
   font-weight: 100;
