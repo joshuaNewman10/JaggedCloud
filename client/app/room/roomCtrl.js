@@ -65,12 +65,13 @@
       console.log('Initializing room controller');
 
       // Fetch the room from the database
-      console.log($scope.roomId);
       Room.getRoom($scope.roomId, function(response){
-         console.log(response.data);
         // Initialize text editors 
         // Assign the save keyboard shortcut to each editor
         TextEditor.init(response.data.text);
+        if(response.data.notes !== undefined){
+          TextEditor.initNotes(response.data.notes, $scope.saveNoteData);
+        }
         TextEditor.assignKBShortcuts($scope.saveTextAndCanvasData);
 
         // Update the canvas with the saved data
@@ -152,6 +153,18 @@
 
       console.log('this is the data i will save', timeData);
       $scope.saveData(timeData);
+    }
+
+    $scope.saveNoteData = function() {
+      console.log('Saving note data...');
+      $scope.saving = true;
+
+      var noteData = {
+        roomId: $scope.roomId,
+        notes: TextEditor.getNotes().editor.getSession().getValue()
+      };
+
+      $scope.saveData(noteData);
     }
     /**
      * Function: RoomCtrl.toggleCanvas()

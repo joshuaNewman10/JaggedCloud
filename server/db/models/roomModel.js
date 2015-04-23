@@ -21,6 +21,7 @@ var roomSchema = new mongoose.Schema({
   canvas: String,
   text: [{editorId: Number,
           data: String}],
+  notes: {type: String, default: '// This is a private editor given only to the employer.'},
   candidateName: String,
   candidateEmail: String
 });

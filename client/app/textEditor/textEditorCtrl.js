@@ -14,6 +14,7 @@
 
   function TextEditorCtrl($scope, TextEditor){
     $scope.editors = TextEditor.getEditors();
+    $scope.notes = TextEditor.getNotes();
 
     // The $destroy event is called when we leave this view
     $scope.$on('$destroy', function(){
@@ -50,6 +51,10 @@
      */
     $scope.setActiveEditor = function(editorId){
       TextEditor.setActiveEditor(editorId);
+    };
+
+    $scope.setActiveNotes = function(notesEditorId){
+      TextEditor.setActiveNotes(notesEditorId);
     };
 
     /**

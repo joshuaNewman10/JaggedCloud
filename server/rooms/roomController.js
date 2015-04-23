@@ -94,7 +94,6 @@ module.exports.create = function(req, res) {
  */
 module.exports.save = function(req, res) {
 var roomId = req.body.roomId;
-console.log('this is the req.body', req.body);
 
 // find room and update data
 Room.findOneAndUpdate({_id: roomId}, req.body, {new: true}, function(err, room){
@@ -181,7 +180,7 @@ module.exports.fetchOne = function(req, res) {
       if(userIsCreator(room, githubId)) {
         // user is creator;  creator property is true
         roomData.creator = true;
-        
+        roomData.notes = room.notes;
         // add creator properties to the room
         roomData.displayOpen = !roomIsOpen(room, githubId) && new Date() < roomData.end_time;
         roomData.displayClose = roomIsOpen(room, githubId);
