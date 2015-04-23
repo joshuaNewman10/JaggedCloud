@@ -48,12 +48,11 @@ http://hackbox.herokuapp.com/
 
 - Node 0.10.x
 - MongoDB 3.0.2
-- Postgresql 9.1.x
 
 ### API Key Requirements
 
--GitHub Authorization
--Mandrill email service
+- GitHub Authorization
+- Mandrill email service
 
 ### Roadmap
 
