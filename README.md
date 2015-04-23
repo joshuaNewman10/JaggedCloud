@@ -51,8 +51,8 @@ http://hackbox.herokuapp.com/
 
 ### API Key Requirements
 
-- GitHub Authorization
-- Mandrill email service
+-GitHub Authorization
+-Mandrill email service
 
 ### Roadmap
 
@@ -62,3 +62,7 @@ View the project roadmap [here](https://github.com/JaggedCloud/JaggedCloud/issue
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
+
+## Full Documentation
+
+Explanation of high level system architecture as well as specific components can be found in our [wiki page](https://github.com/JaggedCloud/JaggedCloud/wiki)
