@@ -63,7 +63,7 @@
 =======
             <div class='interview' ng-repeat='interview in incompleteInterviews | orderBy: interviewOrder | interviewFilter:timeframe | filter:searchText' ng-click='joinRoom(interview)'>
                 <div class="close" ng-click="$event.stopPropagation()"><a ng-click='remove(interview.roomId)'><i class="fa fa-times"></i></a></div>
-                <h5><div class='innerInterview'>
+                <!-- <div class='innerInterview'>
 
                   <div class='interviewLeft'>
                     <ul>
@@ -80,8 +80,8 @@
                       <li class='email'> {{interview.candidateEmail}} </li>
                     </ul>
                   </div>
+                </div> -->
 
-                </div></h5>
             </div>
 >>>>>>> styling home page
         </div>
