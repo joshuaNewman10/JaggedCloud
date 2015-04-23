@@ -144,6 +144,9 @@ body {
   /*width: 1024px;*/
   height: 473px;
   background-color: #F1EDEB;
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 50px;
 }
 
 .section4 {

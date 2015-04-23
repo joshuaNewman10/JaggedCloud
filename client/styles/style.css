@@ -227,16 +227,16 @@ li{
   text-decoration:none;
   margin: 1px;
   padding-right: 5px;
-  background-color: #333;
+  background-color: #444;
   border-radius: 5px;
 }
 
 .activeTab{
   display: inline-block;
-  color:#666666;
+  color:#eee;
   padding: 5px 15px;
   text-decoration:none;
-  background-color: #333;
+  background-color: #444;
   border-radius: 5px;
   margin: 1px;
 }
@@ -431,6 +431,6 @@ li{
 }
 
 .gear-rotate {
-  -webkit-transform: rotate(360deg);
-  -webkit-transition: 3s;
+  /*-webkit-transform: rotate(200deg);*/
+  -webkit-transition: 10s;
 }
