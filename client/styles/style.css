@@ -203,6 +203,7 @@ li{
 .tab-box { 
   display:inline-block;
   position: relative;
+  width: 100%;
 }
 
 .tab-container {
@@ -218,7 +219,7 @@ li{
 .activeTab-container {
   display: inline-block;
   /*border:1px solid #DDD;*/
-  color:#444;
+  color:#fff;
   text-decoration:none;
   margin: 1px;
   padding-right: 5px;
@@ -244,7 +245,7 @@ li{
 
 .tab {
   display: inline-block;
-  color:#666666;
+  color:#fff;
   padding: 5px 15px;
   text-decoration:none;
   background-color: #222;
@@ -389,4 +390,18 @@ li{
   left: 10px;
   height: 25px;
   width: 25px;
+}
+
+.gear-container {
+  margin: 0 0 0 2px;
+}
+
+.gear {
+  background-color: #222;
+  color: #fff;
+  border: none;
+}
+
+.gear-options {
+  background-color: #f1edeb;
 }

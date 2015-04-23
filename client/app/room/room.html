@@ -1,17 +1,22 @@
 <div id="room-container">
   <ul class="nav nav-tabs navbar">
-    <li class="divider-vertical title"><a href="#/">HackBox</a></li>
-    <li class="divider-vertical"><a ng-click="saveTextAndCanvasData()">Save</a></li>
-    <li class="divider-vertical" ng-show='saving'><img class='loading_spinner' src="../assets/loading_spinner.gif" ng-show='saving'>Saving...</img></li>
-    <li class="divider-vertical"><a ng-click="clearCanvas()">Clear Canvas</a></li>
-    <li class="divider-vertical"><a ng-click="toggleEraser()">Toggle Eraser</a></li>
+    <li class="divider-vertical title"><img src="../assets/logo.png" class="logo"><a href="#/">HackBox</a></li>
   </ul>
-    <div>
-      <button ng-show="creator && displayOpen" ng-click="openRoom()">Open Room</button>
-      <button ng-show="creator && displayClose" ng-click="closeRoom()">Close Room</button>
-      <!-- <p ng-show="creator">start time: {{startTime}}</p><p ng-show="creator">end time: {{endTime}}</p> -->
-    </div>
     <div class="tab-box" ng-controller='textEditorCtrl'>
+      <div class="btn-group gear-container">
+        <button  type="button" class="btn btn-default dropdown-toggle gear" data-toggle="dropdown" aria-expanded="false">
+        <i ng-show="!saving" class="fa fa-cog fa-2x"></i></span>
+        <img class='loading_spinner' src="../assets/loading_spinner.gif" ng-show='saving'></img>
+        </button>
+        <ul class="dropdown-menu gear-options" role="menu">
+          <li ng-click="saveTextAndCanvasData()"><a>Save</a></li>
+          <li ng-click="clearCanvas()"><a>Clear Canvas</a></li>
+          <li ng-click="toggleEraser()"><a>Toggle Eraser</a></li>
+          <li class="divider"></li>
+          <li ng-show="creator && displayOpen"><a ng-click="openRoom()">Open Room</a></li>
+          <li ng-show="creator && displayClose"><a ng-click="closeRoom()">Close Room</a></li>
+        </ul>
+      </div>
             <div ng-class='{"tab-container": !editor.tab.active, "activeTab-container": editor.tab.active}' ng-click="toggleCanvas(true); setActiveEditor(editor.id)" ng-repeat='editor in editors'>
                 <div ng-class='{tab: !editor.tab.active, activeTab: editor.tab.active}'>{{editor.tab.name}}</div>
                 <a class='removeEditor-button' ng-click='removeTextEditor(editor.id); saveTextAndCanvasData(); $event.stopPropagation();'></a>
