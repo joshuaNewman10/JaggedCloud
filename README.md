@@ -1,6 +1,11 @@
 # HackBox
 
-HackBox is a simple to use, all-in-one technical interview platform empowering interviewers to assess candidates with live-coding exercises.
+HackBox is a simple to use, all-in-one technical interview platform empowering interviewers to assess candidates with live-coding exercises. Our application seamlessly integrates the following components:
+
+1. Video/Audio-Icecomm.io
+2. Coding Editor-Ace Text Editor
+3. Whiteboarding Canvas-Fabric.js ontop of HTML5 Canvas
+4. Syncronization via Icecomm.io and Socket.io
 
 ## Team
 
