@@ -2,24 +2,26 @@
     <div class="container-fluid">
       <!-- Collect the nav links, forms, and other content for toggling -->
         <ul class="nav nav-tabs navbar">
-          <!-- <li class="divider-vertical title"><a href="#/">HackBox</a></li> -->
-          <li class="divider-vertical" ng-controller='signinCtrl'  ng-show='!isLoggedIn'><a ng-click='openSigninModal()' href="#/signin">Sign In</a></li>
-          <li class="divider-vertical" ng-show='isLoggedIn'><a ng-click='logout()' href="/auth/logout">Logout</a></li>
+          <li class="divider-vertical"><img src="../assets/logo.png" class="nav-logo"></li>
+          <li class="divider-vertical"><a href="#/">HackBox</a></li>
           <li class="divider-vertical" ng-controller='scheduleCtrl' ng-show="isLoggedIn"><a ng-click="openScheduleModal()" href="#/schedule">New  Interview</a></li>
           <li class="divider-vertical"><a ng-click='quickRoom()'>Demo Room</a></li>
+          <li class="divider-vertical" id="logout" ng-show='isLoggedIn'><a ng-click='logout()' href="/auth/logout">Logout</a></li>
         </ul>
         <div>
         <div class="homepage" ng-show="isLoggedIn">
          <h2>{{timeframe}} Interviews</h2>
         </div>
-        <div class='interviews-container'>
           <div class='homeSearch-container' ng-show="isLoggedIn">
             <input class="homeSearch" ng-model="searchText" placeholder="Search">
           </div>
-          <div class='button'>
-            <button class="btn btn-default"ng-click='setInterviewFilter("Upcoming")'>Incomplete</button>
-            <button class="btn btn-default" ng-click='setInterviewFilter("Completed")'>Completed</button>
+          <div class="folder-tab-container">
+            <div class='button'>
+              <button ng-class='{"btn btn-default folder-tab-bdr-bottom": timeframe === "Completed", "btn btn-default folder-tab": timeframe === "Upcoming"}' ng-click='setInterviewFilter("Upcoming")'>Incomplete</button>
+              <button ng-class='{"btn btn-default folder-tab": timeframe === "Completed", "btn btn-default folder-tab-bdr-bottom": timeframe === "Upcoming"}' ng-click='setInterviewFilter("Completed")'>Completed</button>
+            </div>
           </div>
+        <div class='interviews-container'>
           <div>
             <img ng-show='showLoadingCreateInterview' class='homeLoadingSpinner' src="../assets/loading_spinner.gif"></img>
             <div ng-show='isLoggedIn && (incompleteInterviews.length === 0) && timeframe === "Upcoming"' style='text-align: center'>You don't have any upcoming interviews!</div>

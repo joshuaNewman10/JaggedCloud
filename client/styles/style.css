@@ -1,5 +1,5 @@
 body { 
-  font-family: 'Signika', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   color: #000;
   font-weight: 300;
   background-color: #F1EDEB;
@@ -11,7 +11,7 @@ body {
 
 .dateLabel{
   font-size: 30px;
-  text-shadow: 4px 4px 4px #aaa;
+  /*text-shadow: 4px 4px 4px #aaa;*/
 }
 
 .navbar {
@@ -70,8 +70,51 @@ li{
   margin-bottom: 40px;
 }
 
+.folder-tab-container {
+  /*border: 1px solid #00f;*/
+  padding: 0;
+  width: 70%;
+  margin: auto;
+}
+
+.folder-tab {
+  border-radius: 7px 15px 5px 5px !important;
+  background-color: #F8F5E1 !important;
+  border: 1px solid #ccc !important;
+  border-bottom: none !important;
+}
+
+
+.folder-tab-bdr-bottom {
+  border-radius: 7px 15px 5px 5px !important;
+  background-color: #F8F5E1 !important;
+  border: 1px solid #ccc !important;
+}
+
+#folder-tab:focus {
+  outline:0;
+}
+
+.button {
+  text-align: left;
+  /*border: 1px solid #000;*/
+  margin: 0 0 0 0;
+  position: absolute;
+}
+
+.interviews-container {
+  background-color: #F8F5E1;
+  margin: 30px auto 0 auto;
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  border: 1px solid #ccc;
+  width: 70%;
+  border-radius: 0 10px 10px 10px;
+}
+
 .interview{
-  width: 55%;
+  width: 70%;
   box-shadow: 0px 8px 10px 0px #A0A0A0;
   margin-left: auto;
   margin-right: auto;
@@ -120,7 +163,7 @@ li{
   height: 100%;
   width: 100%;
   text-align: center;
-  text-shadow: 4px 4px 4px #aaa;
+  /*text-shadow: 4px 4px 4px #aaa;*/
 }
 
 .schedule {
@@ -435,4 +478,12 @@ li{
 .gear-rotate {
   /*-webkit-transform: rotate(200deg);*/
   -webkit-transition: 10s;
+}
+
+.nav-logo {
+  height: 45px;;
+}
+
+#logout {
+  float: right;
 }
