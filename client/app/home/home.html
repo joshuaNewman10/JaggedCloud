@@ -1,5 +1,5 @@
 <div id="home-container">
-    <div class="homeDiv">
+    <div class="container-fluid">
       <!-- Collect the nav links, forms, and other content for toggling -->
         <ul class="nav nav-tabs navbar">
           <li class="divider-vertical title"><a href="#/">HackBox</a></li>
@@ -10,7 +10,6 @@
         </ul>
         <div>
         <div class="homepage" ng-show="isLoggedIn">
-<<<<<<< HEAD
          <h2>{{timeframe}} Interviews</h2>
         </div>
         <div class='interviews-container'>
@@ -18,27 +17,11 @@
             <input class="homeSearch" ng-model="searchText" placeholder="Search">
             <button class="btn btn-default"ng-click='setInterviewFilter("Upcoming")'>Incomplete</button>
             <button class="btn btn-default" ng-click='setInterviewFilter("Completed")'>Completed</button>
-=======
-         <h3>Upcoming Interviews</h3>
-        </div>
-        <div class='interviews-container'>
-          <div class='homeSearch-container' ng-show="isLoggedIn">
-            <i class="fa fa-search"></i>
-            <input class="homeSearch" ng-model="searchText" placeholder="">
           </div>
-
-          <div class='filterButtons'>
-            <button class='btn-sm' ng-click='setInterviewFilter("present")'>Incomplete</button>
-            <button class='btn-sm' ng-click='setInterviewFilter("past")'>Completed</button>
->>>>>>> styling home page
-          </div>
-
           <div>
             <img ng-show='showLoadingCreateInterview' class='homeLoadingSpinner' src="../assets/loading_spinner.gif"></img>
             <div ng-show='isLoggedIn && (incompleteInterviews.length === 0)' style='text-align: center'>You don't have any upcoming interviews!</div>
           </div>
-<<<<<<< HEAD
-<<<<<<< HEAD
           <div ng-show='timeframe === "Upcoming"'>
             Today
             <div class='interview' ng-repeat='interview in incompleteInterviews | orderBy: interviewOrder | interviewFilter:"Today" | filter:searchText' ng-click='joinRoom(interview)'>
@@ -50,40 +33,7 @@
             <div class='interview' ng-repeat='interview in incompleteInterviews | orderBy: interviewOrder | interviewFilter:timeframe | filter:searchText' ng-click='joinRoom(interview)'>
               <interview-box interview='interview' remove-fn='remove(interview.roomId)'></interview-box>
             </div>
-=======
-          <div class='interview' ng-repeat='interview in incompleteInterviews | orderBy: interviewOrder | interviewFilter:timeframe | filter:searchText' ng-click='joinRoom(interview)'>
-              <div class="close" ng-click="$event.stopPropagation()"><a ng-click='remove(interview.roomId)'><i class="fa fa-times"></i></a></div>
-              <div class='innerInterview'>
-                <h2 class='candidateName'> {{interview.candidateName}}</h2>
-                <div class='candidateEmail'> {{interview.candidateEmail}}</div>
-                <div class='startTime'> {{interview.displayedStart_time}}</div>
-              </div>
->>>>>>> restyle home page
           </div>
-=======
-            <div class='interview' ng-repeat='interview in incompleteInterviews | orderBy: interviewOrder | interviewFilter:timeframe | filter:searchText' ng-click='joinRoom(interview)'>
-                <div class="close" ng-click="$event.stopPropagation()"><a ng-click='remove(interview.roomId)'><i class="fa fa-times"></i></a></div>
-                <!-- <div class='innerInterview'>
-
-                  <div class='interviewLeft'>
-                    <ul>
-                      <li> <i class="fa fa-calendar"></i> {{interview.displayed_date}} </li>
-                      <br>
-                      <li> <i class="fa fa-clock-o"></i> {{interview.displayed_time}} </li>
-                    </ul>
-                  </div>
-
-                  <div class='interviewRight'>
-                    <ul>
-                      <li class='name'> {{interview.candidateName}} </li>
-                      <br>
-                      <li class='email'> {{interview.candidateEmail}} </li>
-                    </ul>
-                  </div>
-                </div> -->
-
-            </div>
->>>>>>> styling home page
         </div>
     </div>
 </div>
