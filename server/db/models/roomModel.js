@@ -5,18 +5,18 @@ var mongoose = require('mongoose');
 // SCHEMAS: each schema maps to a 'collection' in MongoDB (analogous to SQL table) and defines the shape of the 'documents' within that colletion (documents are analogous to a row in a SQL table)
 var roomSchema = new mongoose.Schema({
 
+  is_completed: {
+    type: Boolean,
+    default: false
+  },
+
   date_created: {
     type: Date,
     default: Date.now
   },
 
-  start_time: Number, // number of milliseconds
   end_time: Number, // number of milliseconds
-  is_completed: {
-    type: Boolean,
-    default: false
-  },
-  
+  start_time: Number, // number of milliseconds
   created_by: String, // githubId
   canvas: String,
   text: [{editorId: Number,
