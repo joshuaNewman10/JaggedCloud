@@ -89,10 +89,15 @@ li{
   border-radius: 7px 15px 5px 5px !important;
   background-color: #F8F5E1 !important;
   border: 1px solid #ccc !important;
+  margin-top: -5px;
 }
 
-#folder-tab:focus {
-  outline:0;
+.folder-tab:focus {
+  outline:0 !important;
+}
+
+.folder-tab-bdr-bottom:focus {
+  outline: 0 !important;
 }
 
 .button {
@@ -111,6 +116,7 @@ li{
   border: 1px solid #ccc;
   width: 70%;
   border-radius: 0 10px 10px 10px;
+  padding-top: 30px;
 }
 
 .interview{
