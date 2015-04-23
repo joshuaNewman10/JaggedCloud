@@ -19,7 +19,6 @@
 
     var instance = {
       init: init,
-      initializeDataListener: initializeDataListener,
       getEditors: getEditors,
       addTextEditor: addTextEditor,
       setActiveEditor: setActiveEditor,
@@ -27,7 +26,9 @@
       removeTextEditor: removeTextEditor,
       removeAllEditors: removeAllEditors,
       deactivateTabsAndEditors: deactivateTabsAndEditors,
-      assignKBShortcuts: assignKBShortcuts
+      assignKBShortcuts: assignKBShortcuts,
+      peerAddEditor: peerAddEditor,
+      peerRemoveEditor: peerRemoveEditor
     };
 
     return instance;
@@ -37,57 +38,11 @@
     ////////////////// Text Editor Methods //////////////////
     function init(savedEditors){
       // If there is text saved, set the editors text to that. 
-      if(savedEditors && savedEditors.length > 0){
-        savedEditors.forEach(function(savedText, i){
-          addTextEditor();
-          setEditorText(savedText, i);
-        });
-        setActiveEditor(0);
-      } 
-      else{
-        addTextEditor();
-      }
+      loadSavedEditors(savedEditors);
 
       // Initialize the listener for incoming text
       initializeDataListener();
     }
-
-    /**  
-     * Function: TextEditor.initializeDataListener()
-     * This function will initialize all entities upon switching the the room state.
-     */
-    function initializeDataListener(){
-      var comm = IcecommWrapper.getIcecommInstance();
-
-      // Sync with peer if first into room
-        comm.on('connected', function(peer) {
-          if(comm.isHost()){
-            console.log('Sending Peer my data')
-            _editors.forEach(function(editor){
-              if(_okToSend)
-                comm.send({data: editor.editor.getSession().getValue(), editorId: editor.id});
-            });
-          }
-        });
-
-      IcecommWrapper.setDataListener(function(peer) {
-        // Prevent user from sending data while receiving data
-        _okToSend = false;
-
-        // Emit an event for use
-        $rootScope.$emit('receivingData');
-        
-        var editorIdx = indexOfEditorWithId(peer.data.editorId);
-        if(editorIdx !== -1){
-          var cursorPos = _editors[editorIdx].editor.getCursorPosition();
-          _editors[editorIdx].editor.getSession().setValue(peer.data.data,1);
-          _editors[editorIdx].editor.moveCursorToPosition(cursorPos);
-        }
-
-        // Editor is now ok to send data again. 
-        _okToSend = true;
-      });
-    };
 
     /**  
      * Function: TextEditor.getEditors()
@@ -103,10 +58,16 @@
      * Function: TextEditor.addTextEditor()
      * This function will add a new text editor to the DOM. 
      */
-    function addTextEditor(){
+    function addTextEditor(id){
+      var editorId = nextSmallestId(_editors, MAX_EDITORS);
+
       if(_editors.length < MAX_EDITORS){
         // Get the id to assign
-        var editorId = nextSmallestId(_editors, MAX_EDITORS);
+        if(id !== undefined && _editors[id] === undefined){
+          var editorId = id;
+        } else{
+          var editorId = nextSmallestId(_editors, MAX_EDITORS);
+        }
 
         // Hide all editors and tabs
         deactivateTabsAndEditors();
@@ -119,13 +80,7 @@
                       editor: createEditor('#editors',editorId) };
 
         // Setup ace editor listener for change in text
-        editor.editor.on('change', function(event){
-          var text = editor.editor.getSession().getValue();
-          var editorId = editor.id;
-
-          if(_okToSend)
-            IcecommWrapper.getIcecommInstance().send({data: text, editorId: editorId});
-        });
+        setEditorOnChangeListener(editor);
 
         _editors.push(editor);
       }
@@ -204,7 +159,7 @@
     /**
      * Function: TextEditor.resizeAllEditors()
      * This function will rerender all the editors. 
-     * This helps the use experience when changing visibility
+     * This helps the user experience when changing visibility
      */
     function resizeAllEditors(){
       // Force a rerender of editors
@@ -230,6 +185,16 @@
                                       exec: saveFn
           });
       });
+    }
+
+    function peerAddEditor(){
+      console.log('Add editor to peer!')
+      IcecommWrapper.getIcecommInstance().send({command: 'addEditor'});
+    }
+
+    function peerRemoveEditor(editorId){
+      console.log('Remove Editor to peer!')
+      IcecommWrapper.getIcecommInstance().send({command: 'removeEditor', editorId: editorId});
     }
     ///////////////////// End Text Editor Methods //////////////////////
 
@@ -261,6 +226,42 @@
       return editor;
     }
 
+    /**  
+     * Function: TextEditor.initializeDataListener()
+     * This function will initialize all entities upon switching the the room state.
+     */
+    function initializeDataListener(){
+      var comm = IcecommWrapper.getIcecommInstance();
+
+      // Sync with peer if first into room
+        comm.on('connected', function(peer) {
+          if(comm.isHost()){
+            console.log('Sending Peer my data')
+            _editors.forEach(function(editor){
+              if(_okToSend)
+                comm.send({command: 'setData', 
+                           data: editor.editor.getSession().getValue(), 
+                           editorId: editor.id});
+            });
+          }
+        });
+
+      // Start data listener for peer data transfers
+      IcecommWrapper.setDataListener(onPeerData);
+    };
+    
+    function setEditorOnChangeListener(editor){
+      editor.editor.on('change', function(event){
+        var text = editor.editor.getSession().getValue();
+        var editorId = editor.id;
+
+        if(_okToSend)
+          IcecommWrapper.getIcecommInstance().send({command: 'setData',
+                                                    data: text, 
+                                                    editorId: editorId});
+      });
+    }
+
     /**
      * Function: TextEditor.setEditorText(text, editorId)
      * This function will set the text in an editor with a given id to text
@@ -270,7 +271,13 @@
      */
     function setEditorText(text, editorId){
       var editorIdx = indexOfEditorWithId(editorId);
-      _editors[editorIdx].editor.getSession().setValue(text,1);
+
+      if(editorIdx !== -1){
+        var cursorPos = _editors[editorIdx].editor.getCursorPosition();
+        _editors[editorIdx].editor.getSession().setValue(text,1);
+        _editors[editorIdx].editor.moveCursorToPosition(cursorPos);
+      }
+
     };
 
     /**  
@@ -307,6 +314,49 @@
       });
     };
 
+    function loadSavedEditors(savedEditors){
+      // If there is text saved, set the editors text to that. 
+      if(savedEditors && savedEditors.length > 0){
+        savedEditors.forEach(function(savedEditor, i){
+          addTextEditor(savedEditor.editorId);
+          setEditorText(savedEditor.data, savedEditor.editorId);
+        });
+        setActiveEditor(savedEditors[0].editorId);
+      } 
+      else{
+        addTextEditor();
+      }
+    }
+
+    function onPeerData(peer){
+      // Prevent user from sending data while receiving data
+      _okToSend = false;
+      switch(peer.data.command){
+        case 'addEditor':
+          $rootScope.$apply(function(){
+            addTextEditor();
+          });
+          break;
+
+        case 'removeEditor':
+          $rootScope.$apply(function(){
+            removeTextEditor(peer.data.editorId);
+          });
+          break;
+
+        case 'setData':
+          // Emit an event for use
+          $rootScope.$emit('receivingData');
+          setEditorText(peer.data.data, peer.data.editorId)
+          break;
+
+        default:
+          break;
+      }
+  
+      // Editor is now ok to send data again. 
+      _okToSend = true;
+    }
     /**
      * Function: nextSmallestId(arr, limit)
      * A helper function to find the smallest editor.id # from 0 - limit
@@ -332,10 +382,10 @@
     /**
      * Function: indexOfEditorWithId(editorId)
      * A helper function to find the smallest editor.id # from 0 - limit
-     * that does not exist currently in the __editors collection.
+     * that does not exist currently in the _editors collection.
      *
      * @param editorId: An integer representing the ID of the editor to find. Range(0 - MAX_EDITORS)
-     * @return: The index in the __editors collection which corresponds to the editor with the 
+     * @return: The index in the _editors collection which corresponds to the editor with the 
      * matching Id. 
      */
     function indexOfEditorWithId(editorId){

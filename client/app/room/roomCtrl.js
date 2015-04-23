@@ -71,7 +71,7 @@
         // Initialize text editors 
         // Assign the save keyboard shortcut to each editor
         TextEditor.init(response.data.text);
-        TextEditor.assignKBShortcuts($scope.saveData);
+        TextEditor.assignKBShortcuts($scope.saveTextAndCanvasData);
 
         // Update the canvas with the saved data
         if(response.data.canvas){
@@ -126,7 +126,8 @@
       var canvas = JSON.stringify(Drawing.getCanvas().toJSON());
       var text = [];
       TextEditor.getEditors().forEach(function(editor){
-        text.push(editor.editor.getSession().getValue());
+        var editorObj = {editorId: editor.id, data: editor.editor.getSession().getValue()}
+        text.push(editorObj);
       });
 
       var roomData = {
@@ -135,6 +136,7 @@
         text: text
       };
       console.log('this is the data i will save', roomData)
+      
       $scope.saveData(roomData);
     };
 

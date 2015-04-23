@@ -19,7 +19,8 @@ var roomSchema = new mongoose.Schema({
   
   created_by: String, // githubId
   canvas: String,
-  text: [String],
+  text: [{editorId: Number,
+          data: String}],
   candidateName: String,
   candidateEmail: String
 });
