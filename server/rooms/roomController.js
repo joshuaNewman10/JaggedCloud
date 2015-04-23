@@ -3,7 +3,7 @@ var User = require('../db/models/userModel');
 var mandrill = require('../email/message');
 
 var handleError = function(error) {
-  console.error('The following error has occurred: ' + error);
+  console.error('the following error has occurred: ' + error);
 };
 
 
@@ -55,6 +55,7 @@ module.exports.create = function(req, res) {
     else{
       // no room created
       if (!room) {
+        handleError(err);
         res.status(404).send('error creating room');
       }
       // room created successfully
@@ -71,6 +72,7 @@ module.exports.create = function(req, res) {
           else {
             // user doesn't exist
             if (!user) {
+              handleError(err);
               res.status(201).send(room);
             }
             // user exists; send email to candidate and send room object back
@@ -117,6 +119,35 @@ Room.findOneAndUpdate({_id: roomId}, req.body, {new: true}, function(err, room){
 );
 };
 
+/**
+ * RoomController.exists:
+ * This function determines if the room exists
+ */
+module.exports.exists = function(req, res) {
+  var roomId = req.params.id;
+  
+  if (roomId.match(/^[0-9a-fA-F]{24}$/)) {
+    // Yes, it's a valid ObjectId, proceed with `findById` call.
+    Room.findById(roomId, function(err, room) {
+      // if an error occurs console the error
+      if(err) {
+        console.error('Error: ', err);
+      }
+      // if a room exists, return true;
+      if(room) {
+        console.log('Found room: ', room._id);
+        res.status(200).send({exists: true});
+      // if  a room does not exist, return false;
+      } else {
+        console.log('No room, instead found: ', room);
+        res.status(200).send({exists: false});
+      }
+    });
+  }
+  else {
+    res.status(200).send({exists: false});
+  }
+};
 
 /**
  * RoomController.access:
@@ -124,16 +155,15 @@ Room.findOneAndUpdate({_id: roomId}, req.body, {new: true}, function(err, room){
  */
 module.exports.access = function(req, res) {
   var roomId = req.params.id;
-  var githubId = req.user;
 
   if (roomId.match(/^[0-9a-fA-F]{24}$/)) {
     Room.findById(roomId, function(err, room) {
-      if(err) {
       // if an error occurs console the error
-        handleError(err);
+      if(err) {
+        console.error('Error:', err);
       }
-      if(room) {
       // if a room is found;
+      if(room) {
         console.log('Found room', room._id);
         var access = userIsCreator(room, githubId) || roomIsOpen(room, githubId);
         res.status(200).send({access: access});
@@ -145,7 +175,6 @@ module.exports.access = function(req, res) {
     });
   }
   else {
-  // the room's id is not a valid ObjectID
     res.status(200).send({access: false});
   }
 }
@@ -226,6 +255,7 @@ module.exports.fetchAll = function(req, res) {
     else {
       // no user
       if (!user) {
+        handleError(err);
         res.status(404).send('no user found');
       }
       // user found
@@ -299,6 +329,7 @@ module.exports.remove = function(req, res) {
     else {
       // room not found
       if (!room) {
+        handleError(err); 
         res.status(404).send('room not found');
       }
       // room was found
@@ -314,6 +345,7 @@ module.exports.remove = function(req, res) {
           else {
             // user not found
             if (!user) {
+              handleError(err); 
               res.send(404, 'user not found');
             }
             // user found
