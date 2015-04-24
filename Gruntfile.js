@@ -67,7 +67,38 @@ module.exports = function(grunt) {
         DEST     : 'builds/production'
       },
       all: localConfig
+    },
+    concat: {
+      options: {
+        seperator: ';'
+      },
+      dist: {
+        src: ['client/**/*.js'],
+        dest: 'dist/built.js'
+      }
+    },
+    uglify: {
+      options: {
+        mangle: false
+      },
+      my_target: {
+        files: {
+          'dest/output.min.js': ['dist/built.js']
+        }
+      }
+    },
+    cssmin: {
+      options: {
+        keepSpecialComments: 0
+      },
+      dist: {
+        files: {
+          'dist/style.min.css': ['client/styles/style.css', 'client/styles/landing.css']
+        }
+      }
     }
+    
+
   });
  
   // load the Grunt task
@@ -78,6 +109,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-nodemon');
   grunt.loadNpmTasks('grunt-open');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-contrib-concat');
+
+
+
   //Server development
   grunt.registerTask('server-dev', function (target) {
       // Running nodejs in a different process and displaying output on the main console
@@ -91,11 +128,13 @@ module.exports = function(grunt) {
 
     });
 
+  grunt.registerTask('build', ['cssmin', 'concat', 'uglify']);
+
   //will run our unit tests once and report the results in Karma
   grunt.registerTask('unit-test', ['karma:unit']);
 
   //Use development mode while working on our codebae, it will watch for any file changes and run karma continuously
-  grunt.registerTask('devmode', ['env:all','env:dev','printEnv','shell:mongo','server-dev','open:dev', 'karma:continuous:start', 'watch:karma']);
+  grunt.registerTask('devmode', ['env:all','env:dev','printEnv','shell:mongo','server-dev','open:dev', 'karma:continuous:start', 'watch:karma', 'build']);
 
   //Test is what Travis uses to run our test suite, it is initiated in the 'scripts' section in package.json
   grunt.registerTask('test', ['karma:travis']);
