@@ -29,6 +29,7 @@
       removeAllEditors: removeAllEditors,
       deactivateTabsAndEditors: deactivateTabsAndEditors,
       assignKBShortcuts: assignKBShortcuts,
+      assignKBShortcutsNotes: assignKBShortcutsNotes,
       peerAddEditor: peerAddEditor,
       peerRemoveEditor: peerRemoveEditor,
       getEditors: getEditors,
@@ -56,8 +57,8 @@
      * @param notes: A string representing the text to set for the note editor. 
      * @param saveFn: A callback to a save function to be bound to Ctrl+S
      */
-    function initNotes(notes, saveFn){
-      loadSavedNotes(notes, saveFn);
+    function initNotes(notes){
+      loadSavedNotes(notes);
     }
 
     /**
@@ -307,12 +308,10 @@
     }
 
     /**  
-     * Function: addNotesEditor(saveFn)
+     * Function: addNotesEditor()
      * This function will add a notes editor to the dom with an ID of MAX_EDITORS + 1
-     *
-     * @param saveFn: The callback function for saving to bind
      */
-    function addNotesEditor(saveFn){
+    function addNotesEditor(){
       // Add new editor, starts as active.
       var tab = {name: 'Notes',
                  active: false}; 
@@ -320,8 +319,6 @@
       _notes.id = MAX_EDITORS + 1;
       _notes.tab =  tab;
       _notes.editor = createEditor('#editors', MAX_EDITORS+1);
-
-      assignKBShortcutsNotes(saveFn)
     };
 
     /**  
@@ -459,8 +456,8 @@
      * @params notes: The text to set
      * @params saveFn: The callback function for saving
      */
-    function loadSavedNotes(notes, saveFn){
-      addNotesEditor(saveFn);
+    function loadSavedNotes(notes){
+      addNotesEditor();
       setNotesText(notes);
     }
 

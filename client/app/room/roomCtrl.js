@@ -72,7 +72,8 @@
         // Initialize text editors and notes if needed
         // Assign the save keyboard shortcut to each editor
         if(response.data.creator){
-          TextEditor.initNotes(response.data.notes, $scope.saveNoteData);
+          TextEditor.initNotes(response.data.notes);
+          TextEditor.assignKBShortcutsNotes($scope.saveTextAndCanvasData);
         }
         
         TextEditor.init(response.data.text);
@@ -92,9 +93,6 @@
         // Start interval for saving
         saveInterval = setInterval(function(){
           $scope.saveTextAndCanvasData();
-          if(response.data.creator){
-            $scope.saveNoteData();
-          }
         }, AUTOSAVE_FREQUENCY_MS);
       });
     };
@@ -143,6 +141,11 @@
         text: text
       };
       
+      // Append the notes if creator. 
+      if($scope.isCreator){
+        roomData.notes = TextEditor.getNotes().editor.getSession().getValue();
+      }
+
       $scope.saveData(roomData);
     };
 
@@ -160,21 +163,6 @@
       };
 
       $scope.saveData(timeData);
-    }
-
-    /**
-     * Function: RoomCtrl.saveNoteData()
-     * This function will save the notes to the database. 
-     */
-    $scope.saveNoteData = function() {
-      $scope.saving = true;
-
-      var noteData = {
-        roomId: $scope.roomId,
-        notes: TextEditor.getNotes().editor.getSession().getValue()
-      };
-
-      $scope.saveData(noteData);
     }
 
     /**
