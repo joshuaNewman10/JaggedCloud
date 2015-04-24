@@ -37,7 +37,7 @@ passport.use(new GitHubStrategy({
       }
       if(!user) {
         console.log(profile);
-        User.create({ email: profile._json.email, github_id: profile.id, access_token: accessToken, refresh_token: refreshToken, profile_photo: profile._json.avatar_url }, function(err, user) {
+        User.create({ name: profile._json.name, email: profile._json.email, github_id: profile.id, access_token: accessToken, refresh_token: refreshToken, profile_photo: profile._json.avatar_url }, function(err, user) {
           if(err) {
             console.error('Error: ', err);
           }
