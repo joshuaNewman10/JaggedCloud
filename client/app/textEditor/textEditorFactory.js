@@ -16,7 +16,7 @@
     var _editors = [];
     var _notes = {};
     var _okToSend = true;
-    var MAX_EDITORS = 5;
+    var MAX_EDITORS = 3;
 
     var instance = {
       init: init,
@@ -67,14 +67,16 @@
      * @param id: Overloaded, will set a particular editor with id provided if possible. 
      */
     function addTextEditor(id){
+      var editorId = null;
+
       if(_editors.length < MAX_EDITORS){
-        var editorId = nextSmallestId(_editors, MAX_EDITORS);
+        editorId = nextSmallestId(_editors, MAX_EDITORS);
 
         // Get the id to assign
         if(id !== undefined && _editors[id] === undefined){
-          var editorId = id;
+          editorId = id;
         } else{
-          var editorId = nextSmallestId(_editors, MAX_EDITORS);
+          editorId = nextSmallestId(_editors, MAX_EDITORS);
         }
 
         // Hide all editors and tabs
@@ -93,8 +95,9 @@
         _editors.push(editor);
       }
       else{
-        console.log('Cannot have more than 5 editors!');
+        console.log('Cannot have more than ' + MAX_EDITORS + ' editors!');
       }
+      return editorId; 
     };
 
     /**
@@ -156,8 +159,10 @@
 
         // Destroy the editor and splice the element with the matching id out of _editors
         var idxToRemove = indexOfEditorWithId(editorId);
-        _editors[idxToRemove].editor.destroy();
-        _editors.splice(idxToRemove,1);
+        if(idxToRemove !== -1){
+          _editors[idxToRemove].editor.destroy();
+          _editors.splice(idxToRemove,1);
+        }
 
         // Set active editor if needed
         if(switchEditorFocus){
@@ -180,7 +185,8 @@
         editor.editor.destroy();
       });
 
-      _notes.editor.destroy();
+      if(_notes.hasOwnProperty('editor'))
+        _notes.editor.destroy();
 
       _notes = {};
       _editors = [];
@@ -241,9 +247,9 @@
      * Function: peerAddEditor()
      * This function will send a command to the peer to add an editor
      */
-    function peerAddEditor(){
+    function peerAddEditor(editorId){
       console.log('Add editor to peer!')
-      IcecommWrapper.getIcecommInstance().send({command: 'addEditor'});
+      IcecommWrapper.getIcecommInstance().send({command: 'addEditor', editorId: editorId});
     }
 
     /**
@@ -471,7 +477,7 @@
       switch(peer.data.command){
         case 'addEditor':
           $rootScope.$apply(function(){
-            addTextEditor();
+            addTextEditor(peer.data.editorId);
           });
           break;
 
