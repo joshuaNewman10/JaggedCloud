@@ -14,54 +14,62 @@
 
   function TextEditor($rootScope, IcecommWrapper) {
     var _editors = [];
+    var _notes = {};
     var _okToSend = true;
     var MAX_EDITORS = 5;
 
     var instance = {
       init: init,
-      getEditors: getEditors,
+      initNotes: initNotes,
       addTextEditor: addTextEditor,
       setActiveEditor: setActiveEditor,
+      setActiveNotes: setActiveNotes,
       resizeAllEditors: resizeAllEditors,
       removeTextEditor: removeTextEditor,
       removeAllEditors: removeAllEditors,
       deactivateTabsAndEditors: deactivateTabsAndEditors,
       assignKBShortcuts: assignKBShortcuts,
+      assignKBShortcutsNotes: assignKBShortcutsNotes,
       peerAddEditor: peerAddEditor,
-      peerRemoveEditor: peerRemoveEditor
+      peerRemoveEditor: peerRemoveEditor,
+      getEditors: getEditors,
+      getNotes: getNotes
     };
 
     return instance;
 
-    //// IMPLEMENTATION /////
-
     ////////////////// Text Editor Methods //////////////////
+    /**
+     * Function: TextEditor.init(savedEditors)
+     * This function initialize the text editors given. 
+     *
+     * @param savedEditors: An array of editor objects to initialize the state of each editor to
+     */
     function init(savedEditors){
-      // If there is text saved, set the editors text to that. 
       loadSavedEditors(savedEditors);
-
-      // Initialize the listener for incoming text
       initializeDataListener();
     }
 
-    /**  
-     * Function: TextEditor.getEditors()
-     * This function will return the list of editors currently in use
+    /**
+     * Function: TextEditor.initNotes(notes)
+     * This function will initialize the note editor.
      *
-     * @return : A list of editor objects. 
+     * @param notes: A string representing the text to set for the note editor. 
      */
-    function getEditors(){
-      return _editors;
+    function initNotes(notes){
+      loadSavedNotes(notes);
     }
 
     /**
-     * Function: TextEditor.addTextEditor()
+     * Function: TextEditor.addTextEditor(id)
      * This function will add a new text editor to the DOM. 
+     *
+     * @param id: Overloaded, will set a particular editor with id provided if possible. 
      */
     function addTextEditor(id){
-      var editorId = nextSmallestId(_editors, MAX_EDITORS);
-
       if(_editors.length < MAX_EDITORS){
+        var editorId = nextSmallestId(_editors, MAX_EDITORS);
+
         // Get the id to assign
         if(id !== undefined && _editors[id] === undefined){
           var editorId = id;
@@ -73,13 +81,13 @@
         deactivateTabsAndEditors();
 
         // Add new editor, starts as active.
-        var tab = {name: 'Tab ' + editorId,
+        var tab = {name: 'Tab ' + (editorId + 1),
                    active: true}; 
         var editor = {id: editorId, 
                       tab: tab, 
                       editor: createEditor('#editors',editorId) };
 
-        // Setup ace editor listener for change in text
+        // Setup ace editor listener for change event in text
         setEditorOnChangeListener(editor);
 
         _editors.push(editor);
@@ -90,7 +98,7 @@
     };
 
     /**
-     * Function: TextEditorCtrl.removeTextEditor(editorId)
+     * Function: TextEditor.setActiveEditor(editorId)
      * This function will set the editor in the collection with the matching Id as the active editor 
      *
      * @param editorId: An integer representing the ID of an editor object. Range(0 - MAX_EDITORS)
@@ -110,7 +118,26 @@
     };
 
     /**
-     * Function: TextEditorCtrl.removeTextEditor(editorId)
+     * Function: TextEditor.setActiveEditor(editorId)
+     * This function will set the notes editor as the active editor 
+     *
+     * @param noteEditorId: An integer representing the ID of an editor object. (MAX_EDITORS + 1)
+     */
+    function setActiveNotes(notesEditorId){
+      // Hide all tabs and editors.
+      deactivateTabsAndEditors();
+
+      // Add 'activeEditor' class to the editor with the correct id. Also set the tab as active.
+      setEditorActive(notesEditorId);
+      _notes.tab.active = true;
+
+      // Focus on the editor and set cursor to end.
+      _notes.editor.focus();
+      _notes.editor.navigateLineEnd();
+    };
+
+    /**
+     * Function: TextEditor.removeTextEditor(editorId)
      * This function will remove a text editor from the DOM.
      *
      * @param editorId: An integer representing the ID of an editor object. Range(0 - MAX_EDITORS)
@@ -153,6 +180,9 @@
         editor.editor.destroy();
       });
 
+      _notes.editor.destroy();
+
+      _notes = {};
       _editors = [];
     };
 
@@ -170,8 +200,10 @@
     };
 
     /**
-     * Function: assignKBShortcuts()
+     * Function: assignKBShortcuts(saveFn)
      * This function will assign the KB shortcut for saving to the editor. 
+     *
+     * @param saveFn: The callback function to call when KB shortbut is pressed
      */
     function assignKBShortcuts(saveFn){
       // Assign the save keyboard shortcut to each editor
@@ -187,14 +219,62 @@
       });
     }
 
+    /**
+     * Function: assignKBShortcutsNotes(saveFn)
+     * This function will assign the KB shortcut for saving to the editor. 
+     *
+     * @param saveFn: The callback function to call when KB shortbut is pressed
+     */
+    function assignKBShortcutsNotes(saveFn){
+      // Assign the save keyboard shortcut to the notes object
+      _notes.editor.commands.addCommand({  name: 'saveFile',
+                                    bindKey: {
+                                    win: 'Ctrl-S',
+                                    mac: 'Command-S',
+                                    sender: 'editor|cli'
+                                 },
+                                  exec: saveFn
+      });
+    }
+
+    /**
+     * Function: peerAddEditor()
+     * This function will send a command to the peer to add an editor
+     */
     function peerAddEditor(){
       console.log('Add editor to peer!')
       IcecommWrapper.getIcecommInstance().send({command: 'addEditor'});
     }
 
+    /**
+     * Function: peerRemoveEditor(editorId)
+     * This function will send a command to the peer to remove an editor
+     *
+     * @param editorId: The editorId to remove for the peer
+     */
     function peerRemoveEditor(editorId){
       console.log('Remove Editor to peer!')
       IcecommWrapper.getIcecommInstance().send({command: 'removeEditor', editorId: editorId});
+    }
+
+    /**  
+     * Function: TextEditor.getEditors()
+     * This function will return the list of editors currently in use
+     *
+     * @return : A list of editor objects. 
+     */
+    function getEditors(){
+      return _editors;
+    }
+
+    /**  
+     * Function: TextEditor.getNotes()
+     * This function will return the notes editor object
+     *
+     * @return : The notes editor object
+     */
+    function getNotes(){
+      return _notes;
     }
     ///////////////////// End Text Editor Methods //////////////////////
 
@@ -227,6 +307,20 @@
     }
 
     /**  
+     * Function: addNotesEditor()
+     * This function will add a notes editor to the dom with an ID of MAX_EDITORS + 1
+     */
+    function addNotesEditor(){
+      // Add new editor, starts as active.
+      var tab = {name: 'Notes',
+                 active: false}; 
+
+      _notes.id = MAX_EDITORS + 1;
+      _notes.tab =  tab;
+      _notes.editor = createEditor('#editors', MAX_EDITORS+1);
+    };
+
+    /**  
      * Function: TextEditor.initializeDataListener()
      * This function will initialize all entities upon switching the the room state.
      */
@@ -250,6 +344,12 @@
       IcecommWrapper.setDataListener(onPeerData);
     };
     
+    /**  
+     * Function: TextEditor.setEditorOnChangeListener(editor)
+     * This function will set the 'change' event listener on the ace editor given
+     *
+     * @params editor: The editor object to set the change event on. 
+     */
     function setEditorOnChangeListener(editor){
       editor.editor.on('change', function(event){
         var text = editor.editor.getSession().getValue();
@@ -277,7 +377,18 @@
         _editors[editorIdx].editor.getSession().setValue(text,1);
         _editors[editorIdx].editor.moveCursorToPosition(cursorPos);
       }
+    };
 
+    /**
+     * Function: TextEditor.setNotesText(text)
+     * This function will set the text in the notes editor
+     *
+     * @param text: The text to place in the editor
+     */
+    function setNotesText(text){
+      var cursorPos = _notes.editor.getCursorPosition();
+      _notes.editor.getSession().setValue(text,1);
+      _notes.editor.moveCursorToPosition(cursorPos);
     };
 
     /**  
@@ -312,8 +423,17 @@
       _editors.forEach(function(editor){
         editor.tab.active = false;
       });
+
+      if(_notes.tab)
+        _notes.tab.active = false;
     };
 
+    /**
+     * Function: loadSavedEditors(savedEditors)
+     * A helper function to initialize all editors
+     *
+     * @params savedEditors: An array of editor objects from server to initialize editors to
+     */
     function loadSavedEditors(savedEditors){
       // If there is text saved, set the editors text to that. 
       if(savedEditors && savedEditors.length > 0){
@@ -328,6 +448,23 @@
       }
     }
 
+    /**
+     * Function: loadSavedNotes(notes)
+     * A helper function to initialize the notes editor
+     *
+     * @params notes: The text to set
+     */
+    function loadSavedNotes(notes){
+      addNotesEditor();
+      setNotesText(notes);
+    }
+
+    /**
+     * Function: onPeerData(peer)
+     * A function to determine what actions to perform upon receiving commands from peer
+     *
+     * @params peer: The peer object from Icecomm
+     */
     function onPeerData(peer){
       // Prevent user from sending data while receiving data
       _okToSend = false;
@@ -357,6 +494,7 @@
       // Editor is now ok to send data again. 
       _okToSend = true;
     }
+    
     /**
      * Function: nextSmallestId(arr, limit)
      * A helper function to find the smallest editor.id # from 0 - limit
@@ -394,6 +532,7 @@
                           }).indexOf(editorId);
       return idx;
     }
+
     ///////////////////////// End Helper Functions /////////////////////////
   }
 })();

@@ -14,20 +14,22 @@
   RoomCtrl.$inject = ['$rootScope', '$timeout', '$scope', '$stateParams', 'TextEditor', 'Room', 'Drawing', '$state'];
 
   function RoomCtrl($rootScope, $timeout, $scope, $stateParams, TextEditor, Room, Drawing, $state){
-    $scope.showCanvas = false;
-    $scope.saving = false;
-    $scope.roomId = $stateParams.roomId;
-    $scope.saveInterval = null;
-    $scope.isPeerTyping = false;
-    $scope.videoToggle = false;
-    $scope.displayOpen = false;
-    $scope.displayClose = false;
-    $scope.creator = false;
-    $scope.startTime;
-    $scope.endTime;
+    /////////// Scope Variables and Constants //////////
+    $scope.showCanvas = false;            // Shows/hides canvas
+    $scope.saving = false;                // Shows/hides saving spinner
+    $scope.roomId = $stateParams.roomId;  // Current RoomId
+    $scope.isPeerTyping = false;          // Shows/hides typing message when receiving text
+    $scope.videoToggle = false;           // Flips webcam
+    $scope.displayOpen = false;           // Shows/hides Open Button to open a room
+    $scope.displayClose = false;          // Shows/hides Close Button to close a room
+    $scope.isCreator = false;             // Determines if a user was the creator of a room
+    $scope.startTime;                     // Tracks start time of room as given by server
+    $scope.endTime;                       // Tracks end time of room as given by server
 
-    var isTypingPromise = null;
-    var AUTOSAVE_FREQUENCY_MS = 60000;
+    var isTypingPromise = null;           // Helps act as a timer reset
+    var AUTOSAVE_FREQUENCY_MS = 60000;    // Frequency of auto-save feature in ms
+    var saveInterval = null;              // Interval that will run the auto-save feature
+    ///////// End Scope Variables and Constants /////////
 
     ////////////////// Event Listeners //////////////////
     /**
@@ -35,7 +37,7 @@
      */
     $scope.$on('$destroy', function(){
       $scope.uninit();
-      clearInterval($scope.saveInterval);
+      clearInterval(saveInterval);
     });
 
     /**
@@ -65,11 +67,15 @@
       console.log('Initializing room controller');
 
       // Fetch the room from the database
-      console.log($scope.roomId);
       Room.getRoom($scope.roomId, function(response){
-         console.log(response.data);
-        // Initialize text editors 
+
+        // Initialize text editors and notes if needed
         // Assign the save keyboard shortcut to each editor
+        if(response.data.creator){
+          TextEditor.initNotes(response.data.notes);
+          TextEditor.assignKBShortcutsNotes($scope.saveTextAndCanvasData);
+        }
+        
         TextEditor.init(response.data.text);
         TextEditor.assignKBShortcuts($scope.saveTextAndCanvasData);
 
@@ -78,21 +84,14 @@
           Drawing.updateCanvas(response.data.canvas);
         }
 
-        // determine is user is the creator
-        $scope.creator = response.data.creator;
-        
-        // hide or show the open and close buttons
-        // show the open button if the room is closed and the current time is less than the end time
+        $scope.isCreator = response.data.creator;
         $scope.displayOpen = response.data.displayOpen;
-        // show the close button if the room is open
         $scope.displayClose = response.data.displayClose;
-
-        // render the start and end times
         $scope.startTime = new Date(response.data.start_time).toLocaleString();
         $scope.endTime = new Date(response.data.end_time).toLocaleString();
 
         // Start interval for saving
-        $scope.saveInterval = setInterval(function(){
+        saveInterval = setInterval(function(){
           $scope.saveTextAndCanvasData();
         }, AUTOSAVE_FREQUENCY_MS);
       });
@@ -108,10 +107,12 @@
     };
 
     /**
-     * Function: RoomCtrl.saveData()
-     * This function is called when the user clicks the saveCanvas button
-     * It converts the canvas data into a png image string and then
-     * makes a request to our server to store the image in the database
+     * Function: RoomCtrl.saveData(dataObj)
+     * This function is the core save function. Any saving function should pass the object
+     * to save to this function. 
+     *
+     * @param dataObj: The object to send to the server to save. This needs a roomId
+     * and some data to save. The server will update all fields that match in the model.
      */
     $scope.saveData = function(dataObj) {
       Room.saveRoom(dataObj, function(){
@@ -119,9 +120,13 @@
       });
     };
 
+    /**
+     * Function: RoomCtrl.saveTextAndCanvasData()
+     * This function will save the Text and Canvas to the database.
+     */
     $scope.saveTextAndCanvasData = function() {
-      console.log('Saving canvas and text editor data...');
       $scope.saving = true;
+
       // Get canvas data and text editor data
       var canvas = JSON.stringify(Drawing.getCanvas().toJSON());
       var text = [];
@@ -135,27 +140,36 @@
         canvas: canvas,
         text: text
       };
-      console.log('this is the data i will save', roomData)
       
+      // Append the notes if creator. 
+      if($scope.isCreator){
+        roomData.notes = TextEditor.getNotes().editor.getSession().getValue();
+      }
+
       $scope.saveData(roomData);
     };
 
-    $scope.saveTimeData = function(start_time, end_time) {
-      console.log('Saving time data...');
+    /**
+     * Function: RoomCtrl.saveTimeData(startTime, endTime)
+     * This function will save the start and end time to the database
+     */
+    $scope.saveTimeData = function(startTime, endTime) {
       $scope.saving = true;
 
       var timeData = {
         roomId: $scope.roomId,
-        start_time: Date.parse(start_time),
-        end_time: Date.parse(end_time)
+        start_time: Date.parse(startTime),
+        end_time: Date.parse(endTime)
       };
 
-      console.log('this is the data i will save', timeData);
       $scope.saveData(timeData);
     }
+
     /**
-     * Function: RoomCtrl.toggleCanvas()
+     * Function: RoomCtrl.toggleCanvas(forceCanvasOff)
      * This function will toggle the canvas on/off.
+     *
+     * @param forceCanvasOff: True will force the canvas off.
      */
     $scope.toggleCanvas = function(forceCanvasOff){
       if(forceCanvasOff !== undefined && forceCanvasOff)
@@ -170,9 +184,18 @@
       }
     };
     
+    /**
+     * Function: RoomCtrl.clearCanvas()
+     * This function will clear the canvas
+     */
     $scope.clearCanvas = function() {
       Drawing.clearCanvas();
     };
+
+    /**
+     * Function: RoomCtrl.toggleEraser()
+     * This function will turn on/off the eraser
+     */
     $scope.toggleEraser = function() {
       Drawing.toggleEraser();
     };
@@ -185,6 +208,10 @@
       $scope.videoToggle = !$scope.videoToggle;
     };
 
+    /**
+     * Function: RoomCtrl.openRoom()
+     * This function will change the start time of a room, opening it up.
+     */
     $scope.openRoom = function(){
       $scope.startTime = new Date().toLocaleString();
       $scope.saveTimeData($scope.startTime, $scope.endTime);
@@ -192,6 +219,10 @@
       $scope.displayClose = true;
     };
 
+    /**
+     * Function: RoomCtrl.closeRoom()
+     * This function will change the end time of a room to the current time + 1 minute
+     */
     $scope.closeRoom= function(){
       $scope.endTime = (new Date() + 60000).toLocaleString();
       $scope.saveTimeData($scope.startTime, $scope.endTime);
