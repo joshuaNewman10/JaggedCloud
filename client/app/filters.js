@@ -28,7 +28,7 @@
             }
             break;
           case 'Completed':
-            if (startDay.setHours(0,0,0,0) < today.setHours(0,0,0,0) || endDay.setHours(0,0,0,0) < today.setHours(0,0,0,0)) {
+            if (startDay.setHours(0,0,0,0) < today.setHours(0,0,0,0)) {
               filtered.push(item);
             }
             break;
