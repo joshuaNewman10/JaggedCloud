@@ -77,7 +77,12 @@ module.exports.create = function(req, res) {
             else {
               console.log('successfully added new room to user!' + user);
               if (sendEmail) {
-                mandrill.sendMessage({email:email, fullname: name});
+                mandrill.sendMessage({candidateName: name,
+                                      candidateEmail: email, 
+                                      interviewerName: user.name,
+                                      interviewerEmail: user.email, 
+                                      roomId: room._id,
+                                      roomStartTime: room.start_time});
               }
               res.status(201).send(room);
             }
