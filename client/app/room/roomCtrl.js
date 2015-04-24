@@ -92,6 +92,9 @@
         // Start interval for saving
         saveInterval = setInterval(function(){
           $scope.saveTextAndCanvasData();
+          if(response.data.creator){
+            $scope.saveNoteData();
+          }
         }, AUTOSAVE_FREQUENCY_MS);
       });
     };

@@ -94,9 +94,11 @@ module.exports.create = function(req, res) {
  */
 module.exports.save = function(req, res) {
 var roomId = req.body.roomId;
+var githubId = req.user;
+var roomData = req.body;
 
 // find room and update data
-Room.findOneAndUpdate({_id: roomId}, req.body, {new: true}, function(err, room){
+Room.findOne({_id: roomId}, function(err, room){
     // error finding room
     if (err) {
       handleError(err);
@@ -109,7 +111,29 @@ Room.findOneAndUpdate({_id: roomId}, req.body, {new: true}, function(err, room){
       }
       else {
         // room found, data saved, room object sent back
-        res.status(201).send(room);      
+        // if the user requesting is not the creator
+        if(room.created_by !== githubId){
+          // remove time, and notes
+          delete roomData.start_time;
+          delete roomData.end_time;
+          delete roomData.notes;
+        }
+
+        Room.update({_id: roomId}, roomData, function(err, room){
+          if (err) {
+            handleError(err);
+            res.status(404).send('error finding room');
+          }
+          else {
+            // no room found
+            if (!room){
+              res.status(404).send('no room found');
+            }
+            else {
+              res.status(201).send(room);
+            }
+          }
+        });  
       }
     }
   }
