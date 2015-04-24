@@ -51,11 +51,10 @@
     }
 
     /**
-     * Function: TextEditor.initNotes(notes, saveFn)
+     * Function: TextEditor.initNotes(notes)
      * This function will initialize the note editor.
      *
      * @param notes: A string representing the text to set for the note editor. 
-     * @param saveFn: A callback to a save function to be bound to Ctrl+S
      */
     function initNotes(notes){
       loadSavedNotes(notes);
@@ -450,11 +449,10 @@
     }
 
     /**
-     * Function: loadSavedNotes(notes, saveFn)
+     * Function: loadSavedNotes(notes)
      * A helper function to initialize the notes editor
      *
      * @params notes: The text to set
-     * @params saveFn: The callback function for saving
      */
     function loadSavedNotes(notes){
       addNotesEditor();
