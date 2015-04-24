@@ -34,7 +34,7 @@
       var comm = IcecommWrapper.getIcecommInstance();
 
       // Connect to the correct room. Room supports a maximum of 2 people. 
-      comm.connect(roomName, {limit: 2, audio: true});
+      comm.connect(roomName, {limit: 5, audio: true});
 
       // Register user video connected event
       comm.on('local', function(peer) {

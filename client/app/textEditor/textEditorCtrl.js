@@ -27,9 +27,11 @@
      * This function will add a new text editor to the DOM. 
      */
     $scope.addTextEditor = function(saveFn){
-      TextEditor.addTextEditor();
+      var editorId = TextEditor.addTextEditor();
       TextEditor.assignKBShortcuts(saveFn);
-      TextEditor.peerAddEditor();
+
+      if(editorId !== null)
+        TextEditor.peerAddEditor(editorId);
     };
 
     /**
