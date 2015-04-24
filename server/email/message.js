@@ -10,7 +10,7 @@ exports.sendMessage = function(data) {
     <br>\
     <a href='http://hackbox.herokuapp.com'/>http://hackbox.herokuapp.com/</a></p>",
     "subject": data.fullname + ", you have a new scheduled interview!",
-    "from_email": "HackboxTeam@gmail.com",
+    "from_email": "hackboxinterviewteam@gmail.com",
     "from_name": "Hackbox Team",
     "to": [{
             "email": data.email, //data.email
@@ -18,7 +18,7 @@ exports.sendMessage = function(data) {
             "type": "to"
         }],
     "headers": {
-        "Reply-To": "HackboxTeam@gmail.com"
+        "Reply-To": "hackboxinterviewteam@gmail.com"
     }
   };
 
