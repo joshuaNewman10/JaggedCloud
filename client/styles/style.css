@@ -493,3 +493,15 @@ li{
 #logout {
   float: right;
 }
+
+.stack {
+  text-align: center;
+}
+
+.col-md-4 {
+  /*border: 1px solid #000;*/
+}
+
+.stack-logo {
+  height: 100px;
+}

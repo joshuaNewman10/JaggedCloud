@@ -71,6 +71,11 @@
             resolve: {
               access: access
             }
+        })
+        .state('about', {
+          url: '/about',
+          controller: '',
+          templateUrl: 'app/about/about.html'
         });
         // Attach token to all requests
         // $httpProvider.interceptors.push('AttachTokens');

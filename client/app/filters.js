@@ -5,12 +5,12 @@
   app.filter('interviewFilter', function () {
     return function (items, time) {
       var filtered = [];
-      var now = Date.now();
       var today = new Date();
 
       for (var i = 0; i < items.length; i++) {
         var item = items[i];
         var startDay = new Date(item.start_time);
+        var endDay = new Date(item.end_time);
         // Convert MS to just day
         // Add 24 hrs to it, this will be the MS for the next day
         // Past is now anything that is not today, but also before us by 24 hrs. 
@@ -28,7 +28,7 @@
             }
             break;
           case 'Completed':
-            if (startDay.setHours(0,0,0,0) < today.setHours(0,0,0,0)) {
+            if (startDay.setHours(0,0,0,0) < today.setHours(0,0,0,0) || endDay.setHours(0,0,0,0) < today.setHours(0,0,0,0)) {
               filtered.push(item);
             }
             break;

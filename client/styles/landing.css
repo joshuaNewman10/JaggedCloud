@@ -2,6 +2,10 @@ body {
   background-color: #F1EDEB;
 }
 
+.container {
+  width: 100%;
+}
+
 .section1 {
   background: #363636;
   border: 1px solid #979797;
@@ -135,17 +139,22 @@ body {
 
 .section3 {
   /*width: 1024px;*/
-  height: 473px;
+  /*height: 473px;*/
   background-color: #F1EDEB;
   text-align: center;
-  margin-top: 50px;
-  margin-bottom: 50px;
+  margin: 2% auto 2% auto;
+}
+
+.demo-image {
+  width: 80%;
 }
 
 .section4 {
   /*width: 1024px;*/
   height: 321px;
   background-color: #F1EDEB;
+  width: 75%;
+  margin: auto;
 }
 
 .information {
@@ -157,6 +166,8 @@ body {
 .section5 {
  height: 321px;
  background-color: #F1EDEB;
+ width: 75%;
+ margin: auto;
  /*width: 1024px;*/
 }
 
