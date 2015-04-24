@@ -185,7 +185,8 @@
         editor.editor.destroy();
       });
 
-      _notes.editor.destroy();
+      if(_notes.hasOwnProperty('editor'))
+        _notes.editor.destroy();
 
       _notes = {};
       _editors = [];
