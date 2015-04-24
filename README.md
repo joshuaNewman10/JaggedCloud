@@ -58,6 +58,7 @@ http://hackbox.herokuapp.com/
 
 -GitHub Authorization
 -Mandrill email service
+-Icecomm.io
 
 ### Roadmap
 
