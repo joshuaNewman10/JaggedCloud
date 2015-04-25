@@ -16,7 +16,7 @@
     $scope.isPeerDrawing = false;
     
     //The $destroy event is called when we leave this view
-    $scope.$on('destroy', function() {
+    $scope.$on('$destroy', function() {
       $scope.uninit();
     });
 
@@ -26,6 +26,7 @@
      * This function initializes all entities upon switching room state
     */
     $scope.init = function() {
+      Sockets.init();
       $scope.addCanvas();
       $scope.initializeIO();
     };
@@ -36,8 +37,9 @@
      * It will destroy all editors currently in use
     */
     $scope.uninit = function() {
-      console.log('Destroying Canvas');
+      console.log('Destroying Canvas and disconnecting socket');
       Drawing.removeCanvas();
+      Sockets.disconnect();
     };
 
     $scope.initializeIO = function() {

@@ -12,8 +12,10 @@
   Sockets.$inject = [];
 
   function Sockets() {
-    var socket = io.connect();
+    var _socket;
+
     var instance = {
+      init: init,
       on: on,
       emit: emit,
       disconnect: disconnect
@@ -22,15 +24,19 @@
 
   //// IMPLEMENTATION ////
 
+    function init(){
+      _socket = io.connect({'forceNew': true});
+    }
+
     /**Function: Sockets.on()
      *
      * This Function listens for generic socket events from the server
      */
     function on(eventName, callback) {
-      socket.on(eventName, function() {
+      _socket.on(eventName, function() {
         var args = Array.prototype.slice.call(arguments);
         if( callback ) {
-          callback.apply(socket, args);
+          callback.apply(_socket, args);
         }
       });
     }
@@ -41,17 +47,18 @@
      * and then also will execute a callback if specified
      */
     function emit(eventName, data, callback) {
-      socket.emit(eventName, data, function() {
+      _socket.emit(eventName, data, function() {
         var args = Array.prototype.slice.call(arguments);
         if( callback ) {
-          callback.apply(socket, args);  
+          callback.apply(_socket, args);  
         }     
       });
     }
 
     function disconnect() {
       console.log('disconnecting socket');
-      socket.disconnect();
+      _socket.io.close();
+      _socket.disconnect()
     }
   }
 })();
