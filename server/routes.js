@@ -15,7 +15,7 @@ module.exports = function(app, express) {
   app.use(bodyParser.urlencoded({extended: true, limit: '10mb'}));
 
   // serve fav icon and static files 
-  app.use(favicon(__dirname + '/../client/assets/logo.png'));
+  app.use(favicon(__dirname + '/../client/lib/favicon.ico'));
   app.use(express.static(__dirname + '/../client'));
 
   /* Sessions
