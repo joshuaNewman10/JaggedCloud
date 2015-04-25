@@ -1,12 +1,12 @@
 var mandrillAPI = require('./config.js');
+var moment = require('moment-timezone');
 
 exports.sendMessage = function(data) {
-  var date = new Date(data.roomStartTime).toLocaleString('en-US', { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' });
-  var time = new Date(data.roomStartTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', timeZoneName: 'short' });
+  var datePST = moment(data.roomStartTime).tz('America/Los_Angeles').format("dddd, MMMM Do YYYY, h:mma z");
   var message = {
     'html': "<p>" + data.candidateName + ",</p>\
     <p>You have an interview coming up!</p>\
-    <p>" + data.interviewerName + " would like to schedule an interview with you on " + date + " at " + time +".</p>\
+    <p>" + data.interviewerName + " would like to schedule an interview with you on " + datePST + ".</p>\
     <p>Please follow this link at the time of the interview:</p>\
     <p>http://hackbox.herokuapp.com/#/room/" + data.roomId + "</p>\
     <p>Make sure you do the following:</p>\
@@ -35,7 +35,7 @@ exports.sendMessage = function(data) {
   var confirmationMessage = {
     'html': "<p>" + data.interviewerName + ",</p>\
     <p>You have an interview coming up!</p>\
-    <p>You have scheduled an interview with " + data.candidateName + " on " +  date + " at " + time +".</p>\
+    <p>You have scheduled an interview with " + data.candidateName + " on " +  datePST + ".</p>\
     <p>Please follow this link at the time of the interview. Feel free to prepare the interview ahead of time. You can write prompts, or even diagram things out beforehand.</p>\
     <p>http://hackbox.herokuapp.com/#/room/" + data.roomId + "</p>\
     <p>Make sure you do the following:</p>\
