@@ -73,8 +73,8 @@ module.exports = function(grunt) {
         seperator: ';'
       },
       dist: {
-        src: ['client/**/*.js'],
-        dest: 'dist/built.js'
+        src: ['client/app/app.js','client/app/filters.js','client/app/auth/**/*.js','client/app/home/**/*.js', 'client/app/room/**/*.js', 'client/app/video/**/*.js', 'client/app/Icecomm/**/*.js', 'client/app/sockets/**/*.js', 'client/app/drawing/**/*.js', 'client/app/texteditor/**/*.js', 'client/app/signin/**/*.js', 'client/app/schedule/**/*.js', 'client/app/404/**/*.js', 'client/app/directives/**/*.js'],
+        dest: 'client/dist/built.js'
       }
     },
     uglify: {
@@ -83,7 +83,7 @@ module.exports = function(grunt) {
       },
       my_target: {
         files: {
-          'dest/output.min.js': ['dist/built.js']
+          'client/dest/output.min.js': ['client/dist/built.js']
         }
       }
     },
@@ -93,7 +93,7 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          'dist/style.min.css': ['client/styles/style.css', 'client/styles/landing.css']
+          'client/dist/style.min.css': ['client/styles/style.css', 'client/styles/landing.css']
         }
       }
     }
@@ -134,7 +134,7 @@ module.exports = function(grunt) {
   grunt.registerTask('unit-test', ['karma:unit']);
 
   //Use development mode while working on our codebae, it will watch for any file changes and run karma continuously
-  grunt.registerTask('devmode', ['env:all','env:dev','printEnv','shell:mongo','server-dev','open:dev', 'karma:continuous:start', 'watch:karma', 'build']);
+  grunt.registerTask('devmode', ['env:all','env:dev','printEnv','shell:mongo','server-dev','open:dev', 'karma:continuous:start', 'watch:karma']);
 
   //Test is what Travis uses to run our test suite, it is initiated in the 'scripts' section in package.json
   grunt.registerTask('test', ['karma:travis']);
