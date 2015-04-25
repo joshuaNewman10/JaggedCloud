@@ -15,6 +15,7 @@
 
   function ScheduleModalCtrl($state, $scope, $modalInstance, Room){
     $scope.loading = false;
+    
     var currentDate = new Date();
     var currentYear = currentDate.getFullYear();        // returns year
     var currentMonth = currentDate.getMonth();          // returns month with Jan = 0
