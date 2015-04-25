@@ -65,6 +65,7 @@
      * This function will add a new text editor to the DOM. 
      *
      * @param id: Overloaded, will set a particular editor with id provided if possible. 
+     * @return: The editorId that was added or attempted to add. 
      */
     function addTextEditor(id){
       // Get the id to assign
