@@ -81,10 +81,16 @@
         // $httpProvider.interceptors.push('AttachTokens');
   })
   
-  .run(function ($rootScope, $state, $log) {
+  .run(function ($rootScope, $state, $log, $window) {
     $rootScope.$on('$stateChangeError', function () {
       // Redirect user to our home page
       $state.go('home', {reload: true});
+    });
+    /* Workaround for Icecomm not properly cleaning up on destroy, forces refresh of page. */
+    $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+      if(fromState.name === 'room'){
+        $window.location.reload();
+      } 
     });
   });
   console.log('App loaded successfully');
