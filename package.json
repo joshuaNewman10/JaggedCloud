@@ -56,6 +56,8 @@
     "grunt-contrib-cssmin": "^0.12.2",
     "grunt-contrib-uglify": "^0.9.1",
     "mandrill-api": "^1.0.41",
+    "moment": "^2.10.2",
+    "moment-timezone": "^0.3.1",
     "mongoose": "^4.0.1",
     "morgan": "^1.5.2",
     "passport": "^0.2.1",
