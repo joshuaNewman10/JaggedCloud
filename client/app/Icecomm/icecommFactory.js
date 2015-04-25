@@ -62,7 +62,7 @@
       if(!!comm){
         console.log('Stopping Video');
         
-        comm.leave(true); 
+        comm.leave(); 
         return true;
       }
       return false;
