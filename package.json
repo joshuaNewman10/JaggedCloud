@@ -4,8 +4,7 @@
   "description": "technical interview platform",
   "main": "client/index.html",
   "scripts": {
-    "test": "grunt test",
-    "preinstall": "grunt build",
+    "preinstall": "npm install grunt-cli && grunt build",
     "start": "node ./server/server.js",
     "postinstall": "npm install bower && bower install"
   },
