@@ -332,13 +332,16 @@
 
       // Sync with peer if first into room
         comm.on('connected', function(peer) {
-          console.log('Sending Peer my data')
-          _editors.forEach(function(editor){
-            if(_okToSend)
-              comm.send({command: 'setData', 
-                         data: editor.editor.getSession().getValue(), 
-                         editorId: editor.id});
-          });
+          console.log('Host status: ', comm.isHost());
+          if(comm.isHost()){
+            console.log('Sending Peer my data')
+            _editors.forEach(function(editor){
+              if(_okToSend)
+                comm.send({command: 'setData', 
+                           data: editor.editor.getSession().getValue(), 
+                           editorId: editor.id});
+            });
+          }
         });
 
       // Start data listener for peer data transfers
