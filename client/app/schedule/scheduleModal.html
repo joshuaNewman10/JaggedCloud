@@ -6,7 +6,7 @@
     <input class="userinput" type="email" ng-model="newInterview.email" placeholder="Interviewee's Email" ng-class="{'error': interviewForm.$invalid && interviewForm.$dirty}"required/>
     </div>
     <div class="form-group">
-    <input class="userinput" type="datetime-local" ng-model="newInterview.time" placeholder="Interview Start Time" required/>
+    <input class="userinput" type="datetime-local" ng-model="newInterview.time" required/>
     </div>
     <div class="form-group">
     <input type="checkbox" ng-model="newInterview.sendEmail" ng-true-value="true" ng-false-value="false" />
