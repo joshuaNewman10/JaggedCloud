@@ -451,6 +451,7 @@ li{
   font-weight: bold;
   font-size: 72px;
   color: #222;
+  text-align: left;
 }
 
 .room-title a {
@@ -492,4 +493,72 @@ li{
 
 #logout {
   float: right;
+}
+
+.about-header {
+  font-size: 60px;
+  font-weight: 500;
+  text-decoration: underline;
+  margin-bottom: 1%;
+}
+
+.about-text {
+  width: 85%;
+  font-size: 16px;
+  font-weight: 500;
+  margin: auto;
+  text-align: left;
+}
+
+.about-text h1 {
+  text-decoration: underline;
+}
+
+.about-container {
+  text-align: center;
+}
+
+.logo-container {
+}
+
+.logo-container h1 {
+  text-align: left;
+  margin-left: 7%;
+  margin-right: 7%;
+  text-decoration: underline;
+}
+
+.dev-tools {
+  margin-top: 10%;
+}
+
+.apis {
+  margin-top: 10%;
+}
+
+.col-md-4 {
+  /*border: 1px solid #000;*/
+}
+
+.stack-logo {
+  height: 100px;
+}
+
+.faq-text {
+  width: 85%;
+  margin: auto;
+  text-align: left;
+}
+
+.faq-text h1{
+  text-decoration: underline;
+}
+
+.faq-text p {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.faq-text .q {
+  font-weight: 800;
 }

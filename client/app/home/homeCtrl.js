@@ -110,6 +110,7 @@
             if(!emptyObj) {
               var interview = {
                 start_time: interview.start_time,
+                end_time: interview.end_time,
                 displayed_date: new Date(interview.start_time).toLocaleString('en-US', { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' }),
                 displayed_time: new Date(interview.start_time).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', timeZoneName: 'short' }),
                 candidateName: interview.candidateName,

@@ -2,6 +2,10 @@ body {
   background-color: #F1EDEB;
 }
 
+.container {
+  width: 100%;
+}
+
 .section1 {
   background: #363636;
   border: 1px solid #979797;
@@ -49,14 +53,11 @@ body {
 }
 
 .title2 {
-  position: absolute;
   font-family: Quicksand;
   font-size: 36px;
   color: #F1EDEB;
   line-height: 39px;
-  top: 0;
-  margin-top: 35px;
-  margin-left: 25px;
+  margin-top: 30px;
 }
 
 .slogan {
@@ -82,8 +83,10 @@ body {
   color: #F1EDEB;
   line-height: 12px;
   text-align: center;
-  position: absolute; 
-  bottom: 0;
+  /*position: absolute; */
+  /*bottom: 0;*/
+  /*right: 50;*/
+  margin: auto;
 }
 
 .buttonsContainer{
@@ -135,17 +138,22 @@ body {
 
 .section3 {
   /*width: 1024px;*/
-  height: 473px;
+  /*height: 473px;*/
   background-color: #F1EDEB;
   text-align: center;
-  margin-top: 50px;
-  margin-bottom: 50px;
+  margin: 2% auto 2% auto;
+}
+
+.demo-image {
+  width: 80%;
 }
 
 .section4 {
   /*width: 1024px;*/
   height: 321px;
   background-color: #F1EDEB;
+  width: 75%;
+  margin: auto;
 }
 
 .information {
@@ -157,6 +165,8 @@ body {
 .section5 {
  height: 321px;
  background-color: #F1EDEB;
+ width: 75%;
+ margin: auto;
  /*width: 1024px;*/
 }
 
@@ -196,6 +206,9 @@ body {
   height:100%;
 }
 
+.bottom-spacer {
+  height: 80%;
+}
 .col-md-6{
   position: relative;
   display: inline-block;
