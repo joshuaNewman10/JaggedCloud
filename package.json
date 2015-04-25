@@ -5,6 +5,7 @@
   "main": "client/index.html",
   "scripts": {
     "test": "grunt test",
+    "preinstall": "grunt build",
     "start": "node ./server/server.js",
     "postinstall": "npm install bower && bower install"
   },
