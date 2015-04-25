@@ -29,9 +29,7 @@
     $scope.addTextEditor = function(saveFn){
       var editorId = TextEditor.addTextEditor();
       TextEditor.assignKBShortcuts(saveFn);
-
-      if(editorId !== null)
-        TextEditor.peerAddEditor(editorId);
+      TextEditor.peerAddEditor(editorId);
     };
 
     /**

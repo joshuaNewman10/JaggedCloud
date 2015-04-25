@@ -65,20 +65,18 @@
      * This function will add a new text editor to the DOM. 
      *
      * @param id: Overloaded, will set a particular editor with id provided if possible. 
+     * @return: The editorId that was added or attempted to add. 
      */
     function addTextEditor(id){
-      var editorId = null;
+      // Get the id to assign
+      var editorId = id || nextSmallestId(_editors, MAX_EDITORS);
+
+      if(_editors[indexOfEditorWithId(editorId)] !== undefined){
+        console.log('Editor ' + editorId + ' already exists!');
+        return editorId;
+      }
 
       if(_editors.length < MAX_EDITORS){
-        editorId = nextSmallestId(_editors, MAX_EDITORS);
-
-        // Get the id to assign
-        if(id !== undefined && _editors[id] === undefined){
-          editorId = id;
-        } else{
-          editorId = nextSmallestId(_editors, MAX_EDITORS);
-        }
-
         // Hide all editors and tabs
         deactivateTabsAndEditors();
 
@@ -335,6 +333,7 @@
 
       // Sync with peer if first into room
         comm.on('connected', function(peer) {
+          console.log('Host status: ', comm.isHost());
           if(comm.isHost()){
             console.log('Sending Peer my data')
             _editors.forEach(function(editor){
@@ -476,6 +475,7 @@
       _okToSend = false;
       switch(peer.data.command){
         case 'addEditor':
+          console.log('Adding editor from peer: ', peer.data.editorId);
           $rootScope.$apply(function(){
             addTextEditor(peer.data.editorId);
           });
@@ -490,6 +490,10 @@
         case 'setData':
           // Emit an event for use
           $rootScope.$emit('receivingData');
+          if(_editors[indexOfEditorWithId(peer.data.editorId)] === undefined){
+            addTextEditor(peer.data.editorId);
+          }
+
           setEditorText(peer.data.data, peer.data.editorId)
           break;
 
