@@ -15,15 +15,19 @@
 
   function ScheduleModalCtrl($state, $scope, $modalInstance, Room){
     $scope.loading = false;
+    
     var currentDate = new Date();
-    // $scope.isoDateString = currentDate.toISOString();
-    var currentYear = currentDate.getYear(); // returns year
-    var currentMonth = currentDate.getMonth(); // returns month with Jan = 0
-    var currentDay = currentDate.getDate(); // returns day of month (getDay returns day of week)
-    var currentHour = currentDate.getHours(); // returns hour
-    var currentMinute = currentDate.getMinutes(); // returns minute 
-    $scope.newInterview.time = new Date(currentYear, currentMonth, currentDay, currentHour, currentMinute);
-
+    var currentYear = currentDate.getFullYear();        // returns year
+    var currentMonth = currentDate.getMonth();          // returns month with Jan = 0
+    var currentDay = currentDate.getDate();             // returns day of month (getDay returns day of week)
+    var currentHour = currentDate.getHours();           // returns hour
+    var currentMinute = currentDate.getMinutes();       // returns minute 
+    
+    $scope.newInterview.time = new Date(currentYear,
+                                        currentMonth, 
+                                        currentDay, 
+                                        currentHour, 
+                                        currentMinute);
 
     /**
      * Function: HomeCtrl.createInterview()
