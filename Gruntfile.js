@@ -73,7 +73,7 @@ module.exports = function(grunt) {
         seperator: ';'
       },
       dist: {
-        src: ['client/app/app.js','client/app/filters.js','client/app/auth/**/*.js','client/app/home/**/*.js', 'client/app/room/**/*.js', 'client/app/video/**/*.js', 'client/app/Icecomm/**/*.js', 'client/app/sockets/**/*.js', 'client/app/drawing/**/*.js', 'client/app/texteditor/**/*.js', 'client/app/signin/**/*.js', 'client/app/schedule/**/*.js', 'client/app/404/**/*.js', 'client/app/directives/**/*.js'],
+        src: ['client/app/app.js','client/app/filters.js','client/app/auth/**/*.js','client/app/home/**/*.js', 'client/app/room/**/*.js', 'client/app/video/**/*.js', 'client/app/Icecomm/**/*.js', 'client/app/sockets/**/*.js', 'client/app/drawing/**/*.js', 'client/app/textEditor/**/*.js', 'client/app/signin/**/*.js', 'client/app/schedule/**/*.js', 'client/app/404/**/*.js', 'client/app/directives/**/*.js'],
         dest: 'client/dist/built.js'
       }
     },
