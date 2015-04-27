@@ -23,8 +23,9 @@
           </div>
         <div class='interviews-container'>
           <div>
-            <img ng-show='showLoadingCreateInterview' class='homeLoadingSpinner' src="../assets/loading_spinner.gif"></img>
-            <div ng-show='isLoggedIn && (allInterviews.length === 0) && timeframe === "Upcoming"' style='text-align: center'>You don't have any upcoming interviews!</div>
+            <img ng-show='showLoadingInterviews' class='homeLoadingSpinner' src="../assets/loading_spinner.gif"></img>
+            <div ng-show='isLoggedIn && ((allInterviews |  interviewFilter:"Today").length === 0) && (allInterviews |  interviewFilter:"Upcoming").length === 0 && timeframe === "Upcoming"' style='text-align: center'>You don't have any upcoming interviews!</div>
+            <div ng-show='isLoggedIn && ((allInterviews |  interviewFilter:"Completed").length === 0) && timeframe === "Completed"' style='text-align: center'>You don't have any completed interviews!</div>
           </div>
           <div ng-show='timeframe === "Upcoming"'>
             <div class='dateLabelDiv'>

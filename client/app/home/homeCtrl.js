@@ -13,14 +13,17 @@
   HomeCtrl.$inject = ['$scope' ,'$modal', '$state','$log', 'Auth', 'Room'];
 
   function HomeCtrl($scope, $modal, $state, $log, Auth, Room){
-    $scope.showCreateInterview = false;
-    $scope.showLoadingCreateInterview = false;
-    $scope.isLoggedIn = false;
-    $scope.timeframe = 'Upcoming';
-    $scope.interviewOrder = '+start_time';
-    $scope.allInterviews = [];
-    $scope.newInterview = {};
+    /////////// Scope Variables and Constants //////////
+    $scope.showCreateInterview = false;          // Shows/Hides create interview button
+    $scope.showLoadingInterviews = false;        // Shows/Hides loading interviews spinner
+    $scope.isLoggedIn = false;                   // Boolean determining is the user is signed in
+    $scope.timeframe = 'Upcoming';               // Timeframe used for filtering interviews
+    $scope.interviewOrder = '+start_time';       // OrderBy string used for ordering interviews
+    $scope.allInterviews = [];                   // Array of all interviews for user
+    $scope.newInterview = {};                    // Used to save state upon closing schedule interview modal
+    /////////// Scope Variables and Constants //////////
 
+    ///////////////    Home Methods     ///////////////
     /**
      * Function: HomeCtrl.init()
      * This function will initialize the home page. If the user is logged in,
@@ -84,7 +87,6 @@
       };
 
       Room.createRoom(room,function(response){
-        console.log(response);
         $state.go('demo', {roomId: response.data._id})
       });
     };
@@ -95,19 +97,17 @@
      * a list. 
      */
      $scope.refreshInterviews = function(){
-      $scope.allInterviews = [];
-      $scope.showLoadingCreateInterview = true;
+      $scope.showLoadingInterviews = true;
       
       Room.getUpcomingInterviews(function(response){
-        var allInterviews = response.data;
+        var interviewsFromDb = response.data;
+        var newInterviews = [];
 
         // If there are interviews that came back, populate our list with them
-        if(allInterviews.length > 0){
+        if(interviewsFromDb.length > 0){
           // Populate allInterviews with snapshot
-          allInterviews.forEach(function(interview){
-            console.log(interview);
-            var emptyObj = (Object.keys(interview).length === 0);
-            if(!emptyObj) {
+          interviewsFromDb.forEach(function(interview){
+            if(!(Object.keys(interview).length === 0)) {
               var interview = {
                 start_time: interview.start_time,
                 end_time: interview.end_time,
@@ -118,15 +118,13 @@
                 created_by: interview.created_by,
                 roomId: interview.id
               };
-              $scope.allInterviews.push(interview);
-              $scope.showLoadingCreateInterview = false;
+              newInterviews.push(interview);
             }
           });
         }
-        // If there are no interviews that came back, then we display nothing
-        else {
-          $scope.showLoadingCreateInterview = false;
-        }
+        // Copy the list of interviews into the old array so angular maintains binding
+        angular.copy(newInterviews, $scope.allInterviews);
+        $scope.showLoadingInterviews = false;
       });
     }
 
@@ -140,6 +138,7 @@
       else
         $scope.interviewOrder = '+start_time';
     };
+    ///////////////    Home Methods     ///////////////
 
     $scope.init();
   }
