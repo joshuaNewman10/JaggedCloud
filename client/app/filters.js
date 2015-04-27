@@ -6,7 +6,6 @@
     return function (items, time) {
       var filtered = [];
       var today = new Date();
-      items = items || [];
       for (var i = 0; i < items.length; i++) {
         var item = items[i];
         var startDay = new Date(item.start_time);
