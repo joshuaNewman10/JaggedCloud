@@ -22,7 +22,7 @@
             </div> 
         <div ng-click='deactivateTabs(); toggleCanvas(false)' ng-class='{tab: !showCanvas, activeTab: showCanvas}'>Whiteboard</div>
         <div ng-class='{"tab": !notes.tab.active, "activeTab": notes.tab.active}' ng-click="toggleCanvas(true); setActiveNotes(notes.id)" ng-show='isCreator'>Notes</div>
-        <button class="addtab-btn" ng-click='addTextEditor(saveTextAndCanvasData); saveTextAndCanvasData();'><i class="fa fa-plus"></i></button>
+        <button class="addtab-btn" ng-click='addTextEditor(saveTextAndCanvasData); saveTextAndCanvasData();'><i class="fa fa-plus "></i></button>
         <div class='peerTypingText' ng-show='isPeerTyping'> 
             Another user is typing...
         </div>
