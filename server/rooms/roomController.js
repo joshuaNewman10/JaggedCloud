@@ -288,6 +288,7 @@ module.exports.fetchAll = function(req, res) {
                   var roomData = {
                     created_by: room.created_by,
                     start_time: room.start_time,
+                    end_time: room.end_time,
                     candidateName: room.candidateName,
                     candidateEmail: room.candidateEmail,
                     id: room._id

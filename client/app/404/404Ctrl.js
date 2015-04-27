@@ -8,15 +8,14 @@
 
   angular
     .module('hackbox')
-    .controller('404Ctrl', bigcontroller);
+    .controller('404Ctrl', ErrorCtrl);
 
-  bigcontroller.$inject = ['$scope' ,'$modal', '$state','$log', 'Auth', 'Room'];
+  ErrorCtrl.$inject = ['$scope' ,'$modal', '$state','$log', 'Auth', 'Room'];
 
-  function bigcontroller($scope, $modal, $state, $log, Auth, Room){
+  function ErrorCtrl($scope, $modal, $state, $log, Auth, Room){
     $scope.showCreateInterview = false;
     $scope.showLoadingCreateInterview = false;
     $scope.showLogout = false;
-    $scope.incompleteInterviews = [];
     $scope.newInterview = {};
 
     /**

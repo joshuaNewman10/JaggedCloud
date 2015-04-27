@@ -470,12 +470,14 @@ li{
 
 .gear-container {
   margin: 0 0 0 2px;
+  padding: 0;
 }
 
 .gear {
   background-color: #222;
   color: #fff;
   border: none;
+  padding: 0 5px 0 5px;
 }
 
 .gear-options {
@@ -483,8 +485,8 @@ li{
 }
 
 .gear-rotate {
-  /*-webkit-transform: rotate(200deg);*/
-  -webkit-transition: 10s;
+  -webkit-transform: rotateZ(240deg);
+  -webkit-transition: 20s;
 }
 
 .nav-logo {
@@ -561,4 +563,8 @@ li{
 
 .faq-text .q {
   font-weight: 800;
+}
+
+.confirmation {
+  text-align: center;
 }

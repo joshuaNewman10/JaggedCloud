@@ -6,7 +6,6 @@
     return function (items, time) {
       var filtered = [];
       var today = new Date();
-
       for (var i = 0; i < items.length; i++) {
         var item = items[i];
         var startDay = new Date(item.start_time);
@@ -18,7 +17,7 @@
 
         switch(time){
           case 'Today':
-            if (startDay.setHours(0,0,0,0) === today.setHours(0,0,0,0)) {
+            if (startDay.setHours(0,0,0,0) === today.setHours(0,0,0,0) && endDay.setHours(0,0,0,0) > startDay.setHours(0,0,0,0)) {
               filtered.push(item);
             }
             break;
@@ -28,7 +27,7 @@
             }
             break;
           case 'Completed':
-            if (startDay.setHours(0,0,0,0) < today.setHours(0,0,0,0)) {
+            if (endDay.setHours(0,0,0,0) <= today.setHours(0,0,0,0)) {
               filtered.push(item);
             }
             break;
