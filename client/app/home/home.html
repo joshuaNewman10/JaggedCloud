@@ -30,7 +30,7 @@
             <div class='dateLabelDiv'>
               <div class='dateLabel' ng-show="todayFiltered.length > 0">TODAY</div>
             </div>
-            <div class='interview' ng-repeat='interview in allInterviews | orderBy: interviewOrder | interviewFilter:"Today" | filter:searchText' ng-click='joinRoom(interview)'>
+            <div class='interview' ng-repeat='interview in todayFiltered = (allInterviews | orderBy: interviewOrder | interviewFilter:"Today" | filter:searchText) ' ng-click='joinRoom(interview)'>
                 <interview-box interview='interview' remove-fn='remove(interview.roomId)'></interview-box>
             </div>
           </div>
@@ -38,7 +38,7 @@
             <div class='dateLabelDiv'>
               <div ng-show="timeframeFiltered.length > 0" class='dateLabel'>{{timeframe | uppercase}}</div>
             </div>
-            <div class='interview' ng-repeat='interview in allInterviews | orderBy: interviewOrder | interviewFilter:timeframe | filter:searchText' ng-click='joinRoom(interview)'>
+            <div class='interview' ng-repeat='interview in timeframeFiltered = (allInterviews | orderBy: interviewOrder | interviewFilter:timeframe | filter:searchText)' ng-click='joinRoom(interview)'>
               <interview-box interview='interview' remove-fn='remove(interview.roomId)'></interview-box>
             </div>
           </div>
