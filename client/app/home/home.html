@@ -24,21 +24,21 @@
         <div class='interviews-container'>
           <div>
             <img ng-show='showLoadingCreateInterview' class='homeLoadingSpinner' src="../assets/loading_spinner.gif"></img>
-            <div ng-show='isLoggedIn && (incompleteInterviews.length === 0) && timeframe === "Upcoming"' style='text-align: center'>You don't have any upcoming interviews!</div>
+            <div ng-show='isLoggedIn && (allInterviews.length === 0) && timeframe === "Upcoming"' style='text-align: center'>You don't have any upcoming interviews!</div>
           </div>
           <div ng-show='timeframe === "Upcoming"'>
             <div class='dateLabelDiv'>
-              <div class='dateLabel'>TODAY</div>
+              <div class='dateLabel' ng-show="todayFiltered.length > 0">TODAY</div>
             </div>
-            <div class='interview' ng-repeat='interview in incompleteInterviews | orderBy: interviewOrder | interviewFilter:"Today" | filter:searchText' ng-click='joinRoom(interview)'>
+            <div class='interview' ng-repeat='interview in allInterviews | orderBy: interviewOrder | interviewFilter:"Today" | filter:searchText' ng-click='joinRoom(interview)'>
                 <interview-box interview='interview' remove-fn='remove(interview.roomId)'></interview-box>
             </div>
           </div>
           <div>
             <div class='dateLabelDiv'>
-              <div class='dateLabel'>{{timeframe | uppercase}}</div>
+              <div ng-show="timeframeFiltered.length > 0" class='dateLabel'>{{timeframe | uppercase}}</div>
             </div>
-            <div class='interview' ng-repeat='interview in incompleteInterviews | orderBy: interviewOrder | interviewFilter:timeframe | filter:searchText' ng-click='joinRoom(interview)'>
+            <div class='interview' ng-repeat='interview in allInterviews | orderBy: interviewOrder | interviewFilter:timeframe | filter:searchText' ng-click='joinRoom(interview)'>
               <interview-box interview='interview' remove-fn='remove(interview.roomId)'></interview-box>
             </div>
           </div>

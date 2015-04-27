@@ -16,7 +16,6 @@
     $scope.showCreateInterview = false;
     $scope.showLoadingCreateInterview = false;
     $scope.showLogout = false;
-    $scope.incompleteInterviews = [];
     $scope.newInterview = {};
 
     /**

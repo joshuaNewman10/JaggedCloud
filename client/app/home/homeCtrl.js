@@ -18,7 +18,7 @@
     $scope.isLoggedIn = false;
     $scope.timeframe = 'Upcoming';
     $scope.interviewOrder = '+start_time';
-    $scope.incompleteInterviews = [];
+    $scope.allInterviews = [];
     $scope.newInterview = {};
 
     /**
@@ -95,7 +95,7 @@
      * a list. 
      */
      $scope.refreshInterviews = function(){
-      $scope.incompleteInterviews = [];
+      $scope.allInterviews = [];
       $scope.showLoadingCreateInterview = true;
       
       Room.getUpcomingInterviews(function(response){
@@ -103,7 +103,7 @@
 
         // If there are interviews that came back, populate our list with them
         if(allInterviews.length > 0){
-          // Populate incompleteInterviews with snapshot
+          // Populate allInterviews with snapshot
           allInterviews.forEach(function(interview){
             console.log(interview);
             var emptyObj = (Object.keys(interview).length === 0);
@@ -118,7 +118,7 @@
                 created_by: interview.created_by,
                 roomId: interview.id
               };
-              $scope.incompleteInterviews.push(interview);
+              $scope.allInterviews.push(interview);
               $scope.showLoadingCreateInterview = false;
             }
           });
